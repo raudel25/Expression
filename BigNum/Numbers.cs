@@ -15,16 +15,16 @@ public class Numbers : IComparable<Numbers>
         if (!Check(s)) throw new Exception("El valor introducido no es correcto");
 
         string[] part = s.Split('.');
-        this.PartNumber = part[0];
-        this.PartDecimal = part.Length == 2 ? part[1] : "0";
+        this.PartNumber = AuxOperations.EliminateZerosLeft(part[0]);
+        this.PartDecimal = part.Length == 2 ? AuxOperations.EliminateZerosRight(part[1]) : "0";
         this.Sign = positive ? '+' : '-';
         this.Abs = positive ? this : new Numbers(this.PartNumber, this.PartDecimal);
     }
 
     internal Numbers(string partNumber, string partDecimal, bool positive = true)
     {
-        this.PartDecimal = partDecimal;
-        this.PartNumber = partNumber;
+        this.PartNumber = AuxOperations.EliminateZerosLeft(partNumber);
+        this.PartDecimal = AuxOperations.EliminateZerosRight(partDecimal);
         this.Sign = positive ? '+' : '-';
         this.Abs = positive ? this : new Numbers(this.PartNumber, this.PartDecimal);
     }

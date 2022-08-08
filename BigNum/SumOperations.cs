@@ -15,16 +15,12 @@ internal static class SumOperations
     private static Numbers SumOperation(Numbers x, Numbers y, bool sum, bool positive)
     {
         int mayorDecimal = Math.Max(x.PartDecimal.Length, y.PartDecimal.Length);
-        int minimalDecimal = Math.Min(x.PartDecimal.Length, y.PartDecimal.Length);
         int mayorNumber = Math.Max(x.PartNumber.Length, y.PartNumber.Length);
-        int minimalNumber = Math.Min(x.PartNumber.Length, y.PartNumber.Length);
 
-        string xSumDecimal = AuxOperations.AddZerosRight(x.PartDecimal, mayorDecimal - minimalDecimal);
-        string ySumDecimal = AuxOperations.AddZerosRight(y.PartDecimal, mayorDecimal - minimalDecimal);
-        string xSumNumber = AuxOperations.AddZerosLeft(x.PartNumber, mayorNumber - minimalNumber);
-        string ySumNumber = AuxOperations.AddZerosLeft(y.PartNumber, mayorNumber - minimalNumber);
-        Console.WriteLine(xSumDecimal);
-        Console.WriteLine(ySumDecimal);
+        string xSumDecimal = AuxOperations.AddZerosRight(x.PartDecimal, mayorDecimal - x.PartDecimal.Length);
+        string ySumDecimal = AuxOperations.AddZerosRight(y.PartDecimal, mayorDecimal - y.PartDecimal.Length);
+        string xSumNumber = AuxOperations.AddZerosLeft(x.PartNumber, mayorNumber - x.PartNumber.Length);
+        string ySumNumber = AuxOperations.AddZerosLeft(y.PartNumber, mayorNumber - y.PartNumber.Length);
 
         string result = sum
             ? Sum(xSumNumber + xSumDecimal, ySumNumber + ySumDecimal)
