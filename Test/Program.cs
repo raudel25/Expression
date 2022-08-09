@@ -4,6 +4,8 @@ Numbers a = new Numbers("0");
 
 Numbers b = new Numbers("6",false);
 
-Numbers c = a + b;
+Fraction c = new Fraction(new IntegerNumbers("1"), new IntegerNumbers("2"));
 
-Console.WriteLine(-a-b);
+Fraction d = new Fraction(new IntegerNumbers("2"), new IntegerNumbers("3"));
+
+Console.WriteLine(c-d);
