@@ -101,10 +101,7 @@ public class Numbers : IComparable<Numbers>
         return 0;
     }
 
-    public bool Positive()
-    {
-        return this.Sign == '+';
-    }
+    public bool Positive() => this.Sign == '+';
 
     public override string ToString()
     {
@@ -113,4 +110,40 @@ public class Numbers : IComparable<Numbers>
 
         return sign + this.PartNumber + partDecimal;
     }
+
+    public static Numbers operator +(Numbers a, Numbers b) => BigNumMath.Sum(a, b);
+
+    public static Numbers operator -(Numbers a) => BigNumMath.Opposite(a);
+
+    public static Numbers operator -(Numbers a, Numbers b) => BigNumMath.Sum(a, BigNumMath.Opposite(b));
+
+    public static Numbers operator *(Numbers a, Numbers b) => BigNumMath.Product(a, b);
+
+    public static bool operator ==(Numbers? a, Numbers? b)
+    {
+        if (a is null || b is null)
+        {
+            return a is null && b is null;
+        }
+
+        return a.Equals(b);
+    }
+
+    public static bool operator !=(Numbers? a, Numbers? b)
+    {
+        if (a is null || b is null)
+        {
+            return a is null && b is null;
+        }
+
+        return !a.Equals(b);
+    }
+
+    public static bool operator >(Numbers a, Numbers b) => a.CompareTo(b) == 1;
+
+    public static bool operator <(Numbers a, Numbers b) => a.CompareTo(b) == -1;
+
+    public static bool operator >=(Numbers a, Numbers b) => a.CompareTo(b) != -1;
+
+    public static bool operator <=(Numbers a, Numbers b) => a.CompareTo(b) != 1;
 }

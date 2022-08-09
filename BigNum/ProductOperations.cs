@@ -7,6 +7,9 @@ internal static class ProductOperations
         bool positive = x.Sign == y.Sign;
         int cantDecimal = x.PartDecimal.Length + y.PartDecimal.Length;
 
+        if (x.Abs == new Numbers("1")) return new Numbers(y.PartNumber, y.PartDecimal, positive);
+        if (y.Abs == new Numbers("1")) return new Numbers(x.PartNumber, x.PartDecimal, positive);
+
         IntegerNumbers m = new IntegerNumbers(x.PartNumber + x.PartDecimal);
         IntegerNumbers n = new IntegerNumbers(y.PartNumber + y.PartDecimal);
 
@@ -20,17 +23,14 @@ internal static class ProductOperations
     {
         string xValor = x.PartNumber;
         string yValor = y.PartNumber;
-        Console.WriteLine(xValor);
-        Console.WriteLine(yValor);
 
         if (xValor == "0" || yValor == "0") return new IntegerNumbers("0");
+        if (xValor == "1") return y;
+        if (yValor == "1") return x;
         if (xValor.Length == 1 && yValor.Length == 1)
             return BigNumMath.ConvertToIntegerNumbers(int.Parse(xValor) * int.Parse(yValor));
 
-        int max = Math.Max(xValor.Length, yValor.Length);
-
-        xValor = AuxOperations.AddZerosLeft(xValor, max - xValor.Length);
-        yValor = AuxOperations.AddZerosLeft(yValor, max - yValor.Length);
+        AuxOperations.EqualZerosLeft(ref xValor, ref yValor);
 
         int n = xValor.Length / 2;
         int m = xValor.Length;
@@ -46,9 +46,9 @@ internal static class ProductOperations
             new IntegerNumbers(AuxOperations.AddZerosRight(KaratsubaAlgorithm(x1, y0).PartNumber, m - n));
         IntegerNumbers z12 =
             new IntegerNumbers(AuxOperations.AddZerosRight(KaratsubaAlgorithm(y1, x0).PartNumber, m - n));
-        IntegerNumbers z1 = BigNumMath.NumbersToInteger(BigNumMath.Sum(z11, z12));
+        IntegerNumbers z1 = BigNumMath.NumbersToInteger(z11 + z12);
         IntegerNumbers z0 = new IntegerNumbers(KaratsubaAlgorithm(x0, y0).PartNumber);
 
-        return BigNumMath.NumbersToInteger(BigNumMath.Sum(BigNumMath.Sum(z2, z1), z0));
+        return BigNumMath.NumbersToInteger(z2 + z1 + z0);
     }
 }

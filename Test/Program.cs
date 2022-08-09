@@ -1,8 +1,9 @@
 ﻿using BigNum;
 
-Numbers a = new Numbers("42.71",false);
+Numbers a = new Numbers("0");
 
-Numbers b = new Numbers("53.1");
+Numbers b = new Numbers("6",false);
 
-Console.WriteLine(a);
-Console.WriteLine(BigNumMath.Sum(a,b));
+Numbers c = a + b;
+
+Console.WriteLine(-a-b);

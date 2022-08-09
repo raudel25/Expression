@@ -4,23 +4,25 @@ internal static class SumOperations
 {
     public static Numbers Sum(Numbers x, Numbers y)
     {
+        if (x == new Numbers("0")) return y;
+        if (y == new Numbers("0")) return x;
+
         if (x.Sign == y.Sign) return SumOperation(x, y, true, x.Positive());
 
-        if (x.Abs.CompareTo(y.Abs) == 0) return new Numbers("0", "0");
-        if (x.Abs.CompareTo(y.Abs) == 1) return SumOperation(x.Abs, y.Abs, false, x.Positive());
+        int compare = x.Abs.CompareTo(y.Abs);
+        if (compare == 0) return new Numbers("0", "0");
+        if (compare == 1) return SumOperation(x.Abs, y.Abs, false, x.Positive());
 
         return SumOperation(y.Abs, x.Abs, false, y.Positive());
     }
 
     private static Numbers SumOperation(Numbers x, Numbers y, bool sum, bool positive)
     {
-        int mayorDecimal = Math.Max(x.PartDecimal.Length, y.PartDecimal.Length);
-        int mayorNumber = Math.Max(x.PartNumber.Length, y.PartNumber.Length);
+        (string xSumDecimal, string ySumDecimal) = (x.PartDecimal, y.PartDecimal);
+        (string xSumNumber, string ySumNumber) = (x.PartNumber, y.PartNumber);
 
-        string xSumDecimal = AuxOperations.AddZerosRight(x.PartDecimal, mayorDecimal - x.PartDecimal.Length);
-        string ySumDecimal = AuxOperations.AddZerosRight(y.PartDecimal, mayorDecimal - y.PartDecimal.Length);
-        string xSumNumber = AuxOperations.AddZerosLeft(x.PartNumber, mayorNumber - x.PartNumber.Length);
-        string ySumNumber = AuxOperations.AddZerosLeft(y.PartNumber, mayorNumber - y.PartNumber.Length);
+        int mayorDecimal = AuxOperations.EqualZerosRight(ref xSumDecimal, ref ySumDecimal);
+        int mayorNumber = AuxOperations.EqualZerosLeft(ref xSumNumber, ref ySumNumber);
 
         string result = sum
             ? Sum(xSumNumber + xSumDecimal, ySumNumber + ySumDecimal)

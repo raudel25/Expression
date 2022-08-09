@@ -49,4 +49,22 @@ internal static class AuxOperations
 
         return s;
     }
+
+    internal static int EqualZerosLeft(ref string x, ref string y)
+    {
+        int max = Math.Max(x.Length, y.Length);
+
+        (x, y) = (AddZerosLeft(x, max - x.Length), AddZerosLeft(y, max - y.Length));
+
+        return max;
+    }
+
+    internal static int EqualZerosRight(ref string x, ref string y)
+    {
+        int max = Math.Max(x.Length, y.Length);
+
+        (x, y) = (AddZerosRight(x, max - x.Length), AddZerosRight(y, max - y.Length));
+
+        return max;
+    }
 }
