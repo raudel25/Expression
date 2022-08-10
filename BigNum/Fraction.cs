@@ -8,11 +8,14 @@ public class Fraction : IComparable<Fraction>
 
     internal readonly char Sign;
 
+    public readonly Numbers Valor;
+
     public Fraction(Numbers numerator, Numbers denominator)
     {
         this.Numerator = numerator;
         this.Denominator = denominator;
         this.Sign = numerator.Positive() && denominator.Positive() ? '+' : '-';
+        this.Valor = numerator / denominator;
     }
 
     public override bool Equals(object? obj)
@@ -64,6 +67,8 @@ public class Fraction : IComparable<Fraction>
     public static Fraction operator -(Fraction a, Fraction b) => BigNumMath.Sum(a, BigNumMath.Opposite(b));
 
     public static Fraction operator *(Fraction a, Fraction b) => BigNumMath.Product(a, b);
+    
+    public static Fraction operator /(Fraction a, Fraction b) => BigNumMath.Division(a, b);
 
     public static bool operator ==(Fraction? a, Fraction? b)
     {

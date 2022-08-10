@@ -48,9 +48,9 @@ internal static class ProductOperations
             new IntegerNumbers(AuxOperations.AddZerosRight(KaratsubaAlgorithm(x1, y0).PartNumber, m - n));
         IntegerNumbers z12 =
             new IntegerNumbers(AuxOperations.AddZerosRight(KaratsubaAlgorithm(y1, x0).PartNumber, m - n));
-        IntegerNumbers z1 = BigNumMath.NumbersToInteger(z11 + z12);
+        IntegerNumbers z1 = z11 + z12;
         IntegerNumbers z0 = new IntegerNumbers(KaratsubaAlgorithm(x0, y0).PartNumber);
 
-        return BigNumMath.NumbersToInteger(z2 + z1 + z0);
+        return z2 + z1 + z0;
     }
 }

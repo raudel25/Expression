@@ -126,6 +126,8 @@ public class Numbers : IComparable<Numbers>
 
     public static Numbers operator *(Numbers a, Numbers b) => BigNumMath.Product(a, b);
 
+    public static Numbers operator /(Numbers a, Numbers b) => BigNumMath.Division(a, b);
+
     public static bool operator ==(Numbers? a, Numbers? b)
     {
         if (a is null || b is null)
