@@ -60,6 +60,8 @@ public class Fraction : IComparable<Fraction>
         return sign + this.Numerator.Abs + "/" + this.Denominator.Abs;
     }
 
+    #region Operadores
+
     public static Fraction operator +(Fraction a, Fraction b) => BigNumMath.Sum(a, b);
 
     public static Fraction operator -(Fraction a) => BigNumMath.Opposite(a);
@@ -67,7 +69,7 @@ public class Fraction : IComparable<Fraction>
     public static Fraction operator -(Fraction a, Fraction b) => BigNumMath.Sum(a, BigNumMath.Opposite(b));
 
     public static Fraction operator *(Fraction a, Fraction b) => BigNumMath.Product(a, b);
-    
+
     public static Fraction operator /(Fraction a, Fraction b) => BigNumMath.Division(a, b);
 
     public static bool operator ==(Fraction? a, Fraction? b)
@@ -97,4 +99,6 @@ public class Fraction : IComparable<Fraction>
     public static bool operator >=(Fraction a, Fraction b) => a.CompareTo(b) != -1;
 
     public static bool operator <=(Fraction a, Fraction b) => a.CompareTo(b) != 1;
+
+    #endregion
 }

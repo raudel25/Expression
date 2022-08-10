@@ -2,13 +2,24 @@ namespace BigNum;
 
 internal static class DivisionOperations
 {
+    /// <summary>
+    /// Cantidad maxima de cifras despues de la coma
+    /// </summary>
     private static int _precision = 100;
 
+    /// <summary>
+    /// Dividir dos numeros reales
+    /// </summary>
+    /// <param name="x">Numero real</param>
+    /// <param name="y">Numero real</param>
+    /// <param name="integer">Determinar si los numeros son enteros</param>
+    /// <returns>Cociente y resto</returns>
     internal static (Numbers, IntegerNumbers) Division(Numbers x, Numbers y, bool integer = false)
     {
         bool positive = x.Sign == y.Sign;
 
-        if (y.Abs.Equals(new Numbers("1")))
+        if (y == new Numbers("0")) throw new Exception("Division por 0");
+        if (y.Abs == new Numbers("1"))
             return (new Numbers(x.PartNumber, x.PartDecimal, positive), new IntegerNumbers("0"));
 
         (string xPartDecimal, string yPartDecimal) = (x.PartDecimal, y.PartDecimal);
@@ -28,6 +39,14 @@ internal static class DivisionOperations
         return (new Numbers(result, positive), rest);
     }
 
+    /// <summary>
+    /// Algortimo para la division
+    /// </summary>
+    /// <param name="x">Numero entero</param>
+    /// <param name="y">Numero entero</param>
+    /// <param name="integer">Determinar si los numeros son enteros</param>
+    /// <param name="cantDecimal">Cantidad de cifras para correr la coma</param>
+    /// <returns>Cociente y resto</returns>
     private static (string, IntegerNumbers) DivisionAlgorithm(IntegerNumbers x, IntegerNumbers y, bool integer,
         ref int cantDecimal)
     {
@@ -55,6 +74,13 @@ internal static class DivisionOperations
         return (result, rest);
     }
 
+    /// <summary>
+    /// Dividir un numero por un digito
+    /// </summary>
+    /// <param name="div">Numero a dividir</param>
+    /// <param name="divisor">Divisor</param>
+    /// <param name="result">Cociente</param>
+    /// <returns>Resto de la divison</returns>
     private static IntegerNumbers DivisionImmediate(IntegerNumbers div, IntegerNumbers divisor, ref string result)
     {
         IntegerNumbers aux = new IntegerNumbers("0");

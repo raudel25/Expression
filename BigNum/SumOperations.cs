@@ -2,6 +2,12 @@ namespace BigNum;
 
 internal static class SumOperations
 {
+    /// <summary>
+    /// Sumar dos numeros reales
+    /// </summary>
+    /// <param name="x">Numero real</param>
+    /// <param name="y">Numero real</param>
+    /// <returns>Resultado real</returns>
     public static Numbers Sum(Numbers x, Numbers y)
     {
         if (x == new Numbers("0")) return y;
@@ -16,6 +22,14 @@ internal static class SumOperations
         return SumOperation(y.Abs, x.Abs, false, y.Positive());
     }
 
+    /// <summary>
+    /// Determinar los signos y el tipo de operacion a realizar
+    /// </summary>
+    /// <param name="x">Numero real</param>
+    /// <param name="y">Numero real</param>
+    /// <param name="sum">Operacion a realizar</param>
+    /// <param name="positive">Signo del resultado</param>
+    /// <returns>Resultado real</returns>
     private static Numbers SumOperation(Numbers x, Numbers y, bool sum, bool positive)
     {
         (string xSumDecimal, string ySumDecimal) = (x.PartDecimal, y.PartDecimal);
@@ -40,6 +54,12 @@ internal static class SumOperations
             positive);
     }
 
+    /// <summary>
+    /// Sumar dos cadenas
+    /// </summary>
+    /// <param name="x">Cadena</param>
+    /// <param name="y">Cadena</param>
+    /// <returns>Resultado</returns>
     private static string Sum(string x, string y)
     {
         string sum = "";
@@ -60,6 +80,12 @@ internal static class SumOperations
         return sum;
     }
 
+    /// <summary>
+    /// Restar dos cadenas
+    /// </summary>
+    /// <param name="x">Cadena</param>
+    /// <param name="y">Cadena</param>
+    /// <returns>Resultado</returns>
     private static string Subtraction(string x, string y)
     {
         string sub = "";

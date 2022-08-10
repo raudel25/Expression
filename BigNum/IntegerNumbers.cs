@@ -6,6 +6,8 @@ public class IntegerNumbers : Numbers
     {
     }
 
+    #region operadores
+
     public static IntegerNumbers operator +(IntegerNumbers a, IntegerNumbers b) =>
         BigNumMath.NumbersToInteger(BigNumMath.Sum(a, b));
 
@@ -22,4 +24,6 @@ public class IntegerNumbers : Numbers
 
     public static IntegerNumbers operator %(IntegerNumbers a, IntegerNumbers b) =>
         BigNumMath.NumbersToInteger(BigNumMath.Rest(a, b));
+
+    #endregion
 }

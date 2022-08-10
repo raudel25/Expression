@@ -2,6 +2,12 @@ namespace BigNum;
 
 internal static class ProductOperations
 {
+    /// <summary>
+    /// Multiplicar dos numeros
+    /// </summary>
+    /// <param name="x">Numero real</param>
+    /// <param name="y">Numero real</param>
+    /// <returns>Resultado real</returns>
     internal static Numbers Product(Numbers x, Numbers y)
     {
         bool positive = x.Sign == y.Sign;
@@ -21,6 +27,12 @@ internal static class ProductOperations
             result.Substring(result.Length - cantDecimal, cantDecimal), positive);
     }
 
+    /// <summary>
+    /// Algoritmo de Karatsuba
+    /// </summary>
+    /// <param name="x">Numero entero</param>
+    /// <param name="y">Numero entero</param>
+    /// <returns>Resultado</returns>
     private static IntegerNumbers KaratsubaAlgorithm(IntegerNumbers x, IntegerNumbers y)
     {
         string xValor = x.PartNumber;

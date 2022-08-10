@@ -118,6 +118,8 @@ public class Numbers : IComparable<Numbers>
         return sign + this.PartNumber + partDecimal;
     }
 
+    #region operadores
+
     public static Numbers operator +(Numbers a, Numbers b) => BigNumMath.Sum(a, b);
 
     public static Numbers operator -(Numbers a) => BigNumMath.Opposite(a);
@@ -155,4 +157,6 @@ public class Numbers : IComparable<Numbers>
     public static bool operator >=(Numbers a, Numbers b) => a.CompareTo(b) != -1;
 
     public static bool operator <=(Numbers a, Numbers b) => a.CompareTo(b) != 1;
+
+    #endregion
 }
