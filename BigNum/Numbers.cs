@@ -17,6 +17,7 @@ public class Numbers : IComparable<Numbers>
         string[] part = s.Split('.');
         this.PartNumber = AuxOperations.EliminateZerosLeft(part[0]);
         this.PartDecimal = part.Length == 2 ? AuxOperations.EliminateZerosRight(part[1]) : "0";
+        CheckZero(ref positive);
         this.Sign = positive ? '+' : '-';
         this.Abs = positive ? this : new Numbers(this.PartNumber, this.PartDecimal);
     }
@@ -25,6 +26,7 @@ public class Numbers : IComparable<Numbers>
     {
         this.PartNumber = AuxOperations.EliminateZerosLeft(partNumber);
         this.PartDecimal = AuxOperations.EliminateZerosRight(partDecimal);
+        CheckZero(ref positive);
         this.Sign = positive ? '+' : '-';
         this.Abs = positive ? this : new Numbers(this.PartNumber, this.PartDecimal);
     }
@@ -99,6 +101,11 @@ public class Numbers : IComparable<Numbers>
         if (m.PartDecimal.Length < n.PartDecimal.Length) return 1;
 
         return 0;
+    }
+
+    private void CheckZero(ref bool positive)
+    {
+        if (this.PartNumber == "0" && this.PartDecimal == "0") positive = true;
     }
 
     public bool Positive() => this.Sign == '+';

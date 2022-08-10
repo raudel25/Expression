@@ -15,6 +15,8 @@ internal static class ProductOperations
 
         string result = KaratsubaAlgorithm(m, n).PartNumber;
 
+        if (result == "0") return new Numbers(result);
+
         return new Numbers(result.Substring(0, result.Length - cantDecimal),
             result.Substring(result.Length - cantDecimal, cantDecimal), positive);
     }
