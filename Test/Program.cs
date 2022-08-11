@@ -13,3 +13,5 @@ Fraction d = new Fraction(new IntegerNumbers("2"), new IntegerNumbers("3"));
 Console.WriteLine(a+a*b);
 
 Console.WriteLine(BigNumMath.Pow(c,-1));
+
+Console.WriteLine(Math.Pow(4,0.5));
