@@ -22,15 +22,15 @@ public class Taylor
         IntegerNumbers precisionBig = BigNumMath.ConvertToIntegerNumbers(precision);
 
         for (IntegerNumbers i = IntegerNumbers.Integer1; i < precisionBig; i++)
-        { 
-           // taylorFunction = taylorFunction.Derivative();
+        {
+            taylorFunction = taylorFunction.Derivative();
 
-           //var a = new NumberExpression(taylorFunction.Evaluate(center));
-            //var b = new Pow(new VariableExpression('x') - new NumberExpression(center),
-              //new NumberExpression(i));
-            //var c = new NumberExpression(fact);
+            var a = new NumberExpression(taylorFunction.Evaluate(center));
+            var b = new Pow(new VariableExpression('x') - new NumberExpression(center),
+                new NumberExpression(i));
+            var c = new NumberExpression(fact);
 
-            //taylorValue += a * b / c;
+            taylorValue += a * b / c;
 
             fact *= i;
         }

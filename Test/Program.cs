@@ -10,12 +10,12 @@ ExpressionType c = new Sin(new VariableExpression('p'));
 
 Stopwatch crono = new Stopwatch();
 crono.Start();
-Taylor d = new Taylor(c, new RealNumbers("0"), new RealNumbers("1"), 12);
+Taylor d = new Taylor(c, new RealNumbers("0"), new RealNumbers("1"), 20);
 crono.Stop();
 Console.WriteLine(crono.ElapsedMilliseconds);
 
 Console.WriteLine(c);
 
-//Console.WriteLine(d.ExpressionResult);
+Console.WriteLine(d.ExpressionResult);
 
-Console.WriteLine(BigNumMath.Factorial(new IntegerNumbers("35")));
+//Console.WriteLine(BigNumMath.Factorial(new IntegerNumbers("35")));

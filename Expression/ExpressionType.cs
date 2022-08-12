@@ -42,8 +42,8 @@ public abstract class BinaryExpression : ExpressionType
 
     public BinaryExpression(ExpressionType left, ExpressionType right)
     {
-        this.Left = left;
-        this.Right = right;
+        this.Left = Aux.ReduceExpression(left);
+        this.Right = Aux.ReduceExpression(right);
     }
 
     public override ExpressionType Derivative() => this.Derivative(this.Left, this.Right);
