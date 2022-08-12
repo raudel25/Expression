@@ -13,6 +13,8 @@ public class Sum : BinaryExpression
 
     protected override Numbers Evaluate(Numbers left, Numbers right) => left + right;
 
+    protected override bool IsBinaryImplement() => !(this.Left.ToString() == "0" || this.Right.ToString() == "0");
+
     public override int Priority
     {
         get => 1;
@@ -43,6 +45,8 @@ public class Subtraction : BinaryExpression
 
     protected override Numbers Evaluate(Numbers left, Numbers right) => left - right;
 
+    protected override bool IsBinaryImplement() => !(this.Left.ToString() == "0" || this.Right.ToString() == "0");
+
     public override int Priority
     {
         get => 1;
@@ -72,6 +76,15 @@ public class Multiply : BinaryExpression
         left.Derivative() * right + left * right.Derivative();
 
     protected override Numbers Evaluate(Numbers left, Numbers right) => left * right;
+
+    protected override bool IsBinaryImplement()
+    {
+        if (this.Left.ToString() == "0" || this.Right.ToString() == "0") return false;
+        if (this.Left.ToString() == "1" || this.Right.ToString() == "1") return false;
+        if (this.Left.ToString() == "-1" || this.Right.ToString() == "-1") return false;
+
+        return true;
+    }
 
     public override int Priority
     {
@@ -110,6 +123,8 @@ public class Division : BinaryExpression
 
     protected override Numbers Evaluate(Numbers left, Numbers right) => left * right;
 
+    protected override bool IsBinaryImplement() => !(this.Left.ToString() == "0" || this.Right.ToString() == "1");
+
     public override int Priority
     {
         get => 2;
@@ -122,8 +137,8 @@ public class Division : BinaryExpression
 
         (string left, string right) = this.DeterminatePriority();
 
-        Aux.IsBinary(this.Left, ref left);
-        Aux.IsBinary(this.Right, ref right);
+        if (this.Left.IsBinary()) Aux.Colocated(left);
+        if (this.Right.IsBinary()) Aux.Colocated(right);
 
         (bool leftOpposite, bool rightOpposite) = (left[0] == '-', right[0] == '-');
 
@@ -146,6 +161,9 @@ public class Pow : BinaryExpression
 
     protected override Numbers Evaluate(Numbers left, Numbers right) => throw new NotImplementedException();
 
+    protected override bool IsBinaryImplement() =>
+        !(this.Left.ToString() == "0" || this.Right.ToString() == "0" || this.Left.ToString() == "1");
+
     public override int Priority
     {
         get => 2;
@@ -158,8 +176,8 @@ public class Pow : BinaryExpression
 
         (string left, string right) = this.DeterminatePriority();
 
-        Aux.IsBinary(this.Left, ref left);
-        Aux.IsBinary(this.Right, ref right);
+        if (this.Left.IsBinary()) Aux.Colocated(left);
+        if (this.Right.IsBinary()) Aux.Colocated(right);
 
         (bool leftOpposite, bool rightOpposite) = (left[0] == '-', right[0] == '-');
 
@@ -185,6 +203,8 @@ public class Logarithm : BinaryExpression
     {
         throw new NotImplementedException();
     }
+
+    protected override bool IsBinaryImplement() => throw new NotImplementedException();
 
     public override int Priority
     {

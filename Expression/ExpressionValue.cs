@@ -10,6 +10,8 @@ public abstract class ExpressionValue
 
     public abstract int Priority { get; }
 
+    public virtual bool IsBinary() => this is BinaryExpression;
+
     public ExpressionValue Derivative(int n)
     {
         ExpressionValue expression = this.Derivative();
@@ -52,9 +54,22 @@ public abstract class BinaryExpression : ExpressionValue
 
     protected abstract Numbers Evaluate(Numbers left, Numbers right);
 
+    protected abstract bool IsBinaryImplement();
+
+    public override bool IsBinary()
+    {
+        if (this.Left.IsBinary() || this.Right.IsBinary()) return true;
+
+        return IsBinaryImplement();
+    }
+
     protected (string, string) DeterminatePriority() => (
-        this.Left.Priority < this.Priority ? Aux.Colocated(this.Left.ToString()!) : this.Left.ToString()!,
-        this.Right.Priority < this.Priority ? Aux.Colocated(this.Right.ToString()!) : this.Right.ToString()!);
+        this.Left.Priority < this.Priority && this.Left.IsBinary()
+            ? Aux.Colocated(this.Left.ToString()!)
+            : this.Left.ToString()!,
+        this.Right.Priority < this.Priority && this.Right.IsBinary()
+            ? Aux.Colocated(this.Right.ToString()!)
+            : this.Right.ToString()!);
 }
 
 public abstract class UnaryExpression : ExpressionValue

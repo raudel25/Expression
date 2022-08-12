@@ -4,11 +4,6 @@ public static class Aux
 {
     public static string Colocated(string s) => s[0] == '(' && s[s.Length - 1] == ')' ? s : "(" + s + ")";
 
-    public static void IsBinary(ExpressionValue exp, ref string s)
-    {
-        if (exp is BinaryExpression) s = Colocated(s);
-    }
-
     public static string Opposite(ExpressionValue exp)
     {
         if (exp.ToString()![0] == '-')
