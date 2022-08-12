@@ -9,6 +9,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\BigNum\BigNum.csproj" />
+      <ProjectReference Include="..\Expression\Expression.csproj" />
     </ItemGroup>
 
 </Project>

@@ -97,6 +97,15 @@ public static class BigNumMath
         return result;
     }
 
+    public static IntegerNumbers Factorial(IntegerNumbers x)
+    {
+        IntegerNumbers fact = new IntegerNumbers("1");
+
+        for (IntegerNumbers i = new IntegerNumbers("1"); i <= x; i++) fact *= i;
+
+        return fact;
+    }
+
     /// <summary>
     /// Maximo entre dos numero reales
     /// </summary>

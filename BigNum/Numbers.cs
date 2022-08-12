@@ -157,6 +157,10 @@ public class Numbers : IComparable<Numbers>
     public static bool operator >=(Numbers a, Numbers b) => a.CompareTo(b) != -1;
 
     public static bool operator <=(Numbers a, Numbers b) => a.CompareTo(b) != 1;
+    
+    public static Numbers operator ++(Numbers a) => a + new Numbers("1");
+    
+    public static Numbers operator --(Numbers a) => a - new Numbers("1");
 
     #endregion
 }

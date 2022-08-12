@@ -1,17 +1,9 @@
 ﻿using BigNum;
+using Expression;
 
-IntegerNumbers a = new IntegerNumbers("5");
+ExpressionValue a=new ExpressionNumber(new Numbers("2",false))*new ExpressionNumber(new Numbers("2")) / new ExpressionNumber(new Numbers("2"));
 
-IntegerNumbers b = new IntegerNumbers("3",false);
+ExpressionValue b = new ExpressionNumber(new Numbers("0")) - new ExpressionNumber(new Numbers("2", false));
+ExpressionValue c = new Cos(new Sin(new Cos(new ExpressionNumber(new Numbers("1"))-new ExpressionNumber(new Numbers("3",false)))));
 
-Numbers e = new Numbers("3");
-
-Fraction c = new Fraction(new IntegerNumbers("1"), new IntegerNumbers("2"));
-
-Fraction d = new Fraction(new IntegerNumbers("2"), new IntegerNumbers("3"));
-
-Console.WriteLine(a+a*b);
-
-Console.WriteLine(BigNumMath.Pow(c,-1));
-
-Console.WriteLine(Math.Pow(4,0.5));
+Console.WriteLine(c);

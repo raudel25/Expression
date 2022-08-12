@@ -2,54 +2,6 @@ using BigNum;
 
 namespace Expression;
 
-public class Sum : BinaryExpression
-{
-    public Sum(ExpressionValue left, ExpressionValue right) : base(left, right)
-    {
-    }
-
-    protected override ExpressionValue Derivative(ExpressionValue left, ExpressionValue right) =>
-        left.Derivative() + right.Derivative();
-
-    protected override Numbers Evaluate(Numbers left, Numbers right) => left + right;
-}
-
-public class Subtraction : BinaryExpression
-{
-    public Subtraction(ExpressionValue left, ExpressionValue right) : base(left, right)
-    {
-    }
-
-    protected override ExpressionValue Derivative(ExpressionValue left, ExpressionValue right) =>
-        left.Derivative() - right.Derivative();
-
-    protected override Numbers Evaluate(Numbers left, Numbers right) => left - right;
-}
-
-public class Multiply : BinaryExpression
-{
-    public Multiply(ExpressionValue left, ExpressionValue right) : base(left, right)
-    {
-    }
-
-    protected override ExpressionValue Derivative(ExpressionValue left, ExpressionValue right) =>
-        left.Derivative() * right + left * right.Derivative();
-
-    protected override Numbers Evaluate(Numbers left, Numbers right) => left * right;
-}
-
-public class Division : BinaryExpression
-{
-    public Division(ExpressionValue left, ExpressionValue right) : base(left, right)
-    {
-    }
-
-    protected override ExpressionValue Derivative(ExpressionValue left, ExpressionValue right) =>
-        left.Derivative() * right - left * right.Derivative();
-
-    protected override Numbers Evaluate(Numbers left, Numbers right) => left * right;
-}
-
 public class Sin : UnaryExpression
 {
     public Sin(ExpressionValue value) : base(value)
@@ -97,6 +49,21 @@ public class ExpressionNumber : ExpressionValue
     public override Numbers Evaluate() => this.Value;
 
     public override string ToString() => this.Value.ToString();
+
+    public override int Priority
+    {
+        get => 5;
+    }
+
+    public override bool Equals(object? obj)
+    {
+        ExpressionNumber? exp = obj as ExpressionNumber;
+        if (exp is null) return false;
+
+        return exp.Value == this.Value;
+    }
+
+    public override int GetHashCode() => this.Value.GetHashCode();
 }
 
 public class ExpressionVariable : ExpressionValue
@@ -113,6 +80,11 @@ public class ExpressionVariable : ExpressionValue
     public override Numbers Evaluate()
     {
         throw new NotImplementedException();
+    }
+
+    public override int Priority
+    {
+        get => 2;
     }
 
     public override string ToString() => this.Value.ToString();

@@ -25,5 +25,9 @@ public class IntegerNumbers : Numbers
     public static IntegerNumbers operator %(IntegerNumbers a, IntegerNumbers b) =>
         BigNumMath.NumbersToInteger(BigNumMath.Rest(a, b));
 
+    public static IntegerNumbers operator ++(IntegerNumbers a) => a + new IntegerNumbers("1");
+    
+    public static IntegerNumbers operator --(IntegerNumbers a) => a - new IntegerNumbers("1");
+
     #endregion
 }
