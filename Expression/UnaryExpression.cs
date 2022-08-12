@@ -10,8 +10,10 @@ public class Sin : UnaryExpression
 
     protected override ExpressionValue Derivative(ExpressionValue value) => new Cos(value) * value.Derivative();
 
-    protected override Numbers Evaluate(Numbers value)
+    public override Numbers Evaluate(Numbers value)
     {
+        if (value == new Numbers("0")) return new Numbers("0");
+        
         throw new NotImplementedException();
     }
 
@@ -27,8 +29,10 @@ public class Cos : UnaryExpression
     protected override ExpressionValue Derivative(ExpressionValue value) =>
         new ExpressionNumber(new Numbers("1", false)) * new Sin(value) * value.Derivative();
 
-    protected override Numbers Evaluate(Numbers value)
+    public override Numbers Evaluate(Numbers value)
     {
+        if (value == new Numbers("0")) return new Numbers("1");
+        
         throw new NotImplementedException();
     }
 
@@ -46,7 +50,7 @@ public class ExpressionNumber : ExpressionValue
 
     public override ExpressionValue Derivative() => new ExpressionNumber(new Numbers("0"));
 
-    public override Numbers Evaluate() => this.Value;
+    public override Numbers Evaluate(Numbers x) => this.Value;
 
     public override string ToString() => this.Value.ToString();
 
@@ -77,14 +81,11 @@ public class ExpressionVariable : ExpressionValue
 
     public override ExpressionValue Derivative() => new ExpressionNumber(new Numbers("1"));
 
-    public override Numbers Evaluate()
-    {
-        throw new NotImplementedException();
-    }
+    public override Numbers Evaluate(Numbers x) => x;
 
     public override int Priority
     {
-        get => 2;
+        get => 5;
     }
 
     public override string ToString() => this.Value.ToString();

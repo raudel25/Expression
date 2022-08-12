@@ -2,7 +2,7 @@ namespace Expression;
 
 public static class Aux
 {
-    public static string Colocated(string s) => "(" + s + ")";
+    public static string Colocated(string s) => s[0] == '(' && s[s.Length - 1] == ')' ? s : "(" + s + ")";
 
     public static void IsBinary(ExpressionValue exp, ref string s)
     {

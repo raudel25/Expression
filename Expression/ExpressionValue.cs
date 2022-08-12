@@ -6,7 +6,7 @@ public abstract class ExpressionValue
 {
     public abstract ExpressionValue Derivative();
 
-    public abstract Numbers Evaluate();
+    public abstract Numbers Evaluate(Numbers x);
 
     public abstract int Priority { get; }
 
@@ -46,7 +46,7 @@ public abstract class BinaryExpression : ExpressionValue
 
     public override ExpressionValue Derivative() => this.Derivative(this.Left, this.Right);
 
-    public override Numbers Evaluate() => Evaluate(this.Left.Evaluate(), this.Right.Evaluate());
+    public override Numbers Evaluate(Numbers x) => Evaluate(this.Left.Evaluate(x), this.Right.Evaluate(x));
 
     protected abstract ExpressionValue Derivative(ExpressionValue left, ExpressionValue right);
 
@@ -68,11 +68,7 @@ public abstract class UnaryExpression : ExpressionValue
 
     public override ExpressionValue Derivative() => this.Derivative(this.Value);
 
-    public override Numbers Evaluate() => Evaluate(this.Value.Evaluate());
-
     protected abstract ExpressionValue Derivative(ExpressionValue value);
-
-    protected abstract Numbers Evaluate(Numbers value);
 
     public override int Priority
     {
