@@ -1,16 +1,21 @@
-﻿using BigNum;
+﻿using System.Diagnostics;
+using BigNum;
 using Expression;
 
-ExpressionValue a = new Pow(- new ExpressionVariable('x') + new ExpressionNumber(new Numbers("0")),
-    new ExpressionNumber(new Numbers("2")));
+ExpressionType a = new Pow(- new VariableExpression('x') + new NumberExpression(new RealNumbers("0")),
+    new NumberExpression(new RealNumbers("2")));
 
-ExpressionValue b = new ExpressionNumber(new Numbers("0")) - new ExpressionNumber(new Numbers("2", false));
-ExpressionValue c = new Sin(new ExpressionVariable('p'));
+ExpressionType b = new NumberExpression(new RealNumbers("0")) - new NumberExpression(new RealNumbers("2", false));
+ExpressionType c = new Sin(new VariableExpression('p'));
 
-Taylor d = new Taylor(c, new Numbers("0"), new Numbers("1"), 10);
+Stopwatch crono = new Stopwatch();
+crono.Start();
+Taylor d = new Taylor(c, new RealNumbers("0"), new RealNumbers("1"), 12);
+crono.Stop();
+Console.WriteLine(crono.ElapsedMilliseconds);
 
 Console.WriteLine(c);
 
-Console.WriteLine(d.ExpressionResult);
+//Console.WriteLine(d.ExpressionResult);
 
-Console.WriteLine(a);
+//Console.WriteLine(BigNumMath.Factorial(new IntegerNumbers("20")));

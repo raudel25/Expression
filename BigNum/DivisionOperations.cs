@@ -14,13 +14,13 @@ internal static class DivisionOperations
     /// <param name="y">Numero real</param>
     /// <param name="integer">Determinar si los numeros son enteros</param>
     /// <returns>Cociente y resto</returns>
-    internal static (Numbers, IntegerNumbers) Division(Numbers x, Numbers y, bool integer = false)
+    internal static (RealNumbers, IntegerNumbers) Division(RealNumbers x, RealNumbers y, bool integer = false)
     {
         bool positive = x.Sign == y.Sign;
 
-        if (y == new Numbers("0")) throw new Exception("Division por 0");
-        if (y.Abs == new Numbers("1"))
-            return (new Numbers(x.PartNumber, x.PartDecimal, positive), new IntegerNumbers("0"));
+        if (y == new RealNumbers("0")) throw new Exception("Division por 0");
+        if (y.Abs == new RealNumbers("1"))
+            return (new RealNumbers(x.PartNumber, x.PartDecimal, positive), new IntegerNumbers("0"));
 
         (string xPartDecimal, string yPartDecimal) = (x.PartDecimal, y.PartDecimal);
         AuxOperations.EqualZerosRight(ref xPartDecimal, ref yPartDecimal);
@@ -34,9 +34,9 @@ internal static class DivisionOperations
         (string result, IntegerNumbers rest) = DivisionAlgorithm(m, n, integer, ref cantDecimal);
 
         if (cantDecimal != 0)
-            return (new Numbers(result.Substring(0, result.Length - cantDecimal),
+            return (new RealNumbers(result.Substring(0, result.Length - cantDecimal),
                 result.Substring(result.Length - cantDecimal, cantDecimal), positive), rest);
-        return (new Numbers(result, positive), rest);
+        return (new RealNumbers(result, positive), rest);
     }
 
     /// <summary>

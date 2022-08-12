@@ -8,22 +8,22 @@ internal static class ProductOperations
     /// <param name="x">Numero real</param>
     /// <param name="y">Numero real</param>
     /// <returns>Resultado real</returns>
-    internal static Numbers Product(Numbers x, Numbers y)
+    internal static RealNumbers Product(RealNumbers x, RealNumbers y)
     {
         bool positive = x.Sign == y.Sign;
         int cantDecimal = x.PartDecimal.Length + y.PartDecimal.Length;
 
-        if (x.Abs == new Numbers("1")) return new Numbers(y.PartNumber, y.PartDecimal, positive);
-        if (y.Abs == new Numbers("1")) return new Numbers(x.PartNumber, x.PartDecimal, positive);
+        if (x.Abs == new RealNumbers("1")) return new RealNumbers(y.PartNumber, y.PartDecimal, positive);
+        if (y.Abs == new RealNumbers("1")) return new RealNumbers(x.PartNumber, x.PartDecimal, positive);
 
         IntegerNumbers m = new IntegerNumbers(x.PartNumber + x.PartDecimal);
         IntegerNumbers n = new IntegerNumbers(y.PartNumber + y.PartDecimal);
 
         string result = KaratsubaAlgorithm(m, n).PartNumber;
 
-        if (result == "0") return new Numbers(result);
+        if (result == "0") return new RealNumbers(result);
 
-        return new Numbers(result.Substring(0, result.Length - cantDecimal),
+        return new RealNumbers(result.Substring(0, result.Length - cantDecimal),
             result.Substring(result.Length - cantDecimal, cantDecimal), positive);
     }
 

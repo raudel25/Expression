@@ -1,16 +1,20 @@
 namespace BigNum;
 
-public class Numbers : IComparable<Numbers>
+public class RealNumbers : IComparable<RealNumbers>
 {
+    public static RealNumbers Number1 = new RealNumbers("1");
+
+    public static RealNumbers Number0 = new RealNumbers("0");
+    
     internal readonly string PartDecimal;
 
     internal readonly string PartNumber;
 
     internal readonly char Sign;
 
-    internal readonly Numbers Abs;
+    internal readonly RealNumbers Abs;
 
-    public Numbers(string s, bool positive = true)
+    public RealNumbers(string s, bool positive = true)
     {
         if (!Check(s)) throw new Exception("El valor introducido no es correcto");
 
@@ -19,16 +23,16 @@ public class Numbers : IComparable<Numbers>
         this.PartDecimal = part.Length == 2 ? AuxOperations.EliminateZerosRight(part[1]) : "0";
         CheckZero(ref positive);
         this.Sign = positive ? '+' : '-';
-        this.Abs = positive ? this : new Numbers(this.PartNumber, this.PartDecimal);
+        this.Abs = positive ? this : new RealNumbers(this.PartNumber, this.PartDecimal);
     }
 
-    internal Numbers(string partNumber, string partDecimal, bool positive = true)
+    internal RealNumbers(string partNumber, string partDecimal, bool positive = true)
     {
         this.PartNumber = AuxOperations.EliminateZerosLeft(partNumber);
         this.PartDecimal = AuxOperations.EliminateZerosRight(partDecimal);
         CheckZero(ref positive);
         this.Sign = positive ? '+' : '-';
-        this.Abs = positive ? this : new Numbers(this.PartNumber, this.PartDecimal);
+        this.Abs = positive ? this : new RealNumbers(this.PartNumber, this.PartDecimal);
     }
 
     private bool Check(string s)
@@ -49,7 +53,7 @@ public class Numbers : IComparable<Numbers>
 
     public override bool Equals(object? obj)
     {
-        Numbers? n = obj as Numbers;
+        RealNumbers? n = obj as RealNumbers;
         if (n == null) return false;
 
         return n.PartNumber == this.PartNumber && n.PartDecimal == this.PartDecimal && n.Sign == this.Sign;
@@ -60,7 +64,7 @@ public class Numbers : IComparable<Numbers>
         return this.PartDecimal.GetHashCode() * this.PartNumber.GetHashCode() * this.Sign.GetHashCode();
     }
 
-    public int CompareTo(Numbers? n)
+    public int CompareTo(RealNumbers? n)
     {
         if (n == null) throw new Exception("El valor introducido no es correcto");
 
@@ -74,7 +78,7 @@ public class Numbers : IComparable<Numbers>
         return -1;
     }
 
-    private static int CompareNumber(Numbers m, Numbers n)
+    private static int CompareNumber(RealNumbers m, RealNumbers n)
     {
         if (m.PartNumber.Length > n.PartNumber.Length) return 1;
         if (m.PartNumber.Length < n.PartNumber.Length) return -1;
@@ -120,17 +124,17 @@ public class Numbers : IComparable<Numbers>
 
     #region operadores
 
-    public static Numbers operator +(Numbers a, Numbers b) => BigNumMath.Sum(a, b);
+    public static RealNumbers operator +(RealNumbers a, RealNumbers b) => BigNumMath.Sum(a, b);
 
-    public static Numbers operator -(Numbers a) => BigNumMath.Opposite(a);
+    public static RealNumbers operator -(RealNumbers a) => BigNumMath.Opposite(a);
 
-    public static Numbers operator -(Numbers a, Numbers b) => BigNumMath.Sum(a, BigNumMath.Opposite(b));
+    public static RealNumbers operator -(RealNumbers a, RealNumbers b) => BigNumMath.Sum(a, BigNumMath.Opposite(b));
 
-    public static Numbers operator *(Numbers a, Numbers b) => BigNumMath.Product(a, b);
+    public static RealNumbers operator *(RealNumbers a, RealNumbers b) => BigNumMath.Product(a, b);
 
-    public static Numbers operator /(Numbers a, Numbers b) => BigNumMath.Division(a, b);
+    public static RealNumbers operator /(RealNumbers a, RealNumbers b) => BigNumMath.Division(a, b);
 
-    public static bool operator ==(Numbers? a, Numbers? b)
+    public static bool operator ==(RealNumbers? a, RealNumbers? b)
     {
         if (a is null || b is null)
         {
@@ -140,7 +144,7 @@ public class Numbers : IComparable<Numbers>
         return a.Equals(b);
     }
 
-    public static bool operator !=(Numbers? a, Numbers? b)
+    public static bool operator !=(RealNumbers? a, RealNumbers? b)
     {
         if (a is null || b is null)
         {
@@ -150,17 +154,17 @@ public class Numbers : IComparable<Numbers>
         return !a.Equals(b);
     }
 
-    public static bool operator >(Numbers a, Numbers b) => a.CompareTo(b) == 1;
+    public static bool operator >(RealNumbers a, RealNumbers b) => a.CompareTo(b) == 1;
 
-    public static bool operator <(Numbers a, Numbers b) => a.CompareTo(b) == -1;
+    public static bool operator <(RealNumbers a, RealNumbers b) => a.CompareTo(b) == -1;
 
-    public static bool operator >=(Numbers a, Numbers b) => a.CompareTo(b) != -1;
+    public static bool operator >=(RealNumbers a, RealNumbers b) => a.CompareTo(b) != -1;
 
-    public static bool operator <=(Numbers a, Numbers b) => a.CompareTo(b) != 1;
+    public static bool operator <=(RealNumbers a, RealNumbers b) => a.CompareTo(b) != 1;
     
-    public static Numbers operator ++(Numbers a) => a + new Numbers("1");
+    public static RealNumbers operator ++(RealNumbers a) => a + new RealNumbers("1");
     
-    public static Numbers operator --(Numbers a) => a - new Numbers("1");
+    public static RealNumbers operator --(RealNumbers a) => a - new RealNumbers("1");
 
     #endregion
 }

@@ -8,15 +8,15 @@ internal static class SumOperations
     /// <param name="x">Numero real</param>
     /// <param name="y">Numero real</param>
     /// <returns>Resultado real</returns>
-    public static Numbers Sum(Numbers x, Numbers y)
+    public static RealNumbers Sum(RealNumbers x, RealNumbers y)
     {
-        if (x == new Numbers("0")) return y;
-        if (y == new Numbers("0")) return x;
+        if (x == new RealNumbers("0")) return y;
+        if (y == new RealNumbers("0")) return x;
 
         if (x.Sign == y.Sign) return SumOperation(x, y, true, x.Positive());
 
         int compare = x.Abs.CompareTo(y.Abs);
-        if (compare == 0) return new Numbers("0", "0");
+        if (compare == 0) return new RealNumbers("0", "0");
         if (compare == 1) return SumOperation(x.Abs, y.Abs, false, x.Positive());
 
         return SumOperation(y.Abs, x.Abs, false, y.Positive());
@@ -30,7 +30,7 @@ internal static class SumOperations
     /// <param name="sum">Operacion a realizar</param>
     /// <param name="positive">Signo del resultado</param>
     /// <returns>Resultado real</returns>
-    private static Numbers SumOperation(Numbers x, Numbers y, bool sum, bool positive)
+    private static RealNumbers SumOperation(RealNumbers x, RealNumbers y, bool sum, bool positive)
     {
         (string xSumDecimal, string ySumDecimal) = (x.PartDecimal, y.PartDecimal);
         (string xSumNumber, string ySumNumber) = (x.PartNumber, y.PartNumber);
@@ -50,7 +50,7 @@ internal static class SumOperations
             ? result.Substring(0, mayorNumber)
             : result.Substring(0, mayorNumber + 1);
 
-        return new Numbers(AuxOperations.EliminateZerosLeft(partNumber), AuxOperations.EliminateZerosRight(partDecimal),
+        return new RealNumbers(AuxOperations.EliminateZerosLeft(partNumber), AuxOperations.EliminateZerosRight(partDecimal),
             positive);
     }
 

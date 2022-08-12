@@ -8,7 +8,7 @@ public static class BigNumMath
     /// <param name="x">Numero real</param>
     /// <param name="y">Numero real</param>
     /// <returns>Resultado real</returns>
-    public static Numbers Sum(Numbers x, Numbers y) => SumOperations.Sum(x, y);
+    public static RealNumbers Sum(RealNumbers x, RealNumbers y) => SumOperations.Sum(x, y);
 
     /// <summary>
     /// Sumar dos fracciones reales
@@ -25,7 +25,7 @@ public static class BigNumMath
     /// <param name="x">Numero real</param>
     /// <param name="y">Numero real</param>
     /// <returns>Resultado real</returns>
-    public static Numbers Product(Numbers x, Numbers y) => ProductOperations.Product(x, y);
+    public static RealNumbers Product(RealNumbers x, RealNumbers y) => ProductOperations.Product(x, y);
 
     /// <summary>
     /// Multiplicar dos fracciones reales
@@ -43,7 +43,7 @@ public static class BigNumMath
     /// <param name="y">Numero real</param>
     /// <param name="integer">Si es un numero entero</param>
     /// <returns>Resultado real</returns>
-    public static Numbers Division(Numbers x, Numbers y, bool integer = false) =>
+    public static RealNumbers Division(RealNumbers x, RealNumbers y, bool integer = false) =>
         DivisionOperations.Division(x, y, integer).Item1;
 
     /// <summary>
@@ -69,13 +69,13 @@ public static class BigNumMath
     /// <param name="x">Numero real</param>
     /// <param name="pow">Numero entero(C#)</param>
     /// <returns>Resultado real</returns>
-    public static Numbers Pow(Numbers x, int pow)
+    public static RealNumbers Pow(RealNumbers x, int pow)
     {
-        Numbers result = new Numbers("1");
+        RealNumbers result = new RealNumbers("1");
 
         for (int i = 0; i < Math.Abs(pow); i++) result *= x;
 
-        if (pow < 0) result = new Numbers("1") / result;
+        if (pow < 0) result = new RealNumbers("1") / result;
 
         return result;
     }
@@ -88,7 +88,7 @@ public static class BigNumMath
     /// <returns>Resultado fraccion real</returns>
     public static Fraction Pow(Fraction x, int pow)
     {
-        Fraction result = new Fraction(new Numbers("1"),new Numbers("1"));
+        Fraction result = new Fraction(new RealNumbers("1"),new RealNumbers("1"));
 
         for (int i = 0; i < Math.Abs(pow); i++) result *= x;
 
@@ -112,7 +112,7 @@ public static class BigNumMath
     /// <param name="x">Numero real</param>
     /// <param name="y">Numero real</param>
     /// <returns>Resultado real</returns>
-    public static Numbers Max(Numbers x, Numbers y)
+    public static RealNumbers Max(RealNumbers x, RealNumbers y)
     {
         if (x.CompareTo(y) == 1) return x;
 
@@ -125,7 +125,7 @@ public static class BigNumMath
     /// <param name="x">Numero real</param>
     /// <param name="y">Numero real</param>
     /// <returns>Resultado real</returns>
-    public static Numbers Min(Numbers x, Numbers y)
+    public static RealNumbers Min(RealNumbers x, RealNumbers y)
     {
         if (x.CompareTo(y) == -1) return x;
 
@@ -137,14 +137,14 @@ public static class BigNumMath
     /// </summary>
     /// <param name="x">Numero real</param>
     /// <returns>Resultado real</returns>
-    public static Numbers Abs(Numbers x) => x.Abs;
+    public static RealNumbers Abs(RealNumbers x) => x.Abs;
 
     /// <summary>
     /// Determinar el opuesto de un numero real
     /// </summary>
     /// <param name="x">Numero real</param>
     /// <returns>Resultado real</returns>
-    public static Numbers Opposite(Numbers x) => new Numbers(x.PartNumber, x.PartDecimal, !x.Positive());
+    public static RealNumbers Opposite(RealNumbers x) => new RealNumbers(x.PartNumber, x.PartDecimal, !x.Positive());
 
     /// <summary>
     /// Determinar el opuesto de una fraccion real
@@ -158,7 +158,7 @@ public static class BigNumMath
     /// </summary>
     /// <param name="n">Numero double(C#)</param>
     /// <returns>Resultado real</returns>
-    public static Numbers ConvertToNumbers(double n) => new Numbers(n + "", n >= 0);
+    public static RealNumbers ConvertToRealNumbers(double n) => new RealNumbers(n + "", n >= 0);
 
     /// <summary>
     /// Convertir de entero(C#) a numero real
@@ -172,5 +172,5 @@ public static class BigNumMath
     /// </summary>
     /// <param name="n">Numero real</param>
     /// <returns>Resultado entero</returns>
-    public static IntegerNumbers NumbersToInteger(Numbers n) => new IntegerNumbers(n.PartNumber, n.Positive());
+    public static IntegerNumbers RealToInteger(RealNumbers n) => new IntegerNumbers(n.PartNumber, n.Positive());
 }

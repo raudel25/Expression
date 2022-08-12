@@ -4,32 +4,33 @@ namespace Expression;
 
 public class Taylor
 {
-    public readonly ExpressionValue ExpressionResult;
+    public readonly ExpressionType ExpressionResult;
 
-    public readonly Numbers ValueResult;
+    public readonly RealNumbers ValueResult;
 
-    public Taylor(ExpressionValue exp, Numbers center, Numbers value, int precision)
+    public Taylor(ExpressionType exp, RealNumbers center, RealNumbers value, int precision)
     {
         this.ExpressionResult = TaylorSerial(exp, center, precision);
         //this.ValueResult = this.ExpressionResult.Evaluate(value);
     }
 
-    private ExpressionValue TaylorSerial(ExpressionValue exp, Numbers center, int precision)
+    private ExpressionType TaylorSerial(ExpressionType exp, RealNumbers center, int precision)
     {
-        ExpressionValue taylorValue = new ExpressionNumber(exp.Evaluate(center));
-        ExpressionValue taylorFunction = exp;
-        int fact = 1;
+        ExpressionType taylorValue = new NumberExpression(exp.Evaluate(center));
+        ExpressionType taylorFunction = exp;
+        IntegerNumbers fact = new IntegerNumbers("1");
+        IntegerNumbers precisionBig = BigNumMath.ConvertToIntegerNumbers(precision);
 
-        for (int i = 1; i < precision; i++)
+        for (IntegerNumbers i = new IntegerNumbers("1"); i < precisionBig; i++)
         {
             taylorFunction = taylorFunction.Derivative();
 
-            var a = new ExpressionNumber(taylorFunction.Evaluate(center));
-            var b = new Pow(new ExpressionVariable('x') - new ExpressionNumber(center),
-                new ExpressionNumber(BigNumMath.ConvertToNumbers(i)));
-            var c = new ExpressionNumber(BigNumMath.ConvertToNumbers(fact));
+           //var a = new NumberExpression(taylorFunction.Evaluate(center));
+           // var b = new Pow(new VariableExpression('x') - new NumberExpression(center),
+             //   new NumberExpression(i));
+            //var c = new NumberExpression(fact);
 
-            taylorValue += a * b / c;
+            //taylorValue += a * b / c;
 
             fact *= i;
         }

@@ -4,15 +4,15 @@ namespace Expression;
 
 public class Sin : UnaryExpression
 {
-    public Sin(ExpressionValue value) : base(value)
+    public Sin(ExpressionType value) : base(value)
     {
     }
 
-    protected override ExpressionValue Derivative(ExpressionValue value) => new Cos(value) * value.Derivative();
+    protected override ExpressionType Derivative(ExpressionType value) => new Cos(value) * value.Derivative();
 
-    public override Numbers Evaluate(Numbers value)
+    public override RealNumbers Evaluate(RealNumbers value)
     {
-        if (value == new Numbers("0")) return new Numbers("0");
+        if (value == new RealNumbers("0")) return new RealNumbers("0");
         
         throw new NotImplementedException();
     }
@@ -22,16 +22,16 @@ public class Sin : UnaryExpression
 
 public class Cos : UnaryExpression
 {
-    public Cos(ExpressionValue value) : base(value)
+    public Cos(ExpressionType value) : base(value)
     {
     }
 
-    protected override ExpressionValue Derivative(ExpressionValue value) =>
-        new ExpressionNumber(new Numbers("1", false)) * new Sin(value) * value.Derivative();
+    protected override ExpressionType Derivative(ExpressionType value) =>
+        new NumberExpression(new RealNumbers("1", false)) * new Sin(value) * value.Derivative();
 
-    public override Numbers Evaluate(Numbers value)
+    public override RealNumbers Evaluate(RealNumbers value)
     {
-        if (value == new Numbers("0")) return new Numbers("1");
+        if (value == new RealNumbers("0")) return new RealNumbers("1");
         
         throw new NotImplementedException();
     }
@@ -39,18 +39,18 @@ public class Cos : UnaryExpression
     public override string ToString() => "cos(" + this.Value + ")";
 }
 
-public class ExpressionNumber : ExpressionValue
+public class NumberExpression : ExpressionType
 {
-    public readonly Numbers Value;
+    public readonly RealNumbers Value;
 
-    public ExpressionNumber(Numbers value)
+    public NumberExpression(RealNumbers value)
     {
         this.Value = value;
     }
 
-    public override ExpressionValue Derivative() => new ExpressionNumber(new Numbers("0"));
+    public override ExpressionType Derivative() => new NumberExpression(new RealNumbers("0"));
 
-    public override Numbers Evaluate(Numbers x) => this.Value;
+    public override RealNumbers Evaluate(RealNumbers x) => this.Value;
 
     public override string ToString() => this.Value.ToString();
 
@@ -61,7 +61,7 @@ public class ExpressionNumber : ExpressionValue
 
     public override bool Equals(object? obj)
     {
-        ExpressionNumber? exp = obj as ExpressionNumber;
+        NumberExpression? exp = obj as NumberExpression;
         if (exp is null) return false;
 
         return exp.Value == this.Value;
@@ -70,18 +70,18 @@ public class ExpressionNumber : ExpressionValue
     public override int GetHashCode() => this.Value.GetHashCode();
 }
 
-public class ExpressionVariable : ExpressionValue
+public class VariableExpression : ExpressionType
 {
     public readonly char Value;
 
-    public ExpressionVariable(char value)
+    public VariableExpression(char value)
     {
         this.Value = value;
     }
 
-    public override ExpressionValue Derivative() => new ExpressionNumber(new Numbers("1"));
+    public override ExpressionType Derivative() => new NumberExpression(new RealNumbers("1"));
 
-    public override Numbers Evaluate(Numbers x) => x;
+    public override RealNumbers Evaluate(RealNumbers x) => x;
 
     public override int Priority
     {

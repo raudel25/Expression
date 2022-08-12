@@ -2,15 +2,15 @@ namespace BigNum;
 
 public class Fraction : IComparable<Fraction>
 {
-    internal readonly Numbers Numerator;
+    internal readonly RealNumbers Numerator;
 
-    internal readonly Numbers Denominator;
+    internal readonly RealNumbers Denominator;
 
     internal readonly char Sign;
 
-    public readonly Numbers Valor;
+    public readonly RealNumbers Valor;
 
-    public Fraction(Numbers numerator, Numbers denominator)
+    public Fraction(RealNumbers numerator, RealNumbers denominator)
     {
         this.Numerator = numerator;
         this.Denominator = denominator;

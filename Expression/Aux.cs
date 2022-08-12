@@ -4,7 +4,7 @@ public static class Aux
 {
     public static string Colocated(string s) => s[0] == '(' && s[s.Length - 1] == ')' ? s : "(" + s + ")";
 
-    public static string Opposite(ExpressionValue exp)
+    public static string Opposite(ExpressionType exp)
     {
         if (exp.ToString()![0] == '-')
             return exp.ToString()!.Substring(1, exp.ToString()!.Length - 1);
