@@ -18,9 +18,9 @@ internal static class DivisionOperations
     {
         bool positive = x.Sign == y.Sign;
 
-        if (y == new RealNumbers("0")) throw new Exception("Division por 0");
-        if (y.Abs == new RealNumbers("1"))
-            return (new RealNumbers(x.PartNumber, x.PartDecimal, positive), new IntegerNumbers("0"));
+        if (y == RealNumbers.Real0) throw new Exception("Division por 0");
+        if (y.Abs == RealNumbers.Real1)
+            return (new RealNumbers(x.PartNumber, x.PartDecimal, positive), IntegerNumbers.Integer0);
 
         (string xPartDecimal, string yPartDecimal) = (x.PartDecimal, y.PartDecimal);
         AuxOperations.EqualZerosRight(ref xPartDecimal, ref yPartDecimal);

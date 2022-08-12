@@ -2,6 +2,12 @@ namespace BigNum;
 
 public class IntegerNumbers : RealNumbers
 {
+    public static readonly IntegerNumbers Integer0 = new IntegerNumbers("0");
+    
+    public static readonly IntegerNumbers Integer1 = new IntegerNumbers("1");
+    
+    public static readonly IntegerNumbers IntegerN1 = new IntegerNumbers("1",false);
+    
     public IntegerNumbers(string s, bool positive = true) : base(s, "0", positive)
     {
     }

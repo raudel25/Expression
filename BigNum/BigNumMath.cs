@@ -71,11 +71,11 @@ public static class BigNumMath
     /// <returns>Resultado real</returns>
     public static RealNumbers Pow(RealNumbers x, int pow)
     {
-        RealNumbers result = new RealNumbers("1");
+        RealNumbers result = RealNumbers.Real1;
 
         for (int i = 0; i < Math.Abs(pow); i++) result *= x;
 
-        if (pow < 0) result = new RealNumbers("1") / result;
+        if (pow < 0) result = RealNumbers.Real1 / result;
 
         return result;
     }
@@ -88,7 +88,7 @@ public static class BigNumMath
     /// <returns>Resultado fraccion real</returns>
     public static Fraction Pow(Fraction x, int pow)
     {
-        Fraction result = new Fraction(new RealNumbers("1"),new RealNumbers("1"));
+        Fraction result = new Fraction(RealNumbers.Real1,RealNumbers.Real1);
 
         for (int i = 0; i < Math.Abs(pow); i++) result *= x;
 

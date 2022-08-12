@@ -12,7 +12,7 @@ public class Sin : UnaryExpression
 
     public override RealNumbers Evaluate(RealNumbers value)
     {
-        if (value == new RealNumbers("0")) return new RealNumbers("0");
+        if (value == RealNumbers.Real0) return RealNumbers.Real0;
         
         throw new NotImplementedException();
     }
@@ -27,11 +27,11 @@ public class Cos : UnaryExpression
     }
 
     protected override ExpressionType Derivative(ExpressionType value) =>
-        new NumberExpression(new RealNumbers("1", false)) * new Sin(value) * value.Derivative();
+        new NumberExpression(RealNumbers.RealN1) * new Sin(value) * value.Derivative();
 
     public override RealNumbers Evaluate(RealNumbers value)
     {
-        if (value == new RealNumbers("0")) return new RealNumbers("1");
+        if (value == RealNumbers.Real0) return RealNumbers.Real1;
         
         throw new NotImplementedException();
     }
@@ -48,7 +48,7 @@ public class NumberExpression : ExpressionType
         this.Value = value;
     }
 
-    public override ExpressionType Derivative() => new NumberExpression(new RealNumbers("0"));
+    public override ExpressionType Derivative() => new NumberExpression(RealNumbers.Real0);
 
     public override RealNumbers Evaluate(RealNumbers x) => this.Value;
 
@@ -79,7 +79,7 @@ public class VariableExpression : ExpressionType
         this.Value = value;
     }
 
-    public override ExpressionType Derivative() => new NumberExpression(new RealNumbers("1"));
+    public override ExpressionType Derivative() => new NumberExpression(RealNumbers.Real1);
 
     public override RealNumbers Evaluate(RealNumbers x) => x;
 

@@ -2,9 +2,11 @@ namespace BigNum;
 
 public class RealNumbers : IComparable<RealNumbers>
 {
-    public static RealNumbers Number1 = new RealNumbers("1");
+    public static readonly RealNumbers Real1 = new RealNumbers("1");
+    
+    public static readonly RealNumbers RealN1 = new RealNumbers("1",false);
 
-    public static RealNumbers Number0 = new RealNumbers("0");
+    public static readonly RealNumbers Real0 = new RealNumbers("0");
     
     internal readonly string PartDecimal;
 

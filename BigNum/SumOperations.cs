@@ -10,13 +10,13 @@ internal static class SumOperations
     /// <returns>Resultado real</returns>
     public static RealNumbers Sum(RealNumbers x, RealNumbers y)
     {
-        if (x == new RealNumbers("0")) return y;
-        if (y == new RealNumbers("0")) return x;
+        if (x == RealNumbers.Real0) return y;
+        if (y == RealNumbers.Real0) return x;
 
         if (x.Sign == y.Sign) return SumOperation(x, y, true, x.Positive());
 
         int compare = x.Abs.CompareTo(y.Abs);
-        if (compare == 0) return new RealNumbers("0", "0");
+        if (compare == 0) return RealNumbers.Real0;
         if (compare == 1) return SumOperation(x.Abs, y.Abs, false, x.Positive());
 
         return SumOperation(y.Abs, x.Abs, false, y.Positive());

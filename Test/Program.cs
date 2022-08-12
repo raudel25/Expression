@@ -18,4 +18,4 @@ Console.WriteLine(c);
 
 //Console.WriteLine(d.ExpressionResult);
 
-//Console.WriteLine(BigNumMath.Factorial(new IntegerNumbers("20")));
+Console.WriteLine(BigNumMath.Factorial(new IntegerNumbers("35")));
