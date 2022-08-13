@@ -20,10 +20,14 @@ using Expression;
 //
 // Console.WriteLine(BigNumMath.Factorial(new IntegerNumbers("100")));
 
-Stopwatch crono = new Stopwatch();
-crono.Start();
-Console.WriteLine(BigNumMath.Sqrt(new IntegerNumbers("1000"),new IntegerNumbers("3")));
-crono.Stop();
+// Stopwatch crono = new Stopwatch();
+// crono.Start();
+// Console.WriteLine(BigNumMath.Sqrt(new IntegerNumbers("1000"),new IntegerNumbers("3")));
+// crono.Stop();
+//
+// Console.WriteLine(Math.Pow(2,0.1));
+// Console.WriteLine(crono.ElapsedMilliseconds);
 
-Console.WriteLine(Math.Pow(2,0.1));
-Console.WriteLine(crono.ElapsedMilliseconds);
+Console.WriteLine(BigNumMath.Pow(new RealNumbers("60.42"),new RealNumbers("10.2")));
+
+Console.WriteLine(Math.Pow(60.42,10.2));

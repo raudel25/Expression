@@ -69,17 +69,9 @@ public static class BigNumMath
     /// <param name="x">Numero real</param>
     /// <param name="y">Numero entero</param>
     /// <returns>Resultado real</returns>
-    public static RealNumbers Pow(RealNumbers x, IntegerNumbers y)
-    {
-        RealNumbers result = RealNumbers.Real1;
-        int pow = int.Parse(y.PartNumber);
+    public static RealNumbers Pow(RealNumbers x, IntegerNumbers y) => PowOperations.Pow(x, y);
 
-        for (int i = 0; i < Math.Abs(pow); i++) result *= x;
-
-        if (pow < 0) result = RealNumbers.Real1 / result;
-
-        return result;
-    }
+    public static RealNumbers Pow(RealNumbers x, RealNumbers y) => PowOperations.Pow(x, y);
 
     public static RealNumbers Sqrt(RealNumbers x, IntegerNumbers y) => SqrtOperations.Sqrt(x, y);
 
@@ -91,11 +83,11 @@ public static class BigNumMath
     /// <returns>Resultado fraccion real</returns>
     public static Fraction Pow(Fraction x, int pow)
     {
-        Fraction result = new Fraction(RealNumbers.Real1,RealNumbers.Real1);
+        Fraction result = new Fraction(RealNumbers.Real1, RealNumbers.Real1);
 
         for (int i = 0; i < Math.Abs(pow); i++) result *= x;
 
-        if (pow < 0) result = new Fraction(result.Denominator,result.Numerator);
+        if (pow < 0) result = new Fraction(result.Denominator, result.Numerator);
 
         return result;
     }
@@ -122,6 +114,8 @@ public static class BigNumMath
         return y;
     }
 
+    public static IntegerNumbers Max(IntegerNumbers x, IntegerNumbers y) => RealToInteger(Max((RealNumbers) x, y));
+
     /// <summary>
     /// Minimo entre dos numero reales
     /// </summary>
@@ -135,12 +129,16 @@ public static class BigNumMath
         return y;
     }
 
+    public static IntegerNumbers Min(IntegerNumbers x, IntegerNumbers y) => RealToInteger(Min((RealNumbers) x, y));
+
     /// <summary>
     /// Determinar el modulo de un numero real
     /// </summary>
     /// <param name="x">Numero real</param>
     /// <returns>Resultado real</returns>
     public static RealNumbers Abs(RealNumbers x) => x.Abs;
+
+    public static IntegerNumbers Abs(IntegerNumbers x) => RealToInteger(x.Abs);
 
     /// <summary>
     /// Determinar el opuesto de un numero real
@@ -176,4 +174,21 @@ public static class BigNumMath
     /// <param name="n">Numero real</param>
     /// <returns>Resultado entero</returns>
     public static IntegerNumbers RealToInteger(RealNumbers n) => new IntegerNumbers(n.PartNumber, n.Positive());
+
+    public static IntegerNumbers Mcd(IntegerNumbers x, IntegerNumbers y)
+    {
+        if (x == IntegerNumbers.Integer0 || y == IntegerNumbers.Integer0)
+            throw new Exception("Operacion Invalida (division por 0)");
+
+        (IntegerNumbers a, IntegerNumbers b) = (Max(x, y), Min(x, y));
+        IntegerNumbers rest = IntegerNumbers.Integer1;
+
+        while (rest != IntegerNumbers.Integer0)
+        {
+            rest = a % b;
+            (a, b) = (b, rest);
+        }
+
+        return a;
+    }
 }

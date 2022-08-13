@@ -15,7 +15,7 @@ public static class SqrtOperations
 
         if (parity && !x.Positive()) throw new Exception("Operacion Invalida (el resultado no es real)");
 
-        RealNumbers sqrt = AlgorithmSqrt(x.Abs, BigNumMath.RealToInteger(y.Abs));
+        RealNumbers sqrt = AlgorithmSqrt(x.Abs, BigNumMath.Abs(y));
 
         return y.Positive()
             ? new RealNumbers(sqrt.PartNumber, sqrt.PartDecimal, positive)
@@ -26,8 +26,6 @@ public static class SqrtOperations
     {
         (RealNumbers value, bool find) = ApproximateInteger(x, y);
         if (find) return value;
-
-        Console.WriteLine(value);
 
         IntegerNumbers aux = y - IntegerNumbers.Integer1;
 
