@@ -2,6 +2,8 @@ namespace BigNum;
 
 public class RealNumbers : IComparable<RealNumbers>
 {
+    private static int _precision = 20;
+    
     public static readonly RealNumbers Real1 = new RealNumbers("1");
     
     public static readonly RealNumbers RealN1 = new RealNumbers("1",false);
@@ -21,8 +23,12 @@ public class RealNumbers : IComparable<RealNumbers>
         if (!Check(s)) throw new Exception("El valor introducido no es correcto");
 
         string[] part = s.Split('.');
-        this.PartNumber = AuxOperations.EliminateZerosLeft(part[0]);
-        this.PartDecimal = part.Length == 2 ? AuxOperations.EliminateZerosRight(part[1]) : "0";
+
+        (string partNumber, string partDecimal) = (AuxOperations.EliminateZerosLeft(part[0]),
+            part.Length == 2 ? AuxOperations.EliminateZerosRight(part[1]) : "0");
+        
+        this.PartNumber = partNumber;
+        this.PartDecimal = DeterminatePrecision(partDecimal);
         CheckZero(ref positive);
         this.Sign = positive ? '+' : '-';
         this.Abs = positive ? this : new RealNumbers(this.PartNumber, this.PartDecimal);
@@ -30,8 +36,11 @@ public class RealNumbers : IComparable<RealNumbers>
 
     internal RealNumbers(string partNumber, string partDecimal, bool positive = true)
     {
-        this.PartNumber = AuxOperations.EliminateZerosLeft(partNumber);
-        this.PartDecimal = AuxOperations.EliminateZerosRight(partDecimal);
+        (partNumber, partDecimal) = (AuxOperations.EliminateZerosLeft(partNumber),
+            AuxOperations.EliminateZerosRight(partDecimal));
+        
+        this.PartNumber = partNumber;
+        this.PartDecimal = DeterminatePrecision(partDecimal);
         CheckZero(ref positive);
         this.Sign = positive ? '+' : '-';
         this.Abs = positive ? this : new RealNumbers(this.PartNumber, this.PartDecimal);
@@ -123,6 +132,8 @@ public class RealNumbers : IComparable<RealNumbers>
 
         return sign + this.PartNumber + partDecimal;
     }
+
+    private static string DeterminatePrecision(string s) => s.Length >= _precision ? s.Substring(0, _precision) : s;
 
     #region operadores
 

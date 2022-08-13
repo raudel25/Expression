@@ -67,11 +67,12 @@ public static class BigNumMath
     /// Potencia entre un numero real y un numero entero(C#)
     /// </summary>
     /// <param name="x">Numero real</param>
-    /// <param name="pow">Numero entero(C#)</param>
+    /// <param name="y">Numero entero</param>
     /// <returns>Resultado real</returns>
-    public static RealNumbers Pow(RealNumbers x, int pow)
+    public static RealNumbers Pow(RealNumbers x, IntegerNumbers y)
     {
         RealNumbers result = RealNumbers.Real1;
+        int pow = int.Parse(y.PartNumber);
 
         for (int i = 0; i < Math.Abs(pow); i++) result *= x;
 
@@ -79,7 +80,9 @@ public static class BigNumMath
 
         return result;
     }
-    
+
+    public static RealNumbers Sqrt(RealNumbers x, IntegerNumbers y) => SqrtOperations.Sqrt(x, y);
+
     /// <summary>
     /// Potencia entre una fraccion real y un numero entero(C#)
     /// </summary>

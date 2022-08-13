@@ -5,7 +5,7 @@ internal static class DivisionOperations
     /// <summary>
     /// Cantidad maxima de cifras despues de la coma
     /// </summary>
-    private static int _precision = 100;
+    private static int _precision = 20;
 
     /// <summary>
     /// Dividir dos numeros reales
@@ -18,7 +18,7 @@ internal static class DivisionOperations
     {
         bool positive = x.Sign == y.Sign;
 
-        if (y == RealNumbers.Real0) throw new Exception("Division por 0");
+        if (y == RealNumbers.Real0) throw new Exception("Operacion Invalida (division por 0)");
         if (y.Abs == RealNumbers.Real1)
             return (new RealNumbers(x.PartNumber, x.PartDecimal, positive), IntegerNumbers.Integer0);
 

@@ -8,7 +8,7 @@ internal static class SumOperations
     /// <param name="x">Numero real</param>
     /// <param name="y">Numero real</param>
     /// <returns>Resultado real</returns>
-    public static RealNumbers Sum(RealNumbers x, RealNumbers y)
+    internal static RealNumbers Sum(RealNumbers x, RealNumbers y)
     {
         if (x == RealNumbers.Real0) return y;
         if (y == RealNumbers.Real0) return x;
