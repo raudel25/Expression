@@ -2,7 +2,9 @@ namespace BigNum;
 
 internal static class Constants
 {
-    private static int _precision = 20;
+    private static int _precisionE = 20;
+
+    private static int _precisionPI = 10;
 
     internal static RealNumbers ConstantE()
     {
@@ -10,7 +12,7 @@ internal static class Constants
         RealNumbers fact = RealNumbers.Real1;
         RealNumbers index = RealNumbers.Real0;
 
-        for (int i = 0; i < _precision; i++)
+        for (int i = 0; i < _precisionE; i++)
         {
             if (i != 0) fact *= index;
             e += RealNumbers.Real1 / fact;
@@ -18,5 +20,10 @@ internal static class Constants
         }
 
         return e;
+    }
+
+    internal static RealNumbers ConstantPI()
+    {
+        throw new NotImplementedException();
     }
 }

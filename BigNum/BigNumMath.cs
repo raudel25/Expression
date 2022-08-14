@@ -73,6 +73,8 @@ public static class BigNumMath
 
     public static RealNumbers Pow(RealNumbers x, RealNumbers y) => PowOperations.Pow(x, y);
 
+    public static IntegerNumbers Pow(IntegerNumbers x, IntegerNumbers y) => RealToInteger(PowOperations.Pow(x, y));
+
     public static RealNumbers Sqrt(RealNumbers x, IntegerNumbers y) => SqrtOperations.Sqrt(x, y);
 
     /// <summary>
@@ -81,27 +83,7 @@ public static class BigNumMath
     /// <param name="x">Fraccion real</param>
     /// <param name="pow">Numero entero(C#)</param>
     /// <returns>Resultado fraccion real</returns>
-    public static Fraction Pow(Fraction x, int pow)
-    {
-        Fraction result = new Fraction(RealNumbers.Real1, RealNumbers.Real1);
-
-        for (int i = 0; i < Math.Abs(pow); i++) result *= x;
-
-        if (pow < 0) result = new Fraction(result.Denominator, result.Numerator);
-
-        return result;
-    }
-
-    public static IntegerNumbers Factorial(IntegerNumbers x)
-    {
-        IntegerNumbers fact = new IntegerNumbers("1");
-        int xx = int.Parse(x.PartNumber);
-        IntegerNumbers index = IntegerNumbers.Integer1;
-
-        for (int i = 1; i <= xx; i++) fact *= index++;
-
-        return fact;
-    }
+    public static Fraction Pow(Fraction x, int pow) => PowOperations.Pow(x, pow);
 
     /// <summary>
     /// Maximo entre dos numero reales
@@ -109,12 +91,7 @@ public static class BigNumMath
     /// <param name="x">Numero real</param>
     /// <param name="y">Numero real</param>
     /// <returns>Resultado real</returns>
-    public static RealNumbers Max(RealNumbers x, RealNumbers y)
-    {
-        if (x.CompareTo(y) == 1) return x;
-
-        return y;
-    }
+    public static RealNumbers Max(RealNumbers x, RealNumbers y) => x.CompareTo(y) == 1 ? x : y;
 
     public static IntegerNumbers Max(IntegerNumbers x, IntegerNumbers y) => RealToInteger(Max((RealNumbers) x, y));
 
@@ -124,12 +101,7 @@ public static class BigNumMath
     /// <param name="x">Numero real</param>
     /// <param name="y">Numero real</param>
     /// <returns>Resultado real</returns>
-    public static RealNumbers Min(RealNumbers x, RealNumbers y)
-    {
-        if (x.CompareTo(y) == -1) return x;
-
-        return y;
-    }
+    public static RealNumbers Min(RealNumbers x, RealNumbers y) => x.CompareTo(y) == -1 ? x : y;
 
     public static IntegerNumbers Min(IntegerNumbers x, IntegerNumbers y) => RealToInteger(Min((RealNumbers) x, y));
 
@@ -148,6 +120,8 @@ public static class BigNumMath
     /// <param name="x">Numero real</param>
     /// <returns>Resultado real</returns>
     public static RealNumbers Opposite(RealNumbers x) => new RealNumbers(x.PartNumber, x.PartDecimal, !x.Positive());
+
+    public static IntegerNumbers Opposite(IntegerNumbers x) => new IntegerNumbers(x.PartNumber, !x.Positive());
 
     /// <summary>
     /// Determinar el opuesto de una fraccion real
@@ -177,28 +151,18 @@ public static class BigNumMath
     /// <returns>Resultado entero</returns>
     public static IntegerNumbers RealToInteger(RealNumbers n) => new IntegerNumbers(n.PartNumber, n.Positive());
 
-    public static IntegerNumbers Mcd(IntegerNumbers x, IntegerNumbers y)
-    {
-        if (x == IntegerNumbers.Integer0 || y == IntegerNumbers.Integer0)
-            throw new Exception("Operacion Invalida (division por 0)");
+    public static IntegerNumbers Mcd(IntegerNumbers x, IntegerNumbers y) => IntegerOperations.Mcd(x, y);
 
-        (IntegerNumbers a, IntegerNumbers b) = (Max(x, y), Min(x, y));
-        IntegerNumbers rest = IntegerNumbers.Integer1;
+    public static IntegerNumbers Factorial(IntegerNumbers x) => IntegerOperations.Factorial(x);
 
-        while (rest != IntegerNumbers.Integer0)
-        {
-            rest = a % b;
-            (a, b) = (b, rest);
-        }
-
-        return a;
-    }
+    public static IntegerNumbers Combinations(IntegerNumbers x, IntegerNumbers y) =>
+        IntegerOperations.Combinations(x, y);
 
     public static RealNumbers E = Constants.ConstantE();
 
     public static RealNumbers Sin(RealNumbers x) =>
-        TrigonometryOperations.SinCos(x,true);
+        TrigonometryOperations.SinCos(x, true);
 
     public static RealNumbers Cos(RealNumbers x) =>
-        TrigonometryOperations.SinCos(x,false);
+        TrigonometryOperations.SinCos(x, false);
 }

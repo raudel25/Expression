@@ -26,4 +26,21 @@ internal static class PowOperations
 
         return result;
     }
+
+    /// <summary>
+    /// Potencia entre una fraccion real y un numero entero(C#)
+    /// </summary>
+    /// <param name="x">Fraccion real</param>
+    /// <param name="pow">Numero entero(C#)</param>
+    /// <returns>Resultado fraccion real</returns>
+    internal static Fraction Pow(Fraction x, int pow)
+    {
+        Fraction result = new Fraction(RealNumbers.Real1, RealNumbers.Real1);
+
+        for (int i = 0; i < Math.Abs(pow); i++) result *= x;
+
+        if (pow < 0) result = new Fraction(result.Denominator, result.Numerator);
+
+        return result;
+    }
 }
