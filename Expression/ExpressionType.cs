@@ -81,9 +81,9 @@ public abstract class UnaryExpression : ExpressionType
         this.Value = value;
     }
 
-    public override ExpressionType Derivative() => this.Derivative(this.Value);
+    public override ExpressionType Derivative() => this.Derivative(this.Value) * this.Value.Derivative();
 
-    public override RealNumbers Evaluate(RealNumbers x) => this.EvaluateUnary(x);
+    public override RealNumbers Evaluate(RealNumbers x) => this.EvaluateUnary(this.Value.Evaluate(x));
 
     protected abstract ExpressionType Derivative(ExpressionType value);
 
