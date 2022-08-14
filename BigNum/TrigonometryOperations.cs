@@ -6,8 +6,11 @@ internal static class TrigonometryOperations
 
     private static int _precision = 30;
 
-    internal static RealNumbers SinCos(RealNumbers x, Condition filter1, Condition filter2)
+    internal static RealNumbers SinCos(RealNumbers x,bool sin)
     {
+        Condition filter1 = sin ? (a) => (a & 1) == 0 : (a) => (a & 1) != 0;
+        Condition filter2 = sin ? (a) => a % 4 == 1 : (a) => a % 4 == 0;
+        
         RealNumbers result = RealNumbers.Real0;
         RealNumbers pow = RealNumbers.Real1;
         RealNumbers fact = RealNumbers.Real1;

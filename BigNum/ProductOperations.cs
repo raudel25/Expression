@@ -23,6 +23,8 @@ internal static class ProductOperations
 
         if (result == "0") return RealNumbers.Real0;
 
+        if (result.Length < cantDecimal) result = AuxOperations.AddZerosLeft(result, cantDecimal - result.Length);
+
         return new RealNumbers(result.Substring(0, result.Length - cantDecimal),
             result.Substring(result.Length - cantDecimal, cantDecimal), positive);
     }

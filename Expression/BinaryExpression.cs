@@ -11,7 +11,7 @@ public class Sum : BinaryExpression
     protected override ExpressionType Derivative(ExpressionType left, ExpressionType right) =>
         left.Derivative() + right.Derivative();
 
-    protected override RealNumbers Evaluate(RealNumbers left, RealNumbers right) => left + right;
+    protected override RealNumbers EvaluateBinary(RealNumbers left, RealNumbers right) => left + right;
 
     protected override bool IsBinaryImplement() => !(this.Left.ToString() == "0" || this.Right.ToString() == "0");
 
@@ -43,7 +43,7 @@ public class Subtraction : BinaryExpression
     protected override ExpressionType Derivative(ExpressionType left, ExpressionType right) =>
         left.Derivative() - right.Derivative();
 
-    protected override RealNumbers Evaluate(RealNumbers left, RealNumbers right) => left - right;
+    protected override RealNumbers EvaluateBinary(RealNumbers left, RealNumbers right) => left - right;
 
     protected override bool IsBinaryImplement() => !(this.Left.ToString() == "0" || this.Right.ToString() == "0");
 
@@ -75,7 +75,7 @@ public class Multiply : BinaryExpression
     protected override ExpressionType Derivative(ExpressionType left, ExpressionType right) =>
         left.Derivative() * right + left * right.Derivative();
 
-    protected override RealNumbers Evaluate(RealNumbers left, RealNumbers right) => left * right;
+    protected override RealNumbers EvaluateBinary(RealNumbers left, RealNumbers right) => left * right;
 
     protected override bool IsBinaryImplement()
     {
@@ -121,7 +121,7 @@ public class Division : BinaryExpression
     protected override ExpressionType Derivative(ExpressionType left, ExpressionType right) =>
         left.Derivative() * right - left * right.Derivative();
 
-    protected override RealNumbers Evaluate(RealNumbers left, RealNumbers right) => left * right;
+    protected override RealNumbers EvaluateBinary(RealNumbers left, RealNumbers right) => left / right;
 
     protected override bool IsBinaryImplement() => !(this.Left.ToString() == "0" || this.Right.ToString() == "1");
 
@@ -159,7 +159,7 @@ public class Pow : BinaryExpression
     protected override ExpressionType Derivative(ExpressionType left, ExpressionType right) =>
         throw new NotImplementedException();
 
-    protected override RealNumbers Evaluate(RealNumbers left, RealNumbers right) => throw new NotImplementedException();
+    protected override RealNumbers EvaluateBinary(RealNumbers left, RealNumbers right) => BigNumMath.Pow(left, right);
 
     protected override bool IsBinaryImplement() =>
         !(this.Left.ToString() == "0" || this.Right.ToString() == "0" || this.Left.ToString() == "1");
@@ -199,7 +199,7 @@ public class Logarithm : BinaryExpression
         throw new NotImplementedException();
     }
 
-    protected override RealNumbers Evaluate(RealNumbers left, RealNumbers right)
+    protected override RealNumbers EvaluateBinary(RealNumbers left, RealNumbers right)
     {
         throw new NotImplementedException();
     }

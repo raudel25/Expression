@@ -48,11 +48,11 @@ public abstract class BinaryExpression : ExpressionType
 
     public override ExpressionType Derivative() => this.Derivative(this.Left, this.Right);
 
-    public override RealNumbers Evaluate(RealNumbers x) => Evaluate(this.Left.Evaluate(x), this.Right.Evaluate(x));
+    public override RealNumbers Evaluate(RealNumbers x) => this.EvaluateBinary(this.Left.Evaluate(x), this.Right.Evaluate(x));
 
     protected abstract ExpressionType Derivative(ExpressionType left, ExpressionType right);
 
-    protected abstract RealNumbers Evaluate(RealNumbers left, RealNumbers right);
+    protected abstract RealNumbers EvaluateBinary(RealNumbers left, RealNumbers right);
 
     protected abstract bool IsBinaryImplement();
 
@@ -83,7 +83,12 @@ public abstract class UnaryExpression : ExpressionType
 
     public override ExpressionType Derivative() => this.Derivative(this.Value);
 
+    public override RealNumbers Evaluate(RealNumbers x) => this.EvaluateUnary(x);
+
     protected abstract ExpressionType Derivative(ExpressionType value);
+
+    protected abstract RealNumbers EvaluateUnary(RealNumbers x);
+    
 
     public override int Priority
     {

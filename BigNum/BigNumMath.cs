@@ -197,8 +197,8 @@ public static class BigNumMath
     public static RealNumbers E = Constants.ConstantE();
 
     public static RealNumbers Sin(RealNumbers x) =>
-        TrigonometryOperations.SinCos(x, (a) => (a & 1) == 0, (a) => a % 4 == 1);
+        TrigonometryOperations.SinCos(x,true);
 
     public static RealNumbers Cos(RealNumbers x) =>
-        TrigonometryOperations.SinCos(x, (a) => (a & 1) != 0, (a) => a % 4 == 0);
+        TrigonometryOperations.SinCos(x,false);
 }

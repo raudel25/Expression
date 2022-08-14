@@ -10,12 +10,7 @@ public class Sin : UnaryExpression
 
     protected override ExpressionType Derivative(ExpressionType value) => new Cos(value) * value.Derivative();
 
-    public override RealNumbers Evaluate(RealNumbers value)
-    {
-        if (value == RealNumbers.Real0) return RealNumbers.Real0;
-        
-        throw new NotImplementedException();
-    }
+    protected override RealNumbers EvaluateUnary(RealNumbers value) => BigNumMath.Sin(value);
 
     public override string ToString() => "sin(" + this.Value + ")";
 }
@@ -29,12 +24,7 @@ public class Cos : UnaryExpression
     protected override ExpressionType Derivative(ExpressionType value) =>
         new NumberExpression(RealNumbers.RealN1) * new Sin(value) * value.Derivative();
 
-    public override RealNumbers Evaluate(RealNumbers value)
-    {
-        if (value == RealNumbers.Real0) return RealNumbers.Real1;
-        
-        throw new NotImplementedException();
-    }
+    protected override RealNumbers EvaluateUnary(RealNumbers value) => BigNumMath.Cos(value);
 
     public override string ToString() => "cos(" + this.Value + ")";
 }

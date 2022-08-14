@@ -8,10 +8,10 @@ public class Taylor
 
     public readonly RealNumbers ValueResult;
 
-    public Taylor(ExpressionType exp, RealNumbers center, RealNumbers value, int precision)
+    public Taylor(ExpressionType exp, RealNumbers value, RealNumbers center, int precision = 20)
     {
         this.ExpressionResult = TaylorSerial(exp, center, precision);
-        //this.ValueResult = this.ExpressionResult.Evaluate(value);
+        this.ValueResult = this.ExpressionResult.Evaluate(value);
     }
 
     private ExpressionType TaylorSerial(ExpressionType exp, RealNumbers center, int precision)
@@ -21,11 +21,11 @@ public class Taylor
         RealNumbers fact = RealNumbers.Real1;
         RealNumbers index = RealNumbers.Real1;
 
-        for (int i = 0; i < precision; i++)
+        for (int i = 1; i < precision; i++)
         {
             fact *= index;
             taylorFunction = taylorFunction.Derivative();
-
+            
             var a = new NumberExpression(taylorFunction.Evaluate(center));
             var b = new Pow(new VariableExpression('x') - new NumberExpression(center),
                 new NumberExpression(index));
