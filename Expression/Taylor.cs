@@ -18,21 +18,22 @@ public class Taylor
     {
         ExpressionType taylorValue = new NumberExpression(exp.Evaluate(center));
         ExpressionType taylorFunction = exp;
-        IntegerNumbers fact = IntegerNumbers.Integer1;
-        IntegerNumbers precisionBig = BigNumMath.ConvertToIntegerNumbers(precision);
+        RealNumbers fact = RealNumbers.Real1;
+        RealNumbers index = RealNumbers.Real1;
 
-        for (IntegerNumbers i = IntegerNumbers.Integer1; i < precisionBig; i++)
+        for (int i = 0; i < precision; i++)
         {
+            fact *= index;
             taylorFunction = taylorFunction.Derivative();
 
             var a = new NumberExpression(taylorFunction.Evaluate(center));
             var b = new Pow(new VariableExpression('x') - new NumberExpression(center),
-                new NumberExpression(i));
+                new NumberExpression(index));
             var c = new NumberExpression(fact);
 
             taylorValue += a * b / c;
 
-            fact *= i;
+            index++;
         }
 
         return taylorValue;

@@ -95,8 +95,10 @@ public static class BigNumMath
     public static IntegerNumbers Factorial(IntegerNumbers x)
     {
         IntegerNumbers fact = new IntegerNumbers("1");
+        int xx = int.Parse(x.PartNumber);
+        IntegerNumbers index = IntegerNumbers.Integer1;
 
-        for (IntegerNumbers i = new IntegerNumbers("1"); i <= x; i++) fact *= i;
+        for (int i = 1; i <= xx; i++) fact *= index++;
 
         return fact;
     }
@@ -191,4 +193,12 @@ public static class BigNumMath
 
         return a;
     }
+
+    public static RealNumbers E = Constants.ConstantE();
+
+    public static RealNumbers Sin(RealNumbers x) =>
+        TrigonometryOperations.SinCos(x, (a) => (a & 1) == 0, (a) => a % 4 == 1);
+
+    public static RealNumbers Cos(RealNumbers x) =>
+        TrigonometryOperations.SinCos(x, (a) => (a & 1) != 0, (a) => a % 4 == 0);
 }

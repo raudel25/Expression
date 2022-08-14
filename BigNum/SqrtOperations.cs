@@ -1,6 +1,6 @@
 namespace BigNum;
 
-public static class SqrtOperations
+internal static class SqrtOperations
 {
     private static int _precision = 50;
 

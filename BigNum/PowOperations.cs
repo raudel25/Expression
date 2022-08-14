@@ -1,6 +1,6 @@
 namespace BigNum;
 
-public static class PowOperations
+internal static class PowOperations
 {
     internal static RealNumbers Pow(RealNumbers x, RealNumbers y)
     {
