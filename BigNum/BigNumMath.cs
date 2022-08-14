@@ -160,9 +160,15 @@ public static class BigNumMath
 
     public static RealNumbers E = Constants.ConstantE();
 
+    public static RealNumbers PI = Constants.ConstantPI();
+
     public static RealNumbers Sin(RealNumbers x) =>
         TrigonometryOperations.SinCos(x, true);
 
     public static RealNumbers Cos(RealNumbers x) =>
         TrigonometryOperations.SinCos(x, false);
+
+    public static RealNumbers Arctan(RealNumbers x) => TrigonometryOperations.Arctan(x);
+
+    public static RealNumbers Arcsin(RealNumbers x) => TrigonometryOperations.Arcsin(x);
 }
