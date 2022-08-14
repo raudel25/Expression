@@ -50,3 +50,13 @@ public class PowVariable : Pow
         right * new PowVariable((VariableExpression) left,
             new NumberExpression(right.Evaluate(RealNumbers.Real0) - RealNumbers.Real1));
 }
+
+public class PowE : Pow
+{
+    public PowE(ExpressionType pow) : base(new ConstantE(), pow)
+    {
+    }
+
+    protected override ExpressionType Derivative(ExpressionType left, ExpressionType right) =>
+        this * right.Derivative();
+}

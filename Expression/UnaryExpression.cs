@@ -53,3 +53,21 @@ public class VariableExpression : ExpressionType
 
     public override string ToString() => this.Value.ToString();
 }
+
+public class ConstantE : NumberExpression
+{
+    public ConstantE() : base(BigNumMath.E)
+    {
+    }
+
+    public override string ToString() => "e";
+}
+
+public class ConstantPI : NumberExpression
+{
+    public ConstantPI() : base(BigNumMath.PI)
+    {
+    }
+
+    public override string ToString() => "pi";
+}
