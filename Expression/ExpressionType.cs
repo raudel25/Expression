@@ -32,6 +32,10 @@ public abstract class ExpressionType
     public static ExpressionType operator *(ExpressionType left, ExpressionType right) => new Multiply(left, right);
 
     public static ExpressionType operator /(ExpressionType left, ExpressionType right) => new Division(left, right);
+
+    public static ExpressionType operator ++(ExpressionType value) => value + new NumberExpression(RealNumbers.Real1);
+    
+    public static ExpressionType operator --(ExpressionType value) => value - new NumberExpression(RealNumbers.Real1);
 }
 
 public abstract class BinaryExpression : ExpressionType
