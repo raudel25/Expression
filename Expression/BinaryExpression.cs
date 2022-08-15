@@ -28,9 +28,9 @@ public class Sum : BinaryExpression
         (string left, string right) = this.DeterminatePriority();
 
         bool rightOpposite = right[0] == '-';
-        if (rightOpposite) return left + " - " + right.Substring(1, right.Length - 1);
+        if (rightOpposite) return $"{left} - {right.Substring(1, right.Length - 1)}";
 
-        return left + " + " + right;
+        return $"{left} + {right}";
     }
 }
 
@@ -60,9 +60,9 @@ public class Subtraction : BinaryExpression
         (string left, string right) = this.DeterminatePriority();
 
         bool rightOpposite = right[0] == '-';
-        if (rightOpposite) return left + " + " + right.Substring(1, right.Length - 1);
+        if (rightOpposite) return $"{left} + {right.Substring(1, right.Length - 1)}";
 
-        return left + " - " + right;
+        return $"{left} - {right}";
     }
 }
 
@@ -105,10 +105,10 @@ public class Multiply : BinaryExpression
         (bool leftOpposite, bool rightOpposite) = (left[0] == '-', right[0] == '-');
 
         if (leftOpposite && rightOpposite)
-            return left.Substring(1, left.Length - 1) + " * " + right.Substring(1, right.Length - 1);
-        if (rightOpposite) return left + " * " + Aux.Colocated(right);
+            return $"{left.Substring(1, left.Length - 1)} * {right.Substring(1, right.Length - 1)}";
+        if (rightOpposite) return $"{left} * {Aux.Colocated(right)}";
 
-        return left + " * " + right;
+        return $"{left} * {right}";
     }
 }
 
@@ -143,9 +143,9 @@ public class Division : BinaryExpression
         (bool leftOpposite, bool rightOpposite) = (left[0] == '-', right[0] == '-');
 
         if (leftOpposite && rightOpposite)
-            return left.Substring(1, left.Length - 1) + " / " + right.Substring(1, right.Length - 1);
-        if (rightOpposite) return left + " / " + Aux.Colocated(right);
+            return $"{left.Substring(1, left.Length - 1)} / {right.Substring(1, right.Length - 1)}";
+        if (rightOpposite) return $"{left} / {Aux.Colocated(right)}";
 
-        return left + " / " + right;
+        return $"{left} / {right}";
     }
 }

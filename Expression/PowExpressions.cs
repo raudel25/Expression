@@ -33,10 +33,10 @@ public class Pow : BinaryExpression
 
         (bool leftOpposite, bool rightOpposite) = (left[0] == '-', right[0] == '-');
 
-        if (leftOpposite) return Aux.Colocated(left) + " ^ " + right;
-        if (rightOpposite) return left + " ^ " + Aux.Colocated(right);
+        if (leftOpposite) return $"{Aux.Colocated(left)} ^ {right}";
+        if (rightOpposite) return $"{left} ^ {Aux.Colocated(right)}";
 
-        return left + " ^ " + right;
+        return $"{left} ^ {right}";
     }
 }
 

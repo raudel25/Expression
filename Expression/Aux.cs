@@ -1,11 +1,10 @@
-using System.Runtime.CompilerServices;
 using BigNum;
 
 namespace Expression;
 
 public static class Aux
 {
-    public static string Colocated(string s) => s[0] == '(' && s[s.Length - 1] == ')' ? s : "(" + s + ")";
+    public static string Colocated(string s) => s[0] == '(' && s[s.Length - 1] == ')' ? s : $"({s})";
 
     public static string Opposite(ExpressionType exp)
     {
@@ -13,7 +12,7 @@ public static class Aux
         if (s[0] == '-')
             return s.Substring(1, s.Length - 1);
         if (s == "0") return "0";
-        return exp.Priority == 1 ? "-(" + exp + ")" : "-" + exp;
+        return exp.Priority == 1 ? $"-({exp})" : $"-{exp}";
     }
 
     public static ExpressionType ReduceExpression(ExpressionType exp)

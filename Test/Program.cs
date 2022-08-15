@@ -1,11 +1,10 @@
-﻿using System.Xml;
-using BigNum;
+﻿using BigNum;
 using Expression;
 
 ExpressionType a = new Log(new NumberExpression(new RealNumbers("2")),new VariableExpression('x'));
 
 ExpressionType b = new NumberExpression(new RealNumbers("3"));
-ExpressionType c = new NumberExpression(new RealNumbers("4"));
+ExpressionType c = new NumberExpression(new RealNumbers("4.03"));
 
 Console.WriteLine(b/(c*c));
 

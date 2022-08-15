@@ -12,7 +12,7 @@ public class Sin : UnaryExpression
 
     protected override RealNumbers EvaluateUnary(RealNumbers value) => BigNumMath.Sin(value);
 
-    public override string ToString() => "sin(" + this.Value + ")";
+    public override string ToString() => $"sin({this.Value})";
 }
 
 public class Cos : UnaryExpression
@@ -26,7 +26,7 @@ public class Cos : UnaryExpression
 
     protected override RealNumbers EvaluateUnary(RealNumbers value) => BigNumMath.Cos(value);
 
-    public override string ToString() => "cos(" + this.Value + ")";
+    public override string ToString() => $"cos({this.Value})";
 }
 
 public class Tan : UnaryExpression
@@ -40,7 +40,7 @@ public class Tan : UnaryExpression
 
     protected override RealNumbers EvaluateUnary(RealNumbers value) => BigNumMath.Sin(value) / BigNumMath.Cos(value);
 
-    public override string ToString() => "tan(" + this.Value + ")";
+    public override string ToString() => $"tan({this.Value})";
 }
 
 public class Cot : UnaryExpression
@@ -54,7 +54,7 @@ public class Cot : UnaryExpression
 
     protected override RealNumbers EvaluateUnary(RealNumbers value) => BigNumMath.Cos(value) / BigNumMath.Sin(value);
 
-    public override string ToString() => "cot(" + this.Value + ")";
+    public override string ToString() => $"cot({this.Value})";
 }
 
 public class Sec : UnaryExpression
@@ -67,7 +67,7 @@ public class Sec : UnaryExpression
 
     protected override RealNumbers EvaluateUnary(RealNumbers value) => RealNumbers.Real1 / BigNumMath.Cos(value);
 
-    public override string ToString() => "sec(" + this.Value + ")";
+    public override string ToString() => $"sec({this.Value})";
 }
 
 public class Csc : UnaryExpression
@@ -80,5 +80,5 @@ public class Csc : UnaryExpression
 
     protected override RealNumbers EvaluateUnary(RealNumbers value) => RealNumbers.Real1 / BigNumMath.Sin(value);
 
-    public override string ToString() => "csc(" + this.Value + ")";
+    public override string ToString() => $"csc({this.Value})";
 }

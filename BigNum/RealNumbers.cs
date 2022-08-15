@@ -130,7 +130,7 @@ public class RealNumbers : IComparable<RealNumbers>
         string sign = this.Sign == '-' ? "-" : "";
         string partDecimal = this.PartDecimal == "0" ? "" : "." + this.PartDecimal;
 
-        return sign + this.PartNumber + partDecimal;
+        return $"{sign}{this.PartNumber}{partDecimal}";
     }
 
     private static string DeterminatePrecision(string s) => s.Length >= _precision ? s.Substring(0, _precision) : s;

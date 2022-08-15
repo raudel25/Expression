@@ -57,7 +57,7 @@ public class Fraction : IComparable<Fraction>
     {
         string sign = this.Sign == '-' ? "-" : "";
 
-        return sign + this.Numerator.Abs + "/" + this.Denominator.Abs;
+        return $"{sign}{this.Numerator.Abs}/{this.Denominator.Abs}";
     }
 
     #region Operadores
