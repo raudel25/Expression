@@ -44,7 +44,7 @@ internal static class TrigonometryOperations
         {
             arctan = i % 4 == 1 ? arctan + pow / index : arctan - pow / index;
             pow *= xx;
-            index++;
+            index+=new RealNumbers("2");
         }
 
         return arctan;

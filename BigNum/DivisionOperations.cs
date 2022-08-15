@@ -5,7 +5,7 @@ internal static class DivisionOperations
     /// <summary>
     /// Cantidad maxima de cifras despues de la coma
     /// </summary>
-    private static int _precision = 20;
+    private static int _precision = 30;
 
     /// <summary>
     /// Dividir dos numeros reales

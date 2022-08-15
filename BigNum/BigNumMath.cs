@@ -162,6 +162,10 @@ public static class BigNumMath
 
     public static RealNumbers PI = Constants.ConstantPI();
 
+    public static RealNumbers Ln(RealNumbers x) => LogarithmOperations.Ln(x);
+
+    public static RealNumbers Log(RealNumbers x, RealNumbers y) => LogarithmOperations.Log(x, y);
+
     public static RealNumbers Sin(RealNumbers x) =>
         TrigonometryOperations.SinCos(x, true);
 

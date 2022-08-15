@@ -11,10 +11,7 @@ public class Log : BinaryExpression
     protected override ExpressionType Derivative(ExpressionType left, ExpressionType right) =>
         (new Ln(right) / new Ln(left)).Derivative();
 
-    protected override RealNumbers EvaluateBinary(RealNumbers left, RealNumbers right)
-    {
-        throw new NotImplementedException();
-    }
+    protected override RealNumbers EvaluateBinary(RealNumbers left, RealNumbers right) => BigNumMath.Log(left, right);
 
     protected override bool IsBinaryImplement() => this.Right.ToString() != "1";
 
@@ -41,6 +38,8 @@ public class Ln : Log
 
     protected override ExpressionType Derivative(ExpressionType left, ExpressionType right) =>
         new NumberExpression(RealNumbers.Real1) / right * right.Derivative();
+
+    protected override RealNumbers EvaluateBinary(RealNumbers left, RealNumbers right) => BigNumMath.Ln(right);
 
     public override string ToString()
     {

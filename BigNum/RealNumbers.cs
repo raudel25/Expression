@@ -2,13 +2,13 @@ namespace BigNum;
 
 public class RealNumbers : IComparable<RealNumbers>
 {
-    private static int _precision = 20;
+    private static int _precision = 30;
     
-    public static readonly RealNumbers Real1 = new RealNumbers("1");
+    public static readonly RealNumbers Real1 = new RealNumbers("1","0");
     
-    public static readonly RealNumbers RealN1 = new RealNumbers("1",false);
+    public static readonly RealNumbers RealN1 = new RealNumbers("1","0",false);
 
-    public static readonly RealNumbers Real0 = new RealNumbers("0");
+    public static readonly RealNumbers Real0 = new RealNumbers("0","0");
     
     internal readonly string PartDecimal;
 
@@ -54,11 +54,18 @@ public class RealNumbers : IComparable<RealNumbers>
 
         foreach (var number in part)
         {
-            foreach (var item in number)
-                if (!char.IsNumber(item))
-                    return false;
+            if (!CheckNumber(number)) return false;
         }
 
+        return true;
+    }
+
+    protected bool CheckNumber(string number)
+    {
+        foreach (var item in number)
+            if (!char.IsNumber(item))
+                return false;
+        
         return true;
     }
 
