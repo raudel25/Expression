@@ -2,6 +2,12 @@ namespace BigNum;
 
 internal static class IntegerOperations
 {
+    /// <summary>
+    /// MCD entre dos numeros
+    /// </summary>
+    /// <param name="x">Numero entero</param>
+    /// <param name="y">Numero entero</param>
+    /// <returns>Resultado entero</returns>
     internal static IntegerNumbers Mcd(IntegerNumbers x, IntegerNumbers y)
     {
         if (x == IntegerNumbers.Integer0 || y == IntegerNumbers.Integer0)
@@ -19,6 +25,12 @@ internal static class IntegerOperations
         return a;
     }
 
+    /// <summary>
+    /// Combinaciones sin repeticion
+    /// </summary>
+    /// <param name="x">Numero entero</param>
+    /// <param name="y">Numero entero</param>
+    /// <returns>Resultado entero</returns>
     internal static IntegerNumbers Factorial(IntegerNumbers x)
     {
         IntegerNumbers fact = new IntegerNumbers("1");

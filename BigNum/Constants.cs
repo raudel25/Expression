@@ -6,12 +6,18 @@ internal static class Constants
 
     private static int _precisionPI = 2;
 
+    /// <summary>
+    /// Aproximacion de E
+    /// </summary>
+    /// <returns>Numero E</returns>
     internal static RealNumbers ConstantE()
     {
         RealNumbers e = RealNumbers.Real0;
         RealNumbers fact = RealNumbers.Real1;
         RealNumbers index = RealNumbers.Real0;
 
+        //Formula de taylor e^x
+        //https://es.wikipedia.org/wiki/Serie_de_Taylor
         for (int i = 0; i < _precisionE; i++)
         {
             if (i != 0) fact *= index;
@@ -22,11 +28,17 @@ internal static class Constants
         return e;
     }
 
+    /// <summary>
+    /// Aproximacion de PI
+    /// </summary>
+    /// <returns>Resultado Real</returns>
     internal static RealNumbers ConstantPI()
     {
         IntegerNumbers index = IntegerNumbers.Integer0;
         RealNumbers pi = RealNumbers.Real0;
 
+        //Agoritmo de Ramanujan-Chudnovsky
+        //https://en.wikipedia.org/wiki/Chudnovsky_algorithm
         for (int i = 0; i <= _precisionPI; i++)
         {
             RealNumbers numerator = BigNumMath.Factorial(new IntegerNumbers("6") * index) *

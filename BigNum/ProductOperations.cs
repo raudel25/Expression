@@ -48,6 +48,8 @@ internal static class ProductOperations
 
         AuxOperations.EqualZerosLeft(ref xValor, ref yValor);
 
+        //Algortimo de Karatsuba
+        //https://es.wikipedia.org/wiki/Algoritmo_de_Karatsuba#:~:text=El%20paso%20b%C3%A1sico%20del%20algoritmo,sumas%20y%20desplazamientos%20de%20d%C3%ADgitos.
         int n = xValor.Length / 2;
         int m = xValor.Length;
 

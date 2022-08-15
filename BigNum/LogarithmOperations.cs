@@ -4,6 +4,11 @@ public static class LogarithmOperations
 {
     private static int _precision = 100;
 
+    /// <summary>
+    /// Logaritmo en base e
+    /// </summary>
+    /// <param name="x">Numero real</param>
+    /// <returns>Resultado real</returns>
     internal static RealNumbers Ln(RealNumbers x)
     {
         if (x == BigNumMath.E) return RealNumbers.Real1;
@@ -16,6 +21,8 @@ public static class LogarithmOperations
         RealNumbers index = RealNumbers.Real1;
         RealNumbers ln = RealNumbers.Real0;
 
+        //Serie de Taylor ln(1-x)
+        //https://es.wikipedia.org/wiki/Serie_de_Taylor
         for (int i = 1; i <= _precision; i++)
         {
             ln += pow / index;
@@ -26,6 +33,12 @@ public static class LogarithmOperations
         return positive ? ln : -ln;
     }
 
+    /// <summary>
+    /// Logaritmo entre 2 numeros
+    /// </summary>
+    /// <param name="x">Numero real</param>
+    /// <param name="y">Numero real</param>
+    /// <returns>Resultado real</returns>
     internal static RealNumbers Log(RealNumbers x, RealNumbers y)
     {
         RealNumbers pow = RealNumbers.Real1;
