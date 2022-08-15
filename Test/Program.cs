@@ -2,7 +2,11 @@
 using BigNum;
 using Expression;
 
-Console.WriteLine(Math.Log(Math.E));
-Console.WriteLine(BigNumMath.Log(new IntegerNumbers("4"),new IntegerNumbers("2")));
+ExpressionType a = new Sin(new VariableExpression('x'));
+
+Taylor b = new Taylor(a, RealNumbers.Real1, RealNumbers.Real1, 5);
+
+Console.WriteLine(b.ExpressionResult);
+Console.WriteLine(b.ValueResult);
 
 

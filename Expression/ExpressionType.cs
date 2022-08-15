@@ -4,14 +4,35 @@ namespace Expression;
 
 public abstract class ExpressionType
 {
+    /// <summary>
+    /// Derivada de la expresion
+    /// </summary>
+    /// <returns>Derivada</returns>
     public abstract ExpressionType Derivative();
 
+    /// <summary>
+    /// Evaluar la expresion 
+    /// </summary>
+    /// <param name="x">Numero para evaluar</param>
+    /// <returns>Valor de la expresion</returns>
     public abstract RealNumbers Evaluate(RealNumbers x);
 
+    /// <summary>
+    /// Prioridad de la operacion
+    /// </summary>
     public abstract int Priority { get; }
 
+    /// <summary>
+    /// Determinar si la expresion es binaria
+    /// </summary>
+    /// <returns></returns>
     public virtual bool IsBinary() => this is BinaryExpression;
 
+    /// <summary>
+    /// Hallar la n-esima derivada
+    /// </summary>
+    /// <param name="n">indice de la derivada</param>
+    /// <returns>Derivada n-esima</returns>
     public ExpressionType Derivative(int n)
     {
         ExpressionType expression = this.Derivative();
@@ -21,6 +42,8 @@ public abstract class ExpressionType
         return expression;
     }
 
+    #region Operadores
+    
     public static ExpressionType operator +(ExpressionType left, ExpressionType right) => new Sum(left, right);
 
     public static ExpressionType operator -(ExpressionType left, ExpressionType right) =>
@@ -36,6 +59,8 @@ public abstract class ExpressionType
     public static ExpressionType operator ++(ExpressionType value) => value + new NumberExpression(RealNumbers.Real1);
     
     public static ExpressionType operator --(ExpressionType value) => value - new NumberExpression(RealNumbers.Real1);
+    
+    #endregion
 }
 
 public abstract class BinaryExpression : ExpressionType
@@ -67,6 +92,10 @@ public abstract class BinaryExpression : ExpressionType
         return IsBinaryImplement();
     }
 
+    /// <summary>
+    /// Reterminar la prioridad u colocar parentesis
+    /// </summary>
+    /// <returns>Cadenas modificadas</returns>
     protected (string, string) DeterminatePriority() => (
         this.Left.Priority < this.Priority && this.Left.IsBinary()
             ? Aux.Colocated(this.Left.ToString()!)

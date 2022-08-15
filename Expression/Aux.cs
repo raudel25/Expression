@@ -4,8 +4,18 @@ namespace Expression;
 
 public static class Aux
 {
+    /// <summary>
+    /// Colocar parentesis
+    /// </summary>
+    /// <param name="s">Cadena de texto</param>
+    /// <returns>Cadena modificada</returns>
     public static string Colocated(string s) => s[0] == '(' && s[s.Length - 1] == ')' ? s : $"({s})";
 
+    /// <summary>
+    /// Colocar el signo negativo
+    /// </summary>
+    /// <param name="exp">Cadena de texto</param>
+    /// <returns>Cadena modificada</returns>
     public static string Opposite(ExpressionType exp)
     {
         string s = exp.ToString()!;
@@ -15,6 +25,11 @@ public static class Aux
         return exp.Priority == 1 ? $"-({exp})" : $"-{exp}";
     }
 
+    /// <summary>
+    /// Reducir una expresion
+    /// </summary>
+    /// <param name="exp">Expresion para reducir</param>
+    /// <returns>Expresion reducida</returns>
     public static ExpressionType ReduceExpression(ExpressionType exp)
     {
         BinaryExpression? binary = exp as BinaryExpression;
