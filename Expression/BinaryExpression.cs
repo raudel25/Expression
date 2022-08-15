@@ -119,7 +119,7 @@ public class Division : BinaryExpression
     }
 
     protected override ExpressionType Derivative(ExpressionType left, ExpressionType right) =>
-        left.Derivative() * right - left * right.Derivative();
+        (left.Derivative() * right - left * right.Derivative()) / (right * right);
 
     protected override RealNumbers EvaluateBinary(RealNumbers left, RealNumbers right) => left / right;
 
@@ -147,29 +147,5 @@ public class Division : BinaryExpression
         if (rightOpposite) return left + " / " + Aux.Colocated(right);
 
         return left + " / " + right;
-    }
-}
-
-public class Logarithm : BinaryExpression
-{
-    public Logarithm(ExpressionType left, ExpressionType right) : base(left, right)
-    {
-    }
-
-    protected override ExpressionType Derivative(ExpressionType left, ExpressionType right)
-    {
-        throw new NotImplementedException();
-    }
-
-    protected override RealNumbers EvaluateBinary(RealNumbers left, RealNumbers right)
-    {
-        throw new NotImplementedException();
-    }
-
-    protected override bool IsBinaryImplement() => throw new NotImplementedException();
-
-    public override int Priority
-    {
-        get => 2;
     }
 }

@@ -9,8 +9,10 @@ public static class Aux
 
     public static string Opposite(ExpressionType exp)
     {
-        if (exp.ToString()![0] == '-')
-            return exp.ToString()!.Substring(1, exp.ToString()!.Length - 1);
+        string s = exp.ToString()!;
+        if (s[0] == '-')
+            return s.Substring(1, s.Length - 1);
+        if (s == "0") return "0";
         return exp.Priority == 1 ? "-(" + exp + ")" : "-" + exp;
     }
 
@@ -54,6 +56,12 @@ public static class Aux
                 if (binary.Right.Equals(new NumberExpression(RealNumbers.Real0)))
                     return new NumberExpression(RealNumbers.Real1);
                 if (binary.Right.Equals(new NumberExpression(RealNumbers.Real1))) return binary.Left;
+            }
+
+            if (binary is Log)
+            {
+                if (binary.Right.Equals(new NumberExpression(RealNumbers.Real1)))
+                    return new NumberExpression(RealNumbers.Real0);
             }
         }
 
