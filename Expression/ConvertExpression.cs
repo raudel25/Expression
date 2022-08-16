@@ -8,6 +8,8 @@ public static class ConvertExpression
 
     private static int _maxPriority = 10;
 
+    private static int _maxLenOperator = 6;
+
     private static OperatorsArrayDelegate[] OperatorsArray = new OperatorsArrayDelegate[]
     {
         () => new Operators("+", 1, (exp) => new Sum(exp[0], exp[1]), true),
@@ -23,6 +25,8 @@ public static class ConvertExpression
         () => new Operators("cot", 6, (exp) => new Cot(exp[0])),
         () => new Operators("sec", 6, (exp) => new Sec(exp[0])),
         () => new Operators("csc", 6, (exp) => new Csc(exp[0])),
+        () => new Operators("arcsin", 6, (exp) => new Asin(exp[0])),
+        () => new Operators("arccos", 6, (exp) => new Acos(exp[0])),
     };
 
     public static ExpressionType? ConvertExpressions(string s)
@@ -37,7 +41,7 @@ public static class ConvertExpression
             if (s[i] == ')') cantParent--;
             if (cantParent < 0) return null;
 
-            for (int j = 3; j >= 1; j--)
+            for (int j = _maxLenOperator; j >= 1; j--)
             {
                 if (j > s.Length - i) continue;
 
@@ -77,12 +81,12 @@ public static class ConvertExpression
                 break;
             }
         }
-        
+
         if (index == -1) return VariableOrNumber(s.Substring(start, end - start + 1));
 
         if (operators[index].Binary) return ConvertBinary(s, start, end, visited, operators, index);
 
-        return ConvertUnary(s, end, visited, operators, index);
+        return ConvertUnary(s, start, end, visited, operators, index);
     }
 
     private static Operators? DeterminateOperator(string s)
@@ -111,22 +115,10 @@ public static class ConvertExpression
 
     private static ExpressionType? VariableOrNumber(string s)
     {
-        int i = 0;
-        int j = 0;
+        (int start, int end) = (EliminateParentLeft(s, 0, s.Length - 1), EliminateParentRight(s, 0, s.Length - 1));
+        if (start == -1 || end == -1) return null;
 
-        while (s[i] == '(')
-        {
-            i++;
-            if (i == s.Length) return null;
-        }
-
-        while (s[s.Length - 1 - j] == ')')
-        {
-            j++;
-            if (s.Length - 1 - j == -1) return null;
-        }
-
-        string aux = s.Substring(i, s.Length - i - j);
+        string aux = s.Substring(start, end - start + 1);
 
         if (aux == "e") return new ConstantE();
         if (aux == "pi") return new ConstantPI();
@@ -183,19 +175,13 @@ public static class ConvertExpression
         return left is null || right is null ? null : operators[index].ExpressionOperator(new[] {left, right});
     }
 
-    private static ExpressionType? ConvertUnary(string s, int end, bool[] visited,
+    private static ExpressionType? ConvertUnary(string s, int start, int end, bool[] visited,
         List<Operators> operators, int index)
     {
-        ExpressionType? value;
-        if (operators[index].Operator == "e^")
-        {
-            value = DeterminateExpression(s, operators[index].Position + operators[index].Operator.Length, end, visited,
-                operators);
+        start = EliminateParentLeft(s, start, end);
+        if (start == -1) return null;
 
-            return value is null ? null : operators[index].ExpressionOperator(new[] {value});
-        }
-
-        value = DeterminateExpression(s, operators[index].Position + 1 + operators[index].Operator.Length, end - 1,
+        ExpressionType? value = DeterminateExpression(s, start + 1 + operators[index].Operator.Length, end - 1,
             visited, operators);
 
         return value is null ? null : operators[index].ExpressionOperator(new[] {value});
@@ -212,5 +198,30 @@ public static class ConvertExpression
         }
 
         return -1;
+    }
+
+    private static int EliminateParentLeft(string s, int start, int end)
+    {
+        int i = start;
+        while (s[i] == '(')
+        {
+            i++;
+            if (i == end + 1) return -1;
+        }
+
+        return i;
+    }
+
+    private static int EliminateParentRight(string s, int start, int end)
+    {
+        int j = end;
+
+        while (s[j] == ')')
+        {
+            j--;
+            if (j == start - 1) return -1;
+        }
+
+        return j;
     }
 }

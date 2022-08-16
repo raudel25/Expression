@@ -82,3 +82,48 @@ public class Csc : UnaryExpression
 
     public override string ToString() => $"csc({this.Value})";
 }
+
+public class Asin : UnaryExpression
+{
+    public Asin(ExpressionType value) : base(value)
+    {
+    }
+
+    protected override ExpressionType Derivative(ExpressionType value)
+        => new NumberExpression(RealNumbers.Real1) /
+           new Pow(new NumberExpression(RealNumbers.Real1) - value,
+               new NumberExpression(new RealNumbers("0.5")));
+
+    protected override RealNumbers EvaluateUnary(RealNumbers value) => BigNumMath.Asin(value);
+
+    public override string ToString() => $"arcsin({this.Value})";
+}
+
+public class Acos : UnaryExpression
+{
+    public Acos(ExpressionType value) : base(value)
+    {
+    }
+
+    protected override ExpressionType Derivative(ExpressionType value)
+        => -new NumberExpression(RealNumbers.Real1) /
+           new Pow(new NumberExpression(RealNumbers.Real1) - value,
+               new NumberExpression(new RealNumbers("0.5")));
+
+    protected override RealNumbers EvaluateUnary(RealNumbers value) => BigNumMath.Acos(value);
+
+    public override string ToString() => $"arccos({this.Value})";
+}
+
+public class Atan : UnaryExpression
+{
+    public Atan(ExpressionType value) : base(value)
+    {
+    }
+
+    protected override ExpressionType Derivative(ExpressionType value) => -new Csc(value) * new Cot(value);
+
+    protected override RealNumbers EvaluateUnary(RealNumbers value) => BigNumMath.Asin(value);
+
+    public override string ToString() => $"arctan({this.Value})";
+}
