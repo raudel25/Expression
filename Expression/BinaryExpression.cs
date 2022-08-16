@@ -127,7 +127,7 @@ public class Division : BinaryExpression
 
     public override int Priority
     {
-        get => 2;
+        get => 3;
     }
 
     public override string ToString()
@@ -137,8 +137,8 @@ public class Division : BinaryExpression
 
         (string left, string right) = this.DeterminatePriority();
 
-        if (this.Left.IsBinary()) left = Aux.Colocated(left);
-        if (this.Right.IsBinary()) right = Aux.Colocated(right);
+        // if (this.Left.IsBinary()) left = Aux.Colocated(left);
+        // if (this.Right.IsBinary()) right = Aux.Colocated(right);
 
         (bool leftOpposite, bool rightOpposite) = (left[0] == '-', right[0] == '-');
 

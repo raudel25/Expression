@@ -18,7 +18,7 @@ public class Pow : BinaryExpression
 
     public override int Priority
     {
-        get => 2;
+        get => 4;
     }
 
     public override string ToString()
@@ -28,8 +28,8 @@ public class Pow : BinaryExpression
 
         (string left, string right) = this.DeterminatePriority();
 
-        if (this.Left.IsBinary()) left = Aux.Colocated(left);
-        if (this.Right.IsBinary()) right = Aux.Colocated(right);
+        // if (this.Left.IsBinary()) left = Aux.Colocated(left);
+        // if (this.Right.IsBinary()) right = Aux.Colocated(right);
 
         (bool leftOpposite, bool rightOpposite) = (left[0] == '-', right[0] == '-');
 
@@ -49,6 +49,11 @@ public class PowVariable : Pow
     protected override ExpressionType Derivative(ExpressionType left, ExpressionType right) =>
         right * new PowVariable((VariableExpression) left,
             new NumberExpression(right.Evaluate(RealNumbers.Real0) - RealNumbers.Real1));
+
+    public override int Priority
+    {
+        get => 7;
+    }
 }
 
 public class PowE : Pow

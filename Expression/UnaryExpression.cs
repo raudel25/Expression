@@ -19,7 +19,7 @@ public class NumberExpression : ExpressionType
 
     public override int Priority
     {
-        get => 5;
+        get => 9;
     }
 
     public override bool Equals(object? obj)
@@ -48,7 +48,7 @@ public class VariableExpression : ExpressionType
 
     public override int Priority
     {
-        get => 5;
+        get => 8;
     }
 
     public override string ToString() => this.Value.ToString();
