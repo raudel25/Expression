@@ -1,28 +1,32 @@
+using BigNum;
+
 namespace Expression;
 
 public static class ConvertExpression
 {
-    private static int _maxPriority =7;
-    
-    private static Operators[] OperatorsArray = new[]
+    private delegate Operators OperatorsArrayDelegate();
+
+    private static int _maxPriority = 10;
+
+    private static OperatorsArrayDelegate[] OperatorsArray = new OperatorsArrayDelegate[]
     {
-        new Operators("+", 1, (exp) => new Sum(exp[0], exp[1]),true),
-        new Operators("-", 1, (exp) => new Subtraction(exp[0], exp[1]),true),
-        new Operators("*", 2, (exp) => new Multiply(exp[0], exp[1]),true),
-        new Operators("/", 3, (exp) => new Division(exp[0], exp[1]),true),
-        new Operators("e^", 4, (exp) => new PowE(exp[0])),
-        new Operators("^", 4, (exp) => new Pow(exp[0], exp[1]),true),
-        new Operators("log", 5, (exp) => new Log(exp[0], exp[1]),true),
-        new Operators("ln", 5, (exp) => new Ln(exp[0])),
-        new Operators("sin", 6, (exp) => new Sin(exp[0])),
-        new Operators("cos", 6, (exp) => new Cos(exp[0])),
-        new Operators("tan", 6, (exp) => new Tan(exp[0])),
-        new Operators("cot", 6, (exp) => new Cot(exp[0])),
-        new Operators("sec", 6, (exp) => new Sec(exp[0])),
-        new Operators("csc", 6, (exp) => new Csc(exp[0])),
+        () => new Operators("+", 1, (exp) => new Sum(exp[0], exp[1]), true),
+        () => new Operators("-", 1, (exp) => new Subtraction(exp[0], exp[1]), true),
+        () => new Operators("*", 2, (exp) => new Multiply(exp[0], exp[1]), true),
+        () => new Operators("/", 3, (exp) => new Division(exp[0], exp[1]), true),
+        () => new Operators("e^", 4, (exp) => new PowE(exp[0])),
+        () => new Operators("^", 4, (exp) => new Pow(exp[0], exp[1]), true),
+        () => new Operators("log", 5, (exp) => new Log(exp[0], exp[1]), true),
+        () => new Operators("ln", 5, (exp) => new Ln(exp[0])),
+        () => new Operators("sin", 6, (exp) => new Sin(exp[0])),
+        () => new Operators("cos", 6, (exp) => new Cos(exp[0])),
+        () => new Operators("tan", 6, (exp) => new Tan(exp[0])),
+        () => new Operators("cot", 6, (exp) => new Cot(exp[0])),
+        () => new Operators("sec", 6, (exp) => new Sec(exp[0])),
+        () => new Operators("csc", 6, (exp) => new Csc(exp[0])),
     };
 
-    public static void ConvertExpressions(string s)
+    public static ExpressionType? ConvertExpressions(string s)
     {
         s = EliminateSpaces(s);
         List<Operators> operators = new List<Operators>();
@@ -32,12 +36,11 @@ public static class ConvertExpression
         {
             if (s[i] == '(') cantParent++;
             if (s[i] == ')') cantParent--;
-            
-            Console.WriteLine(i);
+            if (cantParent < 0) return null;
 
             for (int j = 3; j >= 1; j--)
             {
-                if(j>s.Length-i) continue;
+                if (j > s.Length - i) continue;
 
                 Operators? op = DeterminateOperator(s.Substring(i, j));
 
@@ -52,44 +55,49 @@ public static class ConvertExpression
             }
         }
 
-        operators.Sort((o1,o2)=>o1.AssignPriority.CompareTo(o1.AssignPriority));
-        foreach (var VARIABLE in operators)
-        {
-            Console.WriteLine(VARIABLE.Operator+" "+VARIABLE.AssignPriority);
-        }
+        if (cantParent != 0) return null;
+
+        operators.Reverse();
+        operators.Sort((o1, o2) => o1.AssignPriority.CompareTo(o2.AssignPriority));
+
+        return DeterminateExpression(s, 0, s.Length - 1, new bool[operators.Count], operators);
     }
 
-    private static ExpressionType DeterminateExpression(string s, int start, int end,bool[] visited,
+    private static ExpressionType? DeterminateExpression(string s, int start, int end, bool[] visited,
         List<Operators> operators)
     {
+        if (start > end) return null;
+
         int index = -1;
         for (int i = 0; i < visited.Length; i++)
         {
-            if (!visited[i])
+            if (!visited[i] && operators[i].Position >= start && operators[i].Position <= end)
             {
                 index = i;
                 visited[i] = true;
                 break;
             }
         }
-        
-        if (operators[index].Binary)
-        {
-            ExpressionType left = DeterminateExpression(s, start, operators[index].Position - 1, visited, operators);
-            ExpressionType right = DeterminateExpression(s, operators[index].Position + 1,start , visited, operators);
 
-            return operators[index].ExpressionOperator(new[] {left, right});
-        }
+        Console.WriteLine((start, end));
+        if (index == -1) return VariableOrNumber(s.Substring(start, end - start + 1));
 
-        return null;
+        if (operators[index].Binary) return ConvertBinary(s, start, end, visited, operators, index);
 
+        return ConvertUnary(s, end, visited, operators, index);
     }
-    
+
     private static Operators? DeterminateOperator(string s)
     {
+        // if (s.Length == 2)
+        // {
+        //     if (s[0] != 'e' && char.IsLetter(s[0]) && s[1]=='^') return new Operators("x^", 7, (exp) => new PowVariable((VariableExpression)exp[0], exp[1]), true)
+        // }
+
         foreach (var item in OperatorsArray)
         {
-            if (s == item.Operator) return item;
+            var aux = item();
+            if (s == aux.Operator) return aux;
         }
 
         return null;
@@ -101,10 +109,115 @@ public static class ConvertExpression
 
         foreach (var item in s)
         {
-            if(item==' ') continue;
+            if (item == ' ') continue;
             result += item;
         }
 
-        return  result;
+        return result;
+    }
+
+    private static ExpressionType? VariableOrNumber(string s)
+    {
+        int i = 0;
+        int j = 0;
+
+        while (s[i] == '(')
+        {
+            i++;
+            if (i == s.Length) return null;
+        }
+
+        while (s[s.Length - 1 - j] == ')')
+        {
+            j++;
+            if (s.Length - 1 - j == -1) return null;
+        }
+
+        string aux = s.Substring(i, s.Length - i - j);
+
+        if (aux == "e") return new ConstantE();
+        if (aux == "pi") return new ConstantPI();
+
+        if (aux.Length == 1)
+        {
+            if (char.IsLetter(aux[0])) return new VariableExpression(aux[0]);
+        }
+
+        double number = 0;
+        if (double.TryParse(aux, out number)) return new NumberExpression(new RealNumbers(aux));
+
+        return null;
+    }
+
+    private static ExpressionType? ConvertBinary(string s, int start, int end, bool[] visited,
+        List<Operators> operators, int index)
+    {
+        ExpressionType? left;
+        ExpressionType? right;
+
+        if (operators[index].Operator == "-")
+        {
+            if (operators[index].Position == start)
+            {
+                right = DeterminateExpression(s, operators[index].Position + 1, end, visited, operators);
+                left = new NumberExpression(RealNumbers.Real0);
+
+                return right is null ? null : operators[index].ExpressionOperator(new[] {left, right});
+            }
+
+            if (s[operators[index].Position - 1] == '(')
+            {
+                right = DeterminateExpression(s, operators[index].Position + 1, end, visited, operators);
+                left = new NumberExpression(RealNumbers.Real0);
+
+                return right is null ? null : operators[index].ExpressionOperator(new[] {left, right});
+            }
+        }
+
+        if (operators[index].Operator == "log")
+        {
+            int ind = DeterminateEndParent(s, start + operators[index].Operator.Length);
+
+            left = DeterminateExpression(s, start + operators[index].Operator.Length + 1, ind - 1, visited, operators);
+            right = DeterminateExpression(s, ind + 2, end - 1, visited, operators);
+
+            return left is null || right is null ? null : operators[index].ExpressionOperator(new[] {left, right});
+        }
+
+        left = DeterminateExpression(s, start, operators[index].Position - 1, visited, operators);
+        right = DeterminateExpression(s, operators[index].Position + 1, end, visited, operators);
+
+        return left is null || right is null ? null : operators[index].ExpressionOperator(new[] {left, right});
+    }
+
+    private static ExpressionType? ConvertUnary(string s, int end, bool[] visited,
+        List<Operators> operators, int index)
+    {
+        ExpressionType? value;
+        if (operators[index].Operator == "e^")
+        {
+            value = DeterminateExpression(s, operators[index].Position + operators[index].Operator.Length, end, visited,
+                operators);
+
+            return value is null ? null : operators[index].ExpressionOperator(new[] {value});
+        }
+        
+        value = DeterminateExpression(s, operators[index].Position + 1 + operators[index].Operator.Length, end - 1,
+            visited, operators);
+
+        return value is null ? null : operators[index].ExpressionOperator(new[] {value});
+    }
+
+    private static int DeterminateEndParent(string s, int ind)
+    {
+        int cantParent = 0;
+        for (int i = ind; i < s.Length; i++)
+        {
+            if (s[i] == '(') cantParent++;
+            if (s[i] == ')') cantParent--;
+            if (cantParent == 0) return i;
+        }
+
+        return -1;
     }
 }

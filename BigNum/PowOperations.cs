@@ -10,6 +10,8 @@ internal static class PowOperations
     /// <returns>Resultado real</returns>
     internal static RealNumbers Pow(RealNumbers x, RealNumbers y)
     {
+        if (y == RealNumbers.Real0) return RealNumbers.Real1;
+
         int cant = y.PartDecimal.Length;
         IntegerNumbers denominator = new IntegerNumbers(AuxOperations.AddZerosRight("1", cant));
         IntegerNumbers numerator = new IntegerNumbers(y.PartNumber + y.PartDecimal);
@@ -48,7 +50,7 @@ internal static class PowOperations
     internal static Fraction Pow(Fraction x, IntegerNumbers pow)
     {
         int powInt = int.Parse(pow.PartNumber);
-        
+
         Fraction result = new Fraction(RealNumbers.Real1, RealNumbers.Real1);
 
         for (int i = 0; i < Math.Abs(powInt); i++) result *= x;
