@@ -2,11 +2,8 @@
 using BigNum;
 using Expression;
 
-ExpressionType a = new Sin(new VariableExpression('x'));
+string s = "(a+b)*c+e^x";
 
-Taylor b = new Taylor(a, RealNumbers.Real1, RealNumbers.Real1, 5);
-
-Console.WriteLine(b.ExpressionResult);
-Console.WriteLine(b.ValueResult);
+ConvertExpression.ConvertExpressions(s);
 
 

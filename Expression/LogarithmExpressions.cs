@@ -13,7 +13,7 @@ public class Log : BinaryExpression
 
     protected override RealNumbers EvaluateBinary(RealNumbers left, RealNumbers right) => BigNumMath.Log(left, right);
 
-    protected override bool IsBinaryImplement() => this.Right.ToString() != "1";
+    protected override bool IsBinaryImplement() => false;
 
     public override int Priority
     {
