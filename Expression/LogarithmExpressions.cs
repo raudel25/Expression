@@ -4,6 +4,14 @@ namespace Expression;
 
 public class Log : BinaryExpression
 {
+    public static Log DeterminateLog(ExpressionType left, ExpressionType right)
+    {
+        ConstantE? e = left as ConstantE;
+        if (e != null) return new Ln(right);
+
+        return new Log(left, right);
+    }
+
     public Log(ExpressionType left, ExpressionType right) : base(left, right)
     {
     }
@@ -44,6 +52,6 @@ public class Ln : Log
     public override string ToString()
     {
         if (this.Right.ToString() == "1") return "0";
-        return $"ln({this.Right})";   
+        return $"ln({this.Right})";
     }
 }

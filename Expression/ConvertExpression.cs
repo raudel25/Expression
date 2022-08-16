@@ -14,9 +14,8 @@ public static class ConvertExpression
         () => new Operators("-", 1, (exp) => new Subtraction(exp[0], exp[1]), true),
         () => new Operators("*", 2, (exp) => new Multiply(exp[0], exp[1]), true),
         () => new Operators("/", 3, (exp) => new Division(exp[0], exp[1]), true),
-        () => new Operators("e^", 4, (exp) => new PowE(exp[0])),
-        () => new Operators("^", 4, (exp) => new Pow(exp[0], exp[1]), true),
-        () => new Operators("log", 5, (exp) => new Log(exp[0], exp[1]), true),
+        () => new Operators("^", 4, (exp) => Pow.DeterminatePow(exp[0], exp[1]), true),
+        () => new Operators("log", 5, (exp) => Log.DeterminateLog(exp[0], exp[1]), true),
         () => new Operators("ln", 5, (exp) => new Ln(exp[0])),
         () => new Operators("sin", 6, (exp) => new Sin(exp[0])),
         () => new Operators("cos", 6, (exp) => new Cos(exp[0])),
@@ -78,8 +77,7 @@ public static class ConvertExpression
                 break;
             }
         }
-
-        Console.WriteLine((start, end));
+        
         if (index == -1) return VariableOrNumber(s.Substring(start, end - start + 1));
 
         if (operators[index].Binary) return ConvertBinary(s, start, end, visited, operators, index);
@@ -89,11 +87,6 @@ public static class ConvertExpression
 
     private static Operators? DeterminateOperator(string s)
     {
-        // if (s.Length == 2)
-        // {
-        //     if (s[0] != 'e' && char.IsLetter(s[0]) && s[1]=='^') return new Operators("x^", 7, (exp) => new PowVariable((VariableExpression)exp[0], exp[1]), true)
-        // }
-
         foreach (var item in OperatorsArray)
         {
             var aux = item();
@@ -201,7 +194,7 @@ public static class ConvertExpression
 
             return value is null ? null : operators[index].ExpressionOperator(new[] {value});
         }
-        
+
         value = DeterminateExpression(s, operators[index].Position + 1 + operators[index].Operator.Length, end - 1,
             visited, operators);
 

@@ -4,6 +4,18 @@ namespace Expression;
 
 public class Pow : BinaryExpression
 {
+    public static Pow DeterminatePow(ExpressionType left, ExpressionType right)
+    {
+        (VariableExpression? variable, NumberExpression? number) =
+            (left as VariableExpression, right as NumberExpression);
+        if (variable != null && number != null) return new PowVariable(variable, number);
+
+        ConstantE? e = left as ConstantE;
+        if (e != null) return new PowE(right);
+
+        return new Pow(left, right);
+    }
+
     public Pow(ExpressionType left, ExpressionType right) : base(left, right)
     {
     }
