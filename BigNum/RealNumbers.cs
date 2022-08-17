@@ -182,9 +182,9 @@ public class RealNumbers : IComparable<RealNumbers>
 
     public static bool operator <=(RealNumbers a, RealNumbers b) => a.CompareTo(b) != 1;
     
-    public static RealNumbers operator ++(RealNumbers a) => a + new RealNumbers("1");
+    public static RealNumbers operator ++(RealNumbers a) => a + Real1;
     
-    public static RealNumbers operator --(RealNumbers a) => a - new RealNumbers("1");
+    public static RealNumbers operator --(RealNumbers a) => a - Real1;
 
     #endregion
 }

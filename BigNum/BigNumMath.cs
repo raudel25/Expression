@@ -175,7 +175,7 @@ public static class BigNumMath
     /// </summary>
     /// <param name="n">Numero double(C#)</param>
     /// <returns>Resultado real</returns>
-    public static RealNumbers ConvertToRealNumbers(double n) => new RealNumbers(n + "", n >= 0);
+    public static RealNumbers ConvertToRealNumbers(double n) => new RealNumbers(n.ToString(), n >= 0);
 
     /// <summary>
     /// Convertir de entero(C#) a numero real

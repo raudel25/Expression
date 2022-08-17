@@ -13,8 +13,8 @@ internal static class PowOperations
         if (y == RealNumbers.Real0) return RealNumbers.Real1;
 
         int cant = y.PartDecimal.Length;
-        IntegerNumbers denominator = new IntegerNumbers(AuxOperations.AddZerosRight("1", cant));
-        IntegerNumbers numerator = new IntegerNumbers(y.PartNumber + y.PartDecimal);
+        IntegerNumbers denominator = new IntegerNumbers(AuxOperations.AddZerosRight("1", cant), false);
+        IntegerNumbers numerator = new IntegerNumbers(y.PartNumber + y.PartDecimal, false);
         IntegerNumbers mcd = BigNumMath.Mcd(numerator, denominator);
 
         RealNumbers pow = SqrtOperations.Sqrt(x, denominator / mcd);

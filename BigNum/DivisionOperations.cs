@@ -26,8 +26,8 @@ internal static class DivisionOperations
         AuxOperations.EqualZerosRight(ref xPartDecimal, ref yPartDecimal);
         if (integer) (xPartDecimal, yPartDecimal) = ("", "");
 
-        IntegerNumbers m = new IntegerNumbers(x.PartNumber + xPartDecimal);
-        IntegerNumbers n = new IntegerNumbers(y.PartNumber + yPartDecimal);
+        IntegerNumbers m = new IntegerNumbers(x.PartNumber + xPartDecimal, false);
+        IntegerNumbers n = new IntegerNumbers(y.PartNumber + yPartDecimal, false);
 
         int cantDecimal = 0;
 
@@ -36,7 +36,7 @@ internal static class DivisionOperations
         if (cantDecimal != 0)
             return (new RealNumbers(result.Substring(0, result.Length - cantDecimal),
                 result.Substring(result.Length - cantDecimal, cantDecimal), positive), rest);
-        return (new RealNumbers(result, positive), rest);
+        return (new RealNumbers(result,"0", positive), rest);
     }
 
     /// <summary>
@@ -51,18 +51,18 @@ internal static class DivisionOperations
         ref int cantDecimal)
     {
         string result = "";
-        IntegerNumbers rest = new IntegerNumbers("0");
+        IntegerNumbers rest = IntegerNumbers.Integer0;
 
         foreach (var t in x.PartNumber)
         {
-            IntegerNumbers div = new IntegerNumbers(rest.PartNumber + t);
+            IntegerNumbers div = new IntegerNumbers(rest.PartNumber + t, false);
 
             rest = DivisionImmediate(div, y, ref result);
         }
 
-        while (rest != new IntegerNumbers("0") && !integer)
+        while (rest != IntegerNumbers.Integer0 && !integer)
         {
-            IntegerNumbers div = new IntegerNumbers(rest.PartNumber + "0");
+            IntegerNumbers div = new IntegerNumbers(rest.PartNumber + "0", false);
 
             rest = DivisionImmediate(div, y, ref result);
 
@@ -83,7 +83,7 @@ internal static class DivisionOperations
     /// <returns>Resto de la divison</returns>
     private static IntegerNumbers DivisionImmediate(IntegerNumbers div, IntegerNumbers divisor, ref string result)
     {
-        IntegerNumbers aux = new IntegerNumbers("0");
+        IntegerNumbers aux = IntegerNumbers.Integer0;
         for (int j = 9; j >= 0; j--)
         {
             aux = divisor * BigNumMath.ConvertToIntegerNumbers(j);

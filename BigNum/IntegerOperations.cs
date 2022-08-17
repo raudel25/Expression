@@ -33,7 +33,7 @@ internal static class IntegerOperations
     /// <returns>Resultado entero</returns>
     internal static IntegerNumbers Factorial(IntegerNumbers x)
     {
-        IntegerNumbers fact = new IntegerNumbers("1");
+        IntegerNumbers fact = IntegerNumbers.Integer1;
         int xx = int.Parse(x.PartNumber);
         IntegerNumbers index = IntegerNumbers.Integer1;
 

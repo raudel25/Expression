@@ -16,7 +16,7 @@ internal static class SqrtOperations
         if (x == RealNumbers.Real0) return RealNumbers.Real0;
         if (y == RealNumbers.Real1) return RealNumbers.Real1;
 
-        bool parity = y % new IntegerNumbers("2") == IntegerNumbers.Integer0;
+        bool parity = y % new IntegerNumbers("2",false) == IntegerNumbers.Integer0;
         bool positive = parity || x.Positive();
 
         if (parity && !x.Positive()) throw new Exception("Operacion Invalida (el resultado no es real)");
