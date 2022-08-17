@@ -81,4 +81,36 @@ public static class Aux
 
         return exp;
     }
+
+    public static int CantVariable(ExpressionType exp)
+    {
+        HashSet<char> variables = new HashSet<char>();
+        CantVariable(exp, variables);
+
+        return variables.Count;
+    }
+
+    public static void CantVariable(ExpressionType exp, HashSet<char> variables)
+    {
+        VariableExpression? variable = exp as VariableExpression;
+
+        if (variable != null)
+        {
+            if (!variables.Contains(variable.Variable)) variables.Add(variable.Variable);
+            return;
+        }
+
+        BinaryExpression? binary = exp as BinaryExpression;
+
+        if (binary != null)
+        {
+            CantVariable(binary.Left, variables);
+            CantVariable(binary.Right, variables);
+            return;
+        }
+
+        UnaryExpression? unary = exp as UnaryExpression;
+
+        if (unary != null) CantVariable(unary.Value, variables);
+    }
 }

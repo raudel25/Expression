@@ -43,12 +43,12 @@ internal static class Constants
         //https://en.wikipedia.org/wiki/Chudnovsky_algorithm
         for (int i = 0; i <= _precisionPI; i++)
         {
-            RealNumbers numerator = BigNumMath.Factorial(new IntegerNumbers("6", false) * index) *
+            RealNumbers numerator = BigNumMath.Factorial(new IntegerNumbers("6", "0") * index) *
                                     (new RealNumbers("545140134", "0") * index + new RealNumbers("13591409", "0"));
-            RealNumbers denominator = BigNumMath.Factorial(new IntegerNumbers("3", false) * index) *
-                                      BigNumMath.Pow(BigNumMath.Factorial(index), new IntegerNumbers("3", false)) *
+            RealNumbers denominator = BigNumMath.Factorial(new IntegerNumbers("3", "0") * index) *
+                                      BigNumMath.Pow(BigNumMath.Factorial(index), new IntegerNumbers("3", "0")) *
                                       BigNumMath.Pow(new RealNumbers("640320", "0"),
-                                          new IntegerNumbers("3", false) * index);
+                                          new IntegerNumbers("3", "0") * index);
 
             pi = (i & 1) == 0 ? pi + numerator / denominator : pi - numerator / denominator;
         }

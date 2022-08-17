@@ -8,8 +8,8 @@ public class Sum : BinaryExpression
     {
     }
 
-    protected override ExpressionType Derivative(ExpressionType left, ExpressionType right) =>
-        left.Derivative() + right.Derivative();
+    protected override ExpressionType Derivative(char variable, ExpressionType left, ExpressionType right) =>
+        left.Derivative(variable) + right.Derivative(variable);
 
     protected override RealNumbers EvaluateBinary(RealNumbers left, RealNumbers right) => left + right;
 
@@ -40,8 +40,8 @@ public class Subtraction : BinaryExpression
     {
     }
 
-    protected override ExpressionType Derivative(ExpressionType left, ExpressionType right) =>
-        left.Derivative() - right.Derivative();
+    protected override ExpressionType Derivative(char variable, ExpressionType left, ExpressionType right) =>
+        left.Derivative(variable) - right.Derivative(variable);
 
     protected override RealNumbers EvaluateBinary(RealNumbers left, RealNumbers right) => left - right;
 
@@ -72,8 +72,8 @@ public class Multiply : BinaryExpression
     {
     }
 
-    protected override ExpressionType Derivative(ExpressionType left, ExpressionType right) =>
-        left.Derivative() * right + left * right.Derivative();
+    protected override ExpressionType Derivative(char variable, ExpressionType left, ExpressionType right) =>
+        left.Derivative(variable) * right + left * right.Derivative(variable);
 
     protected override RealNumbers EvaluateBinary(RealNumbers left, RealNumbers right) => left * right;
 
@@ -118,8 +118,8 @@ public class Division : BinaryExpression
     {
     }
 
-    protected override ExpressionType Derivative(ExpressionType left, ExpressionType right) =>
-        (left.Derivative() * right - left * right.Derivative()) / (right * right);
+    protected override ExpressionType Derivative(char variable, ExpressionType left, ExpressionType right) =>
+        (left.Derivative(variable) * right - left * right.Derivative(variable)) / (right * right);
 
     protected override RealNumbers EvaluateBinary(RealNumbers left, RealNumbers right) => left / right;
 
@@ -136,9 +136,6 @@ public class Division : BinaryExpression
         if (this.Right.ToString() == "1") return this.Left.ToString()!;
 
         (string left, string right) = this.DeterminatePriority();
-
-        // if (this.Left.IsBinary()) left = Aux.Colocated(left);
-        // if (this.Right.IsBinary()) right = Aux.Colocated(right);
 
         (bool leftOpposite, bool rightOpposite) = (left[0] == '-', right[0] == '-');
 

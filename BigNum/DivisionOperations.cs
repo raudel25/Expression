@@ -26,8 +26,8 @@ internal static class DivisionOperations
         AuxOperations.EqualZerosRight(ref xPartDecimal, ref yPartDecimal);
         if (integer) (xPartDecimal, yPartDecimal) = ("", "");
 
-        IntegerNumbers m = new IntegerNumbers(x.PartNumber + xPartDecimal, false);
-        IntegerNumbers n = new IntegerNumbers(y.PartNumber + yPartDecimal, false);
+        IntegerNumbers m = new IntegerNumbers(x.PartNumber + xPartDecimal, "0");
+        IntegerNumbers n = new IntegerNumbers(y.PartNumber + yPartDecimal, "0");
 
         int cantDecimal = 0;
 
@@ -36,7 +36,7 @@ internal static class DivisionOperations
         if (cantDecimal != 0)
             return (new RealNumbers(result.Substring(0, result.Length - cantDecimal),
                 result.Substring(result.Length - cantDecimal, cantDecimal), positive), rest);
-        return (new RealNumbers(result,"0", positive), rest);
+        return (new RealNumbers(result, "0", positive), rest);
     }
 
     /// <summary>
@@ -55,14 +55,14 @@ internal static class DivisionOperations
 
         foreach (var t in x.PartNumber)
         {
-            IntegerNumbers div = new IntegerNumbers(rest.PartNumber + t, false);
+            IntegerNumbers div = new IntegerNumbers(rest.PartNumber + t, "0");
 
             rest = DivisionImmediate(div, y, ref result);
         }
 
         while (rest != IntegerNumbers.Integer0 && !integer)
         {
-            IntegerNumbers div = new IntegerNumbers(rest.PartNumber + "0", false);
+            IntegerNumbers div = new IntegerNumbers(rest.PartNumber + "0", "0");
 
             rest = DivisionImmediate(div, y, ref result);
 

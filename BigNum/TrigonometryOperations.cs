@@ -49,7 +49,7 @@ internal static class TrigonometryOperations
         RealNumbers pow = x;
         RealNumbers index = RealNumbers.Real1;
         RealNumbers arctan = RealNumbers.Real0;
-        RealNumbers xx = BigNumMath.Pow(x, new IntegerNumbers("2",false));
+        RealNumbers xx = BigNumMath.Pow(x, new IntegerNumbers("2","0"));
 
         for (int i = 1; i < 2 * _precisionAtan; i += 2)
         {

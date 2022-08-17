@@ -11,7 +11,7 @@ public class NumberExpression : ExpressionType
         this.Value = value;
     }
 
-    public override ExpressionType Derivative() => new NumberExpression(RealNumbers.Real0);
+    public override ExpressionType Derivative(char variable) => new NumberExpression(RealNumbers.Real0);
 
     public override RealNumbers Evaluate(RealNumbers x) => this.Value;
 
@@ -35,14 +35,16 @@ public class NumberExpression : ExpressionType
 
 public class VariableExpression : ExpressionType
 {
-    public readonly char Value;
+    public readonly char Variable;
 
-    public VariableExpression(char value)
+    public VariableExpression(char variable)
     {
-        this.Value = value;
+        this.Variable = variable;
     }
 
-    public override ExpressionType Derivative() => new NumberExpression(RealNumbers.Real1);
+    public override ExpressionType Derivative(char variable) => variable == this.Variable
+        ? new NumberExpression(RealNumbers.Real1)
+        : new NumberExpression(RealNumbers.Real0);
 
     public override RealNumbers Evaluate(RealNumbers x) => x;
 
@@ -51,7 +53,7 @@ public class VariableExpression : ExpressionType
         get => 8;
     }
 
-    public override string ToString() => this.Value.ToString();
+    public override string ToString() => this.Variable.ToString();
 }
 
 public class ConstantE : NumberExpression

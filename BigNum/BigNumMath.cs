@@ -161,7 +161,7 @@ public static class BigNumMath
     /// </summary>
     /// <param name="x">Numero entero</param>
     /// <returns>Resultado entero</returns>
-    public static IntegerNumbers Opposite(IntegerNumbers x) => new IntegerNumbers(x.PartNumber, !x.Positive());
+    public static IntegerNumbers Opposite(IntegerNumbers x) => new IntegerNumbers(x.PartNumber,"0", !x.Positive());
 
     /// <summary>
     /// Determinar el opuesto de una fraccion real
@@ -175,21 +175,21 @@ public static class BigNumMath
     /// </summary>
     /// <param name="n">Numero double(C#)</param>
     /// <returns>Resultado real</returns>
-    public static RealNumbers ConvertToRealNumbers(double n) => new RealNumbers(n.ToString(), n >= 0);
+    public static RealNumbers ConvertToRealNumbers(double n) => new RealNumbers(n + "", n >= 0);
 
     /// <summary>
     /// Convertir de entero(C#) a numero real
     /// </summary>
     /// <param name="n">Numero entero(C#)</param>
     /// <returns>Resultado entero</returns>
-    public static IntegerNumbers ConvertToIntegerNumbers(int n) => new IntegerNumbers(n + "", n >= 0);
+    public static IntegerNumbers ConvertToIntegerNumbers(int n) => new IntegerNumbers(n + "","0", n >= 0);
 
     /// <summary>
     /// Convertir de real a entero
     /// </summary>
     /// <param name="n">Numero real</param>
     /// <returns>Resultado entero</returns>
-    public static IntegerNumbers RealToInteger(RealNumbers n) => new IntegerNumbers(n.PartNumber, n.Positive());
+    public static IntegerNumbers RealToInteger(RealNumbers n) => new IntegerNumbers(n.PartNumber,"0", n.Positive());
 
     /// <summary>
     /// Maximo comun divisor entre 2 numeros

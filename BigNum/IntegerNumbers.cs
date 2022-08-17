@@ -2,16 +2,14 @@ namespace BigNum;
 
 public class IntegerNumbers : RealNumbers
 {
-    public static readonly IntegerNumbers Integer0 = new IntegerNumbers("0",false);
+    public static readonly IntegerNumbers Integer0 = new IntegerNumbers("0","0");
 
-    public static readonly IntegerNumbers Integer1 = new IntegerNumbers("1",false);
+    public static readonly IntegerNumbers Integer1 = new IntegerNumbers("1","0");
 
-    public static readonly IntegerNumbers IntegerN1 = new IntegerNumbers("1", false);
+    public static readonly IntegerNumbers IntegerN1 = new IntegerNumbers("1", "0");
 
-    internal IntegerNumbers(string s,bool check, bool positive = true) : base(s, "0", positive)
+    internal IntegerNumbers(string partNumber,string partDecimal, bool positive = true) : base(partNumber, "0", positive)
     {
-        if(!check) return;
-        if(!CheckNumber(s)) throw new Exception("El valor introducido no es correcto");
     }
     
     public IntegerNumbers(string s, bool positive = true) : base(s, "0", positive)

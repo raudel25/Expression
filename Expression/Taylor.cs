@@ -39,7 +39,7 @@ public class Taylor
         for (int i = 1; i < precision; i++)
         {
             fact *= index;
-            taylorFunction = taylorFunction.Derivative();
+            //taylorFunction = taylorFunction.Derivative();
             
             var a = new NumberExpression(taylorFunction.Evaluate(center));
             var b = new Pow(new VariableExpression('x') - new NumberExpression(center),

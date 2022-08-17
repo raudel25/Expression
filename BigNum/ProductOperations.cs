@@ -16,8 +16,8 @@ internal static class ProductOperations
         if (x.Abs == RealNumbers.Real1) return new RealNumbers(y.PartNumber, y.PartDecimal, positive);
         if (y.Abs == RealNumbers.Real1) return new RealNumbers(x.PartNumber, x.PartDecimal, positive);
 
-        IntegerNumbers m = new IntegerNumbers(x.PartNumber + x.PartDecimal,false);
-        IntegerNumbers n = new IntegerNumbers(y.PartNumber + y.PartDecimal,false);
+        IntegerNumbers m = new IntegerNumbers(x.PartNumber + x.PartDecimal, "0");
+        IntegerNumbers n = new IntegerNumbers(y.PartNumber + y.PartDecimal, "0");
 
         string result = KaratsubaAlgorithm(m, n).PartNumber;
 
@@ -53,19 +53,19 @@ internal static class ProductOperations
         int n = xValor.Length / 2;
         int m = xValor.Length;
 
-        IntegerNumbers x1 = new IntegerNumbers(xValor.Substring(0, n),false);
-        IntegerNumbers x0 = new IntegerNumbers(xValor.Substring(n, xValor.Length - n),false);
-        IntegerNumbers y1 = new IntegerNumbers(yValor.Substring(0, n),false);
-        IntegerNumbers y0 = new IntegerNumbers(yValor.Substring(n, yValor.Length - n),false);
+        IntegerNumbers x1 = new IntegerNumbers(xValor.Substring(0, n), "0");
+        IntegerNumbers x0 = new IntegerNumbers(xValor.Substring(n, xValor.Length - n), "0");
+        IntegerNumbers y1 = new IntegerNumbers(yValor.Substring(0, n), "0");
+        IntegerNumbers y0 = new IntegerNumbers(yValor.Substring(n, yValor.Length - n), "0");
 
         IntegerNumbers z2 =
-            new IntegerNumbers(AuxOperations.AddZerosRight(KaratsubaAlgorithm(x1, y1).PartNumber, 2 * (m - n)),false);
+            new IntegerNumbers(AuxOperations.AddZerosRight(KaratsubaAlgorithm(x1, y1).PartNumber, 2 * (m - n)), "0");
         IntegerNumbers z11 =
-            new IntegerNumbers(AuxOperations.AddZerosRight(KaratsubaAlgorithm(x1, y0).PartNumber, m - n),false);
+            new IntegerNumbers(AuxOperations.AddZerosRight(KaratsubaAlgorithm(x1, y0).PartNumber, m - n), "0");
         IntegerNumbers z12 =
-            new IntegerNumbers(AuxOperations.AddZerosRight(KaratsubaAlgorithm(y1, x0).PartNumber, m - n),false);
+            new IntegerNumbers(AuxOperations.AddZerosRight(KaratsubaAlgorithm(y1, x0).PartNumber, m - n), "0");
         IntegerNumbers z1 = z11 + z12;
-        IntegerNumbers z0 = new IntegerNumbers(KaratsubaAlgorithm(x0, y0).PartNumber,false);
+        IntegerNumbers z0 = new IntegerNumbers(KaratsubaAlgorithm(x0, y0).PartNumber, "0");
 
         return z2 + z1 + z0;
     }
