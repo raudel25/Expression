@@ -21,7 +21,7 @@ public class Pow : BinaryExpression
     }
 
     protected override ExpressionType Derivative(ExpressionType left, ExpressionType right) =>
-        throw new NotImplementedException();
+        new PowE(right * new Ln(left)) * (right * new Ln(left)).Derivative();
 
     protected override RealNumbers EvaluateBinary(RealNumbers left, RealNumbers right) => BigNumMath.Pow(left, right);
 

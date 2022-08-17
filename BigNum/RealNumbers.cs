@@ -2,7 +2,7 @@ namespace BigNum;
 
 public class RealNumbers : IComparable<RealNumbers>
 {
-    private static int _precision = 30;
+    private static int _precision = 20;
     
     public static readonly RealNumbers Real1 = new RealNumbers("1","0");
     

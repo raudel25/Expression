@@ -4,7 +4,7 @@ internal static class Constants
 {
     private static int _precisionE = 20;
 
-    private static int _precisionPI = 2;
+    //private static int _precisionPI = 2;
 
     /// <summary>
     /// Aproximacion de E

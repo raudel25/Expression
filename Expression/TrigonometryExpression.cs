@@ -121,9 +121,28 @@ public class Atan : UnaryExpression
     {
     }
 
-    protected override ExpressionType Derivative(ExpressionType value) => -new Csc(value) * new Cot(value);
+    protected override ExpressionType Derivative(ExpressionType value)
+        => new NumberExpression(RealNumbers.Real1) /
+           (new NumberExpression(RealNumbers.Real1) + new Pow(value,
+               new NumberExpression(new IntegerNumbers("2"))));
 
-    protected override RealNumbers EvaluateUnary(RealNumbers value) => BigNumMath.Asin(value);
+    protected override RealNumbers EvaluateUnary(RealNumbers value) => BigNumMath.Atan(value);
 
     public override string ToString() => $"arctan({this.Value})";
+}
+
+public class Acot : UnaryExpression
+{
+    public Acot(ExpressionType value) : base(value)
+    {
+    }
+
+    protected override ExpressionType Derivative(ExpressionType value)
+        => -new NumberExpression(RealNumbers.Real1) /
+           (new NumberExpression(RealNumbers.Real1) + new Pow(value,
+               new NumberExpression(new IntegerNumbers("2"))));
+
+    protected override RealNumbers EvaluateUnary(RealNumbers value) => BigNumMath.Acot(value);
+
+    public override string ToString() => $"arccot({this.Value})";
 }

@@ -27,6 +27,8 @@ public static class ConvertExpression
         () => new Operators("csc", 6, (exp) => new Csc(exp[0])),
         () => new Operators("arcsin", 6, (exp) => new Asin(exp[0])),
         () => new Operators("arccos", 6, (exp) => new Acos(exp[0])),
+        () => new Operators("arctan", 6, (exp) => new Atan(exp[0])),
+        () => new Operators("arccot", 6, (exp) => new Acot(exp[0]))
     };
 
     public static ExpressionType? ConvertExpressions(string s)
@@ -161,6 +163,7 @@ public static class ConvertExpression
 
         if (operators[index].Operator == "log")
         {
+            start = EliminateParentLeft(s, start, end);
             int ind = DeterminateEndParent(s, start + operators[index].Operator.Length);
 
             left = DeterminateExpression(s, start + operators[index].Operator.Length + 1, ind - 1, visited, operators);

@@ -256,9 +256,11 @@ public static class BigNumMath
     public static RealNumbers Cos(RealNumbers x) =>
         TrigonometryOperations.SinCos(x, false);
 
-    public static RealNumbers Atan(RealNumbers x) => TrigonometryOperations.Atan(x);
-
     public static RealNumbers Asin(RealNumbers x) => TrigonometryOperations.Asin(x);
 
     public static RealNumbers Acos(RealNumbers x) => PI / new RealNumbers("2", "0") - Asin(x);
+    
+    public static RealNumbers Atan(RealNumbers x) => TrigonometryOperations.Atan(x);
+
+    public static RealNumbers Acot(RealNumbers x) => BigNumMath.PI / new RealNumbers("2", "0") - Atan(x);
 }

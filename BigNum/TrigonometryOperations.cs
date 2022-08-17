@@ -6,7 +6,7 @@ internal static class TrigonometryOperations
 
     private static int _precisionSinCos = 30;
 
-    private static int _precisionAtan = 1000;
+    private static int _precisionAtan = 500;
 
     private static int _precisionAsin = 100;
 
@@ -39,10 +39,13 @@ internal static class TrigonometryOperations
 
         return result;
     }
-
-    //Deficiente
+    
     internal static RealNumbers Atan(RealNumbers x)
     {
+        //arctan(x)+arctan(1/x)=pi/2
+        //arctan(1/x)=arccot(x)
+        if (x.Abs > RealNumbers.Real1) return BigNumMath.Acot(RealNumbers.Real1 / x);
+
         RealNumbers pow = x;
         RealNumbers index = RealNumbers.Real1;
         RealNumbers arctan = RealNumbers.Real0;
@@ -57,9 +60,11 @@ internal static class TrigonometryOperations
 
         return arctan;
     }
-    
+
     internal static RealNumbers Asin(RealNumbers x)
     {
+        if (x.Abs > RealNumbers.Real1) throw new Exception("Operacion Invalida (arcsin recive valores entre 1 y -1)");
+        
         RealNumbers index = RealNumbers.Real1;
         RealNumbers even = RealNumbers.Real1;
         RealNumbers odd = RealNumbers.Real1;
@@ -70,7 +75,7 @@ internal static class TrigonometryOperations
         {
             pow *= x;
             if ((i & 1) == 0) even *= index;
-            
+
             if ((i & 1) == 1)
             {
                 arcsin += (odd * pow) / (even * index);

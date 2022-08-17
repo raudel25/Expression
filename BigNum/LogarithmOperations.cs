@@ -13,6 +13,7 @@ public static class LogarithmOperations
     {
         if (x == BigNumMath.E) return RealNumbers.Real1;
 
+        //ln(1/x)=-ln(x)
         bool positive = x.Abs > RealNumbers.Real1;
         x = positive ? RealNumbers.Real1 / x : x;
         x = RealNumbers.Real1 - x;
