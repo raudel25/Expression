@@ -13,9 +13,9 @@ public static class ConvertExpression
     private static OperatorsArrayDelegate[] OperatorsArray = new OperatorsArrayDelegate[]
     {
         () => new Operators("+", 1, (exp) => new Sum(exp[0], exp[1]), true),
-        () => new Operators("-", 1, (exp) => ReduceExpression.Reduce(new Subtraction(exp[0], exp[1])), true),
-        () => new Operators("*", 2, (exp) => ReduceExpression.Reduce(new Multiply(exp[0], exp[1])), true),
-        () => new Operators("/", 3, (exp) => ReduceExpression.Reduce(new Division(exp[0], exp[1])), true),
+        () => new Operators("-", 1, (exp) => new Subtraction(exp[0], exp[1]), true),
+        () => new Operators("*", 2, (exp) => new Multiply(exp[0], exp[1]), true),
+        () => new Operators("/", 3, (exp) => new Division(exp[0], exp[1]), true),
         () => new Operators("^", 4, (exp) => Pow.DeterminatePow(exp[0], exp[1]), true),
         () => new Operators("log", 5, (exp) => Log.DeterminateLog(exp[0], exp[1]), true),
         () => new Operators("ln", 5, (exp) => new Ln(exp[0])),
@@ -65,7 +65,8 @@ public static class ConvertExpression
         operators.Reverse();
         operators.Sort((o1, o2) => o1.AssignPriority.CompareTo(o2.AssignPriority));
 
-        return DeterminateExpression(s, 0, s.Length - 1, new bool[operators.Count], operators);
+        ExpressionType? exp = DeterminateExpression(s, 0, s.Length - 1, new bool[operators.Count], operators);
+        return exp is null ? null : ReduceExpression.Reduce(exp);
     }
 
     private static ExpressionType? DeterminateExpression(string s, int start, int end, bool[] visited,
