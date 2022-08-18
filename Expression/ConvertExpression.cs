@@ -10,6 +10,9 @@ public static class ConvertExpression
 
     private static int _maxLenOperator = 6;
 
+    /// <summary>
+    /// Lista de operadores
+    /// </summary>
     private static OperatorsArrayDelegate[] OperatorsArray = new OperatorsArrayDelegate[]
     {
         () => new Operators("+", 1, (exp) => new Sum(exp[0], exp[1]), true),
@@ -31,6 +34,11 @@ public static class ConvertExpression
         () => new Operators("arccot", 6, (exp) => new Acot(exp[0]))
     };
 
+    /// <summary>
+    /// Convertir una cadena de texto en una expresion
+    /// </summary>
+    /// <param name="s">Cadena de texto</param>
+    /// <returns>Expresion resultante(si devuelve null la expresion no es correcta)</returns>
     public static ExpressionType? Parsing(string s)
     {
         s = EliminateSpaces(s);
@@ -43,6 +51,7 @@ public static class ConvertExpression
             if (s[i] == ')') cantParent--;
             if (cantParent < 0) return null;
 
+            //Determinar el operador
             for (int j = _maxLenOperator; j >= 1; j--)
             {
                 if (j > s.Length - i) continue;
@@ -51,6 +60,7 @@ public static class ConvertExpression
 
                 if (op != null)
                 {
+                    //Asignar el operador
                     op.AssignPriority = op.DefaultPriority + _maxPriority * cantParent;
                     op.Position = i;
                     operators.Add(op);
@@ -69,11 +79,21 @@ public static class ConvertExpression
         return exp is null ? null : ReduceExpression.Reduce(exp);
     }
 
+    /// <summary>
+    /// Determinar la expresion dado el operador
+    /// </summary>
+    /// <param name="s">Cadena</param>
+    /// <param name="start">Puntero inicial</param>
+    /// <param name="end">Puntero final</param>
+    /// <param name="visited">Operadores ya usados</param>
+    /// <param name="operators">Lista de operadores</param>
+    /// <returns>Expresion resultante(si devuelve null la expresion no es correcta)</returns>
     private static ExpressionType? DeterminateExpression(string s, int start, int end, bool[] visited,
         List<Operators> operators)
     {
         if (start > end) return null;
 
+        //Determinar el operador a usar
         int index = -1;
         for (int i = 0; i < visited.Length; i++)
         {
@@ -85,6 +105,7 @@ public static class ConvertExpression
             }
         }
 
+        //Si no quedan operadores procedemos verificamos si la expresion es una variable o un numero
         if (index == -1) return VariableOrNumber(s.Substring(start, end - start + 1));
 
         if (operators[index].Binary) return ConvertBinary(s, start, end, visited, operators, index);
@@ -92,6 +113,11 @@ public static class ConvertExpression
         return ConvertUnary(s, start, end, visited, operators, index);
     }
 
+    /// <summary>
+    /// Determinar el operador dado el simbolo
+    /// </summary>
+    /// <param name="s">Simbolo del operador</param>
+    /// <returns>Operador</returns>
     private static Operators? DeterminateOperator(string s)
     {
         foreach (var item in OperatorsArray)
@@ -103,6 +129,11 @@ public static class ConvertExpression
         return null;
     }
 
+    /// <summary>
+    /// Eliminar espacios
+    /// </summary>
+    /// <param name="s">Cadena de texto</param>
+    /// <returns>Cadena modificada</returns>
     private static string EliminateSpaces(string s)
     {
         string result = "";
@@ -116,6 +147,11 @@ public static class ConvertExpression
         return result;
     }
 
+    /// <summary>
+    /// Determinar si la expresion es una variable o un numero
+    /// </summary>
+    /// <param name="s">Cadena</param>
+    /// <returns>Expresion resultante</returns>
     private static ExpressionType? VariableOrNumber(string s)
     {
         (int start, int end) = (EliminateParentLeft(s, 0, s.Length - 1), EliminateParentRight(s, 0, s.Length - 1));
@@ -137,6 +173,16 @@ public static class ConvertExpression
         return null;
     }
 
+    /// <summary>
+    /// Determinar la expresion dado un operador binario
+    /// </summary>
+    /// <param name="s">Cadena</param>
+    /// <param name="start">Puntero inicial</param>
+    /// <param name="end">Puntero final</param>
+    /// <param name="visited">Operadores ya usados</param>
+    /// <param name="operators">Lista de operadores</param>
+    /// <param name="index">Operador actual</param>
+    /// <returns>Expresion resultante(si devuelve null la expresion no es correcta)</returns>
     private static ExpressionType? ConvertBinary(string s, int start, int end, bool[] visited,
         List<Operators> operators, int index)
     {
@@ -179,6 +225,16 @@ public static class ConvertExpression
         return left is null || right is null ? null : operators[index].ExpressionOperator(new[] {left, right});
     }
 
+    /// <summary>
+    /// Determinar la expresion dado un operador unario
+    /// </summary>
+    /// <param name="s">Cadena</param>
+    /// <param name="start">Puntero inicial</param>
+    /// <param name="end">Puntero final</param>
+    /// <param name="visited">Operadores ya usados</param>
+    /// <param name="operators">Lista de operadores</param>
+    /// <param name="index">Operador actual</param>
+    /// <returns>Expresion resultante(si devuelve null la expresion no es correcta)</returns>
     private static ExpressionType? ConvertUnary(string s, int start, int end, bool[] visited,
         List<Operators> operators, int index)
     {
@@ -191,6 +247,12 @@ public static class ConvertExpression
         return value is null ? null : operators[index].ExpressionOperator(new[] {value});
     }
 
+    /// <summary>
+    /// Dado un parentesis abierto, determinar el parentesis cerraddo correspondiente
+    /// </summary>
+    /// <param name="s">Cadena</param>
+    /// <param name="ind">Indice del parentesis abierto</param>
+    /// <returns>Indice del parentesis resultante</returns>
     private static int DeterminateEndParent(string s, int ind)
     {
         int cantParent = 0;
@@ -204,6 +266,13 @@ public static class ConvertExpression
         return -1;
     }
 
+    /// <summary>
+    /// Eliminar parentesis de la izqierda
+    /// </summary>
+    /// <param name="s">Cadena</param>
+    /// <param name="start">Puntero inicial</param>
+    /// <param name="end">Puntero final</param>
+    /// <returns>Indice del puntero inicial resultante</returns>
     private static int EliminateParentLeft(string s, int start, int end)
     {
         int i = start;
@@ -216,6 +285,13 @@ public static class ConvertExpression
         return i;
     }
 
+    /// <summary>
+    /// Eliminar parentesis de la derecha
+    /// </summary>
+    /// <param name="s">Cadena</param>
+    /// <param name="start">Puntero inicial</param>
+    /// <param name="end">Puntero final</param>
+    /// <returns>Indice del puntero inicial resultante</returns>
     private static int EliminateParentRight(string s, int start, int end)
     {
         int j = end;

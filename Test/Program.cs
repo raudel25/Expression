@@ -3,7 +3,7 @@ using BigNum;
 using Expression;
 
 
-string s = "a^2+a^3+2*a^2";
+string s = "e+e+pi^2+pi^2";
 
 ExpressionType exp = ConvertExpression.Parsing(s);
 

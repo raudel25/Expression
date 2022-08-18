@@ -52,12 +52,12 @@ public class VariableExpression : ExpressionType
     {
         get => 8;
     }
-    
+
     public override bool Equals(object? obj)
     {
         VariableExpression? exp = obj as VariableExpression;
         if (exp is null) return false;
-        
+
         return exp.Variable == this.Variable;
     }
 
@@ -66,20 +66,38 @@ public class VariableExpression : ExpressionType
     public override string ToString() => this.Variable.ToString();
 }
 
-public class ConstantE : NumberExpression
+public class ConstantE : ExpressionType
 {
-    public ConstantE() : base(BigNumMath.E)
+    public override ExpressionType Derivative(char variable) => new NumberExpression(RealNumbers.Real0);
+
+    public override RealNumbers Evaluate(RealNumbers x) => BigNumMath.E;
+
+    public override int Priority
     {
+        get => 8;
     }
 
     public override string ToString() => "e";
+
+    public override bool Equals(object? obj) => obj is ConstantE;
+
+    public override int GetHashCode() => (int) Math.E;
 }
 
-public class ConstantPI : NumberExpression
+public class ConstantPI : ExpressionType
 {
-    public ConstantPI() : base(BigNumMath.PI)
+    public override ExpressionType Derivative(char variable) => new NumberExpression(RealNumbers.Real0);
+
+    public override RealNumbers Evaluate(RealNumbers x) => BigNumMath.PI;
+
+    public override int Priority
     {
+        get => 8;
     }
 
     public override string ToString() => "pi";
+
+    public override bool Equals(object? obj) => obj is ConstantPI;
+
+    public override int GetHashCode() => (int) Math.PI;
 }

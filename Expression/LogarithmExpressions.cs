@@ -4,6 +4,12 @@ namespace Expression;
 
 public class Log : BinaryExpression
 {
+    /// <summary>
+    /// Determinar el tio de logaritmo
+    /// </summary>
+    /// <param name="left">Expresion izquierda</param>
+    /// <param name="right">Expresion derecha</param>
+    /// <returns>Expresion logaritmica</returns>
     public static Log DeterminateLog(ExpressionType left, ExpressionType right)
     {
         ConstantE? e = left as ConstantE;

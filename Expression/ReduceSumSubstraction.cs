@@ -4,6 +4,11 @@ namespace Expression;
 
 internal static class ReduceSumSubtraction
 {
+    /// <summary>
+    /// Reducir una suma
+    /// </summary>
+    /// <param name="binary">Expresion binaria</param>
+    /// <returns>Expresion resultante</returns>
     internal static ExpressionType ReduceSum(BinaryExpression binary)
     {
         ExpressionType? aux = ReduceSumSimple(binary);
@@ -15,6 +20,11 @@ internal static class ReduceSumSubtraction
         return binary;
     }
 
+    /// <summary>
+    /// Determinar si una suma se puede reducir dadas caracteristicas simples
+    /// </summary>
+    /// <param name="binary">Expresion binaria</param>
+    /// <returns>Expresion resultante(si es null es que no se pudo reducir)</returns>
     internal static ExpressionType? ReduceSumSimple(BinaryExpression binary)
     {
         if (binary.Left.Equals(new NumberExpression(RealNumbers.Real0))) return binary.Right;
@@ -23,6 +33,14 @@ internal static class ReduceSumSubtraction
         return null;
     }
 
+    /// <summary>
+    /// Comprobar si es posible reducir nuevamente la suma
+    /// </summary>
+    /// <param name="left">Expresion izquierda</param>
+    /// <param name="right">Expresion derecha</param>
+    /// <param name="indLeft">Coeficiente de la expresion izquierda</param>
+    /// <param name="indRight">Coeficiente de la expresion derecha</param>
+    /// <returns>Expresion resultante</returns>
     private static ExpressionType ReduceSumCheck(ExpressionType left, ExpressionType right, RealNumbers indLeft,
         RealNumbers indRight)
     {
@@ -37,6 +55,14 @@ internal static class ReduceSumSubtraction
         return binary;
     }
 
+    /// <summary>
+    /// Determinar si es posible reducir una suma dadas su expresion izquierda y derecha
+    /// </summary>
+    /// <param name="left">Expresion izquierda</param>
+    /// <param name="right">Expresion derecha</param>
+    /// <param name="indLeft">Coeficiente de la expresion izquierda</param>
+    /// <param name="indRight">Coeficiente de la expresion derecha</param>
+    /// <returns>Expresion resultante(si es null es que no se pudo reducir)</returns>
     private static ExpressionType? ReduceSum(ExpressionType left, ExpressionType right, RealNumbers indLeft,
         RealNumbers indRight)
     {
@@ -49,7 +75,7 @@ internal static class ReduceSumSubtraction
             (left as BinaryExpression, right as BinaryExpression);
 
         ExpressionType? aux;
-        
+
         if (leftBinary is Sum)
         {
             aux = ReduceSum(leftBinary.Left, right, indLeft, indRight);
@@ -98,6 +124,11 @@ internal static class ReduceSumSubtraction
         return null;
     }
 
+    /// <summary>
+    /// Determinar si una resta se puede reducir dadas caracteristicas simples
+    /// </summary>
+    /// <param name="binary">Expresion binaria</param>
+    /// <returns>Expresion resultante(si es null es que no se pudo reducir)</returns>
     internal static ExpressionType ReduceSubtraction(BinaryExpression binary)
     {
         ExpressionType? aux = ReduceSubtractionSimple(binary);
@@ -109,15 +140,28 @@ internal static class ReduceSumSubtraction
         return binary;
     }
 
+    /// <summary>
+    /// Reducir una resta
+    /// </summary>
+    /// <param name="binary">Expresion binaria</param>
+    /// <returns>Expresion resultante</returns>
     internal static ExpressionType? ReduceSubtractionSimple(BinaryExpression binary)
     {
         if (binary.Left.Equals(new NumberExpression(RealNumbers.Real0)))
-            return new NumberExpression(RealNumbers.RealN1)*binary.Right;
+            return new NumberExpression(RealNumbers.RealN1) * binary.Right;
         if (binary.Right.Equals(new NumberExpression(RealNumbers.Real0))) return binary.Left;
 
         return null;
     }
 
+    /// <summary>
+    /// Comprobar si es posible reducir nuevamente la resta
+    /// </summary>
+    /// <param name="left">Expresion izquierda</param>
+    /// <param name="right">Expresion derecha</param>
+    /// <param name="indLeft">Coeficiente de la expresion izquierda</param>
+    /// <param name="indRight">Coeficiente de la expresion derecha</param>
+    /// <returns>Expresion resultante</returns>
     private static ExpressionType ReduceSubtractionCheck(ExpressionType left, ExpressionType right, RealNumbers indLeft,
         RealNumbers indRight)
     {
@@ -132,6 +176,14 @@ internal static class ReduceSumSubtraction
         return binary;
     }
 
+    /// <summary>
+    /// Determinar si es posible reducir una resta dadas su expresion izquierda y derecha
+    /// </summary>
+    /// <param name="left">Expresion izquierda</param>
+    /// <param name="right">Expresion derecha</param>
+    /// <param name="indLeft">Coeficiente de la expresion izquierda</param>
+    /// <param name="indRight">Coeficiente de la expresion derecha</param>
+    /// <returns>Expresion resultante(si es null es que no se pudo reducir)</returns>
     private static ExpressionType? ReduceSubtraction(ExpressionType left, ExpressionType right, RealNumbers indLeft,
         RealNumbers indRight)
     {
@@ -144,7 +196,7 @@ internal static class ReduceSumSubtraction
             (left as BinaryExpression, right as BinaryExpression);
 
         ExpressionType? aux;
-        
+
         if (leftBinary is Sum)
         {
             aux = ReduceSubtraction(leftBinary.Left, right, indLeft, indRight);
@@ -185,7 +237,7 @@ internal static class ReduceSumSubtraction
 
             return pow;
         }
-        
+
         if (left is NumberExpression && right is NumberExpression)
             return new NumberExpression(left.Evaluate(RealNumbers.Real0) * indLeft -
                                         right.Evaluate(RealNumbers.Real0) * indRight);

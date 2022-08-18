@@ -4,6 +4,11 @@ namespace Expression;
 
 public static class ReduceMultiplyDivision
 {
+    /// <summary>
+    /// Reducir una multiplicacion
+    /// </summary>
+    /// <param name="binary">Expresion binaria</param>
+    /// <returns>Expresion resultante</returns>
     internal static ExpressionType ReduceMultiply(BinaryExpression binary)
     {
         ExpressionType? aux = ReduceMultiplySimple(binary);
@@ -15,6 +20,11 @@ public static class ReduceMultiplyDivision
         return binary;
     }
 
+    /// <summary>
+    /// Determinar si una multiplicacion se puede reducir dadas caracteristicas simples
+    /// </summary>
+    /// <param name="binary">Expresion binaria</param>
+    /// <returns>Expresion resultante(si es null es que no se pudo reducir)</returns>
     internal static ExpressionType? ReduceMultiplySimple(BinaryExpression binary)
     {
         if (binary.Left.Equals(new NumberExpression(RealNumbers.Real0)) ||
@@ -26,6 +36,14 @@ public static class ReduceMultiplyDivision
         return null;
     }
 
+    /// <summary>
+    /// Comprobar si es posible reducir nuevamente la multiplicacion
+    /// </summary>
+    /// <param name="left">Expresion izquierda</param>
+    /// <param name="right">Expresion derecha</param>
+    /// <param name="indLeft">Indice de la expresion izquierda</param>
+    /// <param name="indRight">Indice de la expresion derecha</param>
+    /// <returns>Expresion resultante</returns>
     private static ExpressionType ReduceMultiplyCheck(ExpressionType left, ExpressionType right, RealNumbers indLeft,
         RealNumbers indRight)
     {
@@ -41,6 +59,14 @@ public static class ReduceMultiplyDivision
         return binary;
     }
 
+    /// <summary>
+    /// Determinar si es posible reducir una multiplicacion dadas su expresion izquierda y derecha
+    /// </summary>
+    /// <param name="left">Expresion izquierda</param>
+    /// <param name="right">Expresion derecha</param>
+    /// <param name="indLeft">Indice de la expresion izquierda</param>
+    /// <param name="indRight">Indice de la expresion derecha</param>
+    /// <returns>Expresion resultante(si es null es que no se pudo reducir)</returns>
     private static ExpressionType? ReduceMultiply(ExpressionType left, ExpressionType right, RealNumbers indLeft,
         RealNumbers indRight)
     {
@@ -102,6 +128,11 @@ public static class ReduceMultiplyDivision
         return null;
     }
 
+    /// <summary>
+    /// Reducir una division
+    /// </summary>
+    /// <param name="binary">Expresion binaria</param>
+    /// <returns>Expresion resultante</returns>
     internal static ExpressionType ReduceDivision(BinaryExpression binary)
     {
         ExpressionType? aux = ReduceDivisionSimple(binary);
@@ -113,6 +144,11 @@ public static class ReduceMultiplyDivision
         return binary;
     }
 
+    /// <summary>
+    /// Determinar si una division se puede reducir dadas caracteristicas simples
+    /// </summary>
+    /// <param name="binary">Expresion binaria</param>
+    /// <returns>Expresion resultante(si es null es que no se pudo reducir)</returns>
     internal static ExpressionType? ReduceDivisionSimple(BinaryExpression binary)
 
     {
@@ -123,6 +159,14 @@ public static class ReduceMultiplyDivision
         return null;
     }
 
+    /// <summary>
+    /// Comprobar si es posible reducir nuevamente la division
+    /// </summary>
+    /// <param name="left">Expresion izquierda</param>
+    /// <param name="right">Expresion derecha</param>
+    /// <param name="indLeft">Indice de la expresion izquierda</param>
+    /// <param name="indRight">Indice de la expresion derecha</param>
+    /// <returns>Expresion resultante</returns>
     private static ExpressionType ReduceDivisionCheck(ExpressionType left, ExpressionType right, RealNumbers indLeft,
         RealNumbers indRight)
     {
@@ -138,6 +182,14 @@ public static class ReduceMultiplyDivision
         return binary;
     }
 
+    /// <summary>
+    /// Determinar si es posible reducir una division dadas su expresion izquierda y derecha
+    /// </summary>
+    /// <param name="left">Expresion izquierda</param>
+    /// <param name="right">Expresion derecha</param>
+    /// <param name="indLeft">Indice de la expresion izquierda</param>
+    /// <param name="indRight">Indice de la expresion derecha</param>
+    /// <returns>Expresion resultante(si es null es que no se pudo reducir)</returns>
     private static ExpressionType? ReduceDivision(ExpressionType left, ExpressionType right, RealNumbers indLeft,
         RealNumbers indRight)
     {

@@ -26,11 +26,7 @@ public static class ReduceExpression
 
         if (binary is Division) return ReduceMultiplyDivision.ReduceDivision(binary);
 
-        if (binary is Pow)
-        {
-            ExpressionType? aux = ReducePowSimple(binary);
-            return aux is null ? exp : aux;
-        }
+        if (binary is Pow) return ReducePow(binary);
 
         if (binary is Log)
         {
@@ -41,6 +37,11 @@ public static class ReduceExpression
         return exp;
     }
 
+    /// <summary>
+    /// Determinar si la expresion es completamente numerica
+    /// </summary>
+    /// <param name="binary">Expresion binaria</param>
+    /// <returns>Expresion resultante(si es null es que no se pudo reducir)</returns>
     internal static ExpressionType? Numbers(BinaryExpression binary)
     {
         if (binary.Left is NumberExpression && binary.Right is NumberExpression)
@@ -49,6 +50,27 @@ public static class ReduceExpression
         return null;
     }
 
+    /// <summary>
+    /// Reducir una potencia
+    /// </summary>
+    /// <param name="binary">Expresion binaria</param>
+    /// <returns>Expresion resultante</returns>
+    internal static ExpressionType ReducePow(BinaryExpression binary)
+    {
+        ExpressionType? aux = ReducePowSimple(binary);
+        if (aux is not null) return aux;
+
+        Pow? exp = binary.Left as Pow;
+        if (exp is not null) return ReducePow(Pow.DeterminatePow(exp.Left, exp.Right * binary.Right));
+
+        return binary;
+    }
+
+    /// <summary>
+    /// Determinar si una potencia se puede reducir dadas caracteristicas simples
+    /// </summary>
+    /// <param name="binary">Expresion binaria</param>
+    /// <returns>Expresion resultante(si es null es que no se pudo reducir)</returns>
     internal static ExpressionType? ReducePowSimple(BinaryExpression binary)
     {
         if (binary.Left.Equals(new NumberExpression(RealNumbers.Real0)))

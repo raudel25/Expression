@@ -20,6 +20,10 @@ public class Sum : BinaryExpression
         get => 1;
     }
 
+    public override bool Equals(object? obj) => EqualsCommutative(obj);
+
+    public override int GetHashCode() => base.GetHashCode();
+
     public override string ToString()
     {
         if (this.Left.ToString() == "0") return this.Right.ToString()!;
@@ -91,6 +95,11 @@ public class Multiply : BinaryExpression
         get => 2;
     }
 
+    
+    public override bool Equals(object? obj) => EqualsCommutative(obj);
+
+    public override int GetHashCode() => base.GetHashCode();
+    
     public override string ToString()
     {
         if (this.Left.ToString() == "0" || this.Right.ToString() == "0") return "0";
