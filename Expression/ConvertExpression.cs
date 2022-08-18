@@ -13,9 +13,9 @@ public static class ConvertExpression
     private static OperatorsArrayDelegate[] OperatorsArray = new OperatorsArrayDelegate[]
     {
         () => new Operators("+", 1, (exp) => new Sum(exp[0], exp[1]), true),
-        () => new Operators("-", 1, (exp) => new Subtraction(exp[0], exp[1]), true),
-        () => new Operators("*", 2, (exp) => new Multiply(exp[0], exp[1]), true),
-        () => new Operators("/", 3, (exp) => new Division(exp[0], exp[1]), true),
+        () => new Operators("-", 1, (exp) => ReduceExpression.Reduce(new Subtraction(exp[0], exp[1])), true),
+        () => new Operators("*", 2, (exp) => ReduceExpression.Reduce(new Multiply(exp[0], exp[1])), true),
+        () => new Operators("/", 3, (exp) => ReduceExpression.Reduce(new Division(exp[0], exp[1])), true),
         () => new Operators("^", 4, (exp) => Pow.DeterminatePow(exp[0], exp[1]), true),
         () => new Operators("log", 5, (exp) => Log.DeterminateLog(exp[0], exp[1]), true),
         () => new Operators("ln", 5, (exp) => new Ln(exp[0])),
@@ -31,7 +31,7 @@ public static class ConvertExpression
         () => new Operators("arccot", 6, (exp) => new Acot(exp[0]))
     };
 
-    public static ExpressionType? ConvertExpressions(string s)
+    public static ExpressionType? Parsing(string s)
     {
         s = EliminateSpaces(s);
         List<Operators> operators = new List<Operators>();

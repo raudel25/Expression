@@ -36,7 +36,7 @@ public class Tan : UnaryExpression
     }
 
     protected override ExpressionType Derivative(ExpressionType value) =>
-        new Pow(new Sec(value), new NumberExpression(new RealNumbers("2")));
+        Pow.DeterminatePow(new Sec(value), new NumberExpression(new RealNumbers("2")));
 
     protected override RealNumbers EvaluateUnary(RealNumbers value) => BigNumMath.Sin(value) / BigNumMath.Cos(value);
 
@@ -50,7 +50,7 @@ public class Cot : UnaryExpression
     }
 
     protected override ExpressionType Derivative(ExpressionType value) =>
-        new Pow(new Csc(value), new NumberExpression(new RealNumbers("2")));
+        Pow.DeterminatePow(new Csc(value), new NumberExpression(new RealNumbers("2")));
 
     protected override RealNumbers EvaluateUnary(RealNumbers value) => BigNumMath.Cos(value) / BigNumMath.Sin(value);
 
@@ -91,7 +91,7 @@ public class Asin : UnaryExpression
 
     protected override ExpressionType Derivative(ExpressionType value)
         => new NumberExpression(RealNumbers.Real1) /
-           new Pow(new NumberExpression(RealNumbers.Real1) - value,
+           Pow.DeterminatePow(new NumberExpression(RealNumbers.Real1) - value,
                new NumberExpression(new RealNumbers("0.5")));
 
     protected override RealNumbers EvaluateUnary(RealNumbers value) => BigNumMath.Asin(value);
@@ -107,7 +107,7 @@ public class Acos : UnaryExpression
 
     protected override ExpressionType Derivative(ExpressionType value)
         => -new NumberExpression(RealNumbers.Real1) /
-           new Pow(new NumberExpression(RealNumbers.Real1) - value,
+           Pow.DeterminatePow(new NumberExpression(RealNumbers.Real1) - value,
                new NumberExpression(new RealNumbers("0.5")));
 
     protected override RealNumbers EvaluateUnary(RealNumbers value) => BigNumMath.Acos(value);
@@ -123,7 +123,7 @@ public class Atan : UnaryExpression
 
     protected override ExpressionType Derivative(ExpressionType value)
         => new NumberExpression(RealNumbers.Real1) /
-           (new NumberExpression(RealNumbers.Real1) + new Pow(value,
+           (new NumberExpression(RealNumbers.Real1) + Pow.DeterminatePow(value,
                new NumberExpression(new IntegerNumbers("2"))));
 
     protected override RealNumbers EvaluateUnary(RealNumbers value) => BigNumMath.Atan(value);
@@ -139,7 +139,7 @@ public class Acot : UnaryExpression
 
     protected override ExpressionType Derivative(ExpressionType value)
         => -new NumberExpression(RealNumbers.Real1) /
-           (new NumberExpression(RealNumbers.Real1) + new Pow(value,
+           (new NumberExpression(RealNumbers.Real1) + Pow.DeterminatePow(value,
                new NumberExpression(new IntegerNumbers("2"))));
 
     protected override RealNumbers EvaluateUnary(RealNumbers value) => BigNumMath.Acot(value);

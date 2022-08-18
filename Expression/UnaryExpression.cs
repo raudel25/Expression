@@ -52,6 +52,16 @@ public class VariableExpression : ExpressionType
     {
         get => 8;
     }
+    
+    public override bool Equals(object? obj)
+    {
+        VariableExpression? exp = obj as VariableExpression;
+        if (exp is null) return false;
+        
+        return exp.Variable == this.Variable;
+    }
+
+    public override int GetHashCode() => this.Variable.GetHashCode();
 
     public override string ToString() => this.Variable.ToString();
 }

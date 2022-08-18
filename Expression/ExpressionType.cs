@@ -46,17 +46,17 @@ public abstract class ExpressionType
 
     #region Operadores
 
-    public static ExpressionType operator +(ExpressionType left, ExpressionType right) => new Sum(left, right);
+    public static Sum operator +(ExpressionType left, ExpressionType right) => new Sum(left, right);
 
-    public static ExpressionType operator -(ExpressionType left, ExpressionType right) =>
+    public static Subtraction operator -(ExpressionType left, ExpressionType right) =>
         new Subtraction(left, right);
 
-    public static ExpressionType operator -(ExpressionType value) =>
+    public static Subtraction operator -(ExpressionType value) =>
         new Subtraction(new NumberExpression(new RealNumbers("0")), value);
 
-    public static ExpressionType operator *(ExpressionType left, ExpressionType right) => new Multiply(left, right);
+    public static Multiply operator *(ExpressionType left, ExpressionType right) => new Multiply(left, right);
 
-    public static ExpressionType operator /(ExpressionType left, ExpressionType right) => new Division(left, right);
+    public static Division operator /(ExpressionType left, ExpressionType right) => new Division(left, right);
 
     public static ExpressionType operator ++(ExpressionType value) => value + new NumberExpression(RealNumbers.Real1);
 
@@ -73,8 +73,8 @@ public abstract class BinaryExpression : ExpressionType
 
     public BinaryExpression(ExpressionType left, ExpressionType right)
     {
-        this.Left = Aux.ReduceExpression(left);
-        this.Right = Aux.ReduceExpression(right);
+        this.Left = ReduceExpression.Reduce(left);
+        this.Right = ReduceExpression.Reduce(right);
     }
 
     public override ExpressionType Derivative(char variable) => this.Derivative(variable, this.Left, this.Right);
@@ -94,6 +94,16 @@ public abstract class BinaryExpression : ExpressionType
 
         return IsBinaryImplement();
     }
+
+    public override bool Equals(object? obj)
+    {
+        BinaryExpression? binary = obj as BinaryExpression;
+        if (binary is null) return false;
+
+        return this.Left.Equals(binary.Left) && this.Right.Equals(binary.Right);
+    }
+
+    public override int GetHashCode() => this.Left.GetHashCode() * this.Right.GetHashCode();
 
     /// <summary>
     /// Reterminar la prioridad u colocar parentesis
@@ -125,10 +135,19 @@ public abstract class UnaryExpression : ExpressionType
     protected abstract ExpressionType Derivative(ExpressionType value);
 
     protected abstract RealNumbers EvaluateUnary(RealNumbers x);
-
-
+    
     public override int Priority
     {
         get => 4;
     }
+    
+    public override bool Equals(object? obj)
+    {
+        UnaryExpression? unary = obj as UnaryExpression;
+        if (unary is null) return false;
+
+        return this.Value.Equals(unary.Value);
+    }
+
+    public override int GetHashCode() => this.Value.GetHashCode();
 }

@@ -37,6 +37,7 @@ public class Pow : BinaryExpression
     {
         if (this.Left.ToString() == "0") return "0";
         if (this.Left.ToString() == "1" || this.Right.ToString() == "0") return "1";
+        if (this.Right.ToString() == "1") return this.Left.ToString()!;
 
         (string left, string right) = this.DeterminatePriority();
 
