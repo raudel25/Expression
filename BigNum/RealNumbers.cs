@@ -3,13 +3,13 @@ namespace BigNum;
 public class RealNumbers : IComparable<RealNumbers>
 {
     private static int _precision = 20;
-    
-    public static readonly RealNumbers Real1 = new RealNumbers("1","0");
-    
-    public static readonly RealNumbers RealN1 = new RealNumbers("1","0",false);
 
-    public static readonly RealNumbers Real0 = new RealNumbers("0","0");
-    
+    public static readonly RealNumbers Real1 = new RealNumbers("1", "0");
+
+    public static readonly RealNumbers RealN1 = new RealNumbers("1", "0", false);
+
+    public static readonly RealNumbers Real0 = new RealNumbers("0", "0");
+
     internal readonly string PartDecimal;
 
     internal readonly string PartNumber;
@@ -26,7 +26,7 @@ public class RealNumbers : IComparable<RealNumbers>
 
         (string partNumber, string partDecimal) = (AuxOperations.EliminateZerosLeft(part[0]),
             part.Length == 2 ? AuxOperations.EliminateZerosRight(part[1]) : "0");
-        
+
         this.PartNumber = partNumber;
         this.PartDecimal = DeterminatePrecision(partDecimal);
         CheckZero(ref positive);
@@ -38,7 +38,7 @@ public class RealNumbers : IComparable<RealNumbers>
     {
         (partNumber, partDecimal) = (AuxOperations.EliminateZerosLeft(partNumber),
             AuxOperations.EliminateZerosRight(partDecimal));
-        
+
         this.PartNumber = partNumber;
         this.PartDecimal = DeterminatePrecision(partDecimal);
         CheckZero(ref positive);
@@ -65,7 +65,7 @@ public class RealNumbers : IComparable<RealNumbers>
         foreach (var item in number)
             if (!char.IsNumber(item))
                 return false;
-        
+
         return true;
     }
 
@@ -181,9 +181,9 @@ public class RealNumbers : IComparable<RealNumbers>
     public static bool operator >=(RealNumbers a, RealNumbers b) => a.CompareTo(b) != -1;
 
     public static bool operator <=(RealNumbers a, RealNumbers b) => a.CompareTo(b) != 1;
-    
+
     public static RealNumbers operator ++(RealNumbers a) => a + Real1;
-    
+
     public static RealNumbers operator --(RealNumbers a) => a - Real1;
 
     #endregion

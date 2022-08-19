@@ -161,7 +161,7 @@ public static class BigNumMath
     /// </summary>
     /// <param name="x">Numero entero</param>
     /// <returns>Resultado entero</returns>
-    public static IntegerNumbers Opposite(IntegerNumbers x) => new IntegerNumbers(x.PartNumber,"0", !x.Positive());
+    public static IntegerNumbers Opposite(IntegerNumbers x) => new IntegerNumbers(x.PartNumber, "0", !x.Positive());
 
     /// <summary>
     /// Determinar el opuesto de una fraccion real
@@ -175,21 +175,21 @@ public static class BigNumMath
     /// </summary>
     /// <param name="n">Numero double(C#)</param>
     /// <returns>Resultado real</returns>
-    public static RealNumbers ConvertToRealNumbers(double n) => new RealNumbers(n + "", n >= 0);
+    public static RealNumbers ConvertToRealNumbers(double n) => new RealNumbers(Math.Abs(n) + "", n >= 0);
 
     /// <summary>
     /// Convertir de entero(C#) a numero real
     /// </summary>
     /// <param name="n">Numero entero(C#)</param>
     /// <returns>Resultado entero</returns>
-    public static IntegerNumbers ConvertToIntegerNumbers(int n) => new IntegerNumbers(n + "","0", n >= 0);
+    public static IntegerNumbers ConvertToIntegerNumbers(int n) => new IntegerNumbers(Math.Abs(n) + "", "0", n >= 0);
 
     /// <summary>
     /// Convertir de real a entero
     /// </summary>
     /// <param name="n">Numero real</param>
     /// <returns>Resultado entero</returns>
-    public static IntegerNumbers RealToInteger(RealNumbers n) => new IntegerNumbers(n.PartNumber,"0", n.Positive());
+    public static IntegerNumbers RealToInteger(RealNumbers n) => new IntegerNumbers(n.PartNumber, "0", n.Positive());
 
     /// <summary>
     /// Maximo comun divisor entre 2 numeros
@@ -245,21 +245,19 @@ public static class BigNumMath
     /// </summary>
     /// <param name="x">Numero real</param>
     /// <returns>Resultado real</returns>
-    public static RealNumbers Sin(RealNumbers x) =>
-        TrigonometryOperations.SinCos(x, true);
+    public static RealNumbers Sin(RealNumbers x) => TrigonometryOperations.SinCos(x, true);
 
     /// <summary>
     /// Coseno de un numero real
     /// </summary>
     /// <param name="x">Numero real</param>
     /// <returns>Resultado real</returns>
-    public static RealNumbers Cos(RealNumbers x) =>
-        TrigonometryOperations.SinCos(x, false);
+    public static RealNumbers Cos(RealNumbers x) => TrigonometryOperations.SinCos(x, false);
 
     public static RealNumbers Asin(RealNumbers x) => TrigonometryOperations.Asin(x);
 
     public static RealNumbers Acos(RealNumbers x) => PI / new RealNumbers("2", "0") - Asin(x);
-    
+
     public static RealNumbers Atan(RealNumbers x) => TrigonometryOperations.Atan(x);
 
     public static RealNumbers Acot(RealNumbers x) => BigNumMath.PI / new RealNumbers("2", "0") - Atan(x);

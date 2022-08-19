@@ -2,12 +2,11 @@
 using BigNum;
 using Expression;
 
-
-string s = "e+e+pi^2+pi^2";
-
-ExpressionType exp = ConvertExpression.Parsing(s);
-
-Console.WriteLine(exp);
+Stopwatch crono = new Stopwatch();
+crono.Start();
+Console.WriteLine(BigNumMath.E);
+crono.Stop();
+Console.WriteLine(crono.ElapsedMilliseconds);
 
 
     
