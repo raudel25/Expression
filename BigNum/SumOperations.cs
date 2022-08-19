@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace BigNum;
 
 internal static class SumOperations
@@ -50,7 +52,8 @@ internal static class SumOperations
             ? result.Substring(0, mayorNumber)
             : result.Substring(0, mayorNumber + 1);
 
-        return new RealNumbers(AuxOperations.EliminateZerosLeft(partNumber), AuxOperations.EliminateZerosRight(partDecimal),
+        return new RealNumbers(AuxOperations.EliminateZerosLeft(partNumber),
+            AuxOperations.EliminateZerosRight(partDecimal),
             positive);
     }
 
@@ -62,7 +65,7 @@ internal static class SumOperations
     /// <returns>Resultado</returns>
     private static string Sum(string x, string y)
     {
-        string sum = "";
+        StringBuilder sum = new StringBuilder();
         bool drag = false;
         int len = x.Length;
 
@@ -72,12 +75,12 @@ internal static class SumOperations
 
             n = drag ? n + 1 : n;
             drag = n >= 10;
-            sum = (n % 10) + sum;
+            sum.Insert(0, n % 10);
         }
 
-        if (drag) sum = 1 + sum;
+        if (drag) sum.Insert(0, 1);
 
-        return sum;
+        return sum.ToString();
     }
 
     /// <summary>
@@ -88,7 +91,7 @@ internal static class SumOperations
     /// <returns>Resultado</returns>
     private static string Subtraction(string x, string y)
     {
-        string sub = "";
+        StringBuilder sub = new StringBuilder();
         bool drag = false;
         int len = x.Length;
 
@@ -99,9 +102,9 @@ internal static class SumOperations
             n = drag ? n - 1 : n;
             drag = n < 0;
             n = n < 0 ? n + 10 : n;
-            sub = n + sub;
+            sub.Insert(0, n);
         }
 
-        return sub;
+        return sub.ToString();
     }
 }

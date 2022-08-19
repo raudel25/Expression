@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace BigNum;
 
 internal static class AuxOperations
@@ -10,9 +12,12 @@ internal static class AuxOperations
     /// <returns>Cadena modificada</returns>
     internal static string AddZerosLeft(string s, int cant)
     {
-        for (int i = 0; i < cant; i++) s = 0 + s;
+        StringBuilder d = new StringBuilder();
+        for (int i = 0; i < cant; i++) d.Append("0");
 
-        return s;
+        d.Append(s);
+
+        return d.ToString();
     }
 
     /// <summary>
@@ -67,9 +72,10 @@ internal static class AuxOperations
     /// <returns>Cadena modificada</returns>
     internal static string AddZerosRight(string s, int cant)
     {
-        for (int i = 0; i < cant; i++) s = s + 0;
+        StringBuilder d = new StringBuilder(s);
+        for (int i = 0; i < cant; i++) d.Append("0");
 
-        return s;
+        return d.ToString();
     }
 
     /// <summary>

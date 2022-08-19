@@ -218,12 +218,12 @@ public static class BigNumMath
     /// <summary>
     /// Aproximacion del numero E
     /// </summary>
-    public static RealNumbers E = Constants.ConstantE();
+    public static RealNumbers E => Constants.ConstantE();
 
     /// <summary>
     /// Aproximacion del numero PI
     /// </summary>
-    public static RealNumbers PI = Constants.ConstantPI();
+    public static RealNumbers PI => Constants.ConstantPI();
 
     /// <summary>
     /// Logaritmo en base E

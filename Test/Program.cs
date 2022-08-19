@@ -4,7 +4,7 @@ using Expression;
 
 Stopwatch crono = new Stopwatch();
 crono.Start();
-Console.WriteLine(BigNumMath.E);
+Console.WriteLine(BigNumMath.PI);
 crono.Stop();
 Console.WriteLine(crono.ElapsedMilliseconds);
 

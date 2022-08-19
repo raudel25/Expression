@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace BigNum;
 
 internal static class DivisionOperations
@@ -50,28 +52,28 @@ internal static class DivisionOperations
     private static (string, IntegerNumbers) DivisionAlgorithm(IntegerNumbers x, IntegerNumbers y, bool integer,
         ref int cantDecimal)
     {
-        string result = "";
+        StringBuilder result = new StringBuilder();
         IntegerNumbers rest = IntegerNumbers.Integer0;
 
         foreach (var t in x.PartNumber)
         {
             IntegerNumbers div = new IntegerNumbers(rest.PartNumber + t, "0");
 
-            rest = DivisionImmediate(div, y, ref result);
+            rest = DivisionImmediate(div, y, result);
         }
 
         while (rest != IntegerNumbers.Integer0 && !integer)
         {
             IntegerNumbers div = new IntegerNumbers(rest.PartNumber + "0", "0");
 
-            rest = DivisionImmediate(div, y, ref result);
+            rest = DivisionImmediate(div, y, result);
 
             cantDecimal++;
 
             if (cantDecimal == _precision) break;
         }
 
-        return (result, rest);
+        return (result.ToString(), rest);
     }
 
     /// <summary>
@@ -81,7 +83,7 @@ internal static class DivisionOperations
     /// <param name="divisor">Divisor</param>
     /// <param name="result">Cociente</param>
     /// <returns>Resto de la divison</returns>
-    private static IntegerNumbers DivisionImmediate(IntegerNumbers div, IntegerNumbers divisor, ref string result)
+    private static IntegerNumbers DivisionImmediate(IntegerNumbers div, IntegerNumbers divisor, StringBuilder result)
     {
         IntegerNumbers aux = IntegerNumbers.Integer0;
         for (int j = 9; j >= 0; j--)
@@ -90,7 +92,7 @@ internal static class DivisionOperations
 
             if (aux <= div)
             {
-                result = result + j;
+                result.Append(j);
                 break;
             }
         }

@@ -135,7 +135,7 @@ public class RealNumbers : IComparable<RealNumbers>
     public override string ToString()
     {
         string sign = this.Sign == '-' ? "-" : "";
-        string partDecimal = this.PartDecimal == "0" ? "" : "." + this.PartDecimal;
+        string partDecimal = this.PartDecimal == "0" ? "" : $".{this.PartDecimal}";
 
         return $"{sign}{this.PartNumber}{partDecimal}";
     }
