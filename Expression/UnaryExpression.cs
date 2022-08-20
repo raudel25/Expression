@@ -13,7 +13,7 @@ public class NumberExpression : ExpressionType
 
     public override ExpressionType Derivative(char variable) => new NumberExpression(RealNumbers.Real0);
 
-    public override RealNumbers Evaluate(RealNumbers x) => this.Value;
+    public override RealNumbers Evaluate(List<(char, RealNumbers)> variables) => this.Value;
 
     public override string ToString() => this.Value.ToString();
 
@@ -46,7 +46,15 @@ public class VariableExpression : ExpressionType
         ? new NumberExpression(RealNumbers.Real1)
         : new NumberExpression(RealNumbers.Real0);
 
-    public override RealNumbers Evaluate(RealNumbers x) => x;
+    public override RealNumbers Evaluate(List<(char, RealNumbers)> variables)
+    {
+        foreach (var item in variables)
+        {
+            if (item.Item1 == this.Variable) return item.Item2;
+        }
+
+        throw new Exception("No se ha introducido un valor para cada variable");
+    }
 
     public override int Priority
     {
@@ -70,7 +78,7 @@ public class ConstantE : ExpressionType
 {
     public override ExpressionType Derivative(char variable) => new NumberExpression(RealNumbers.Real0);
 
-    public override RealNumbers Evaluate(RealNumbers x) => BigNumMath.E;
+    public override RealNumbers Evaluate(List<(char, RealNumbers)> variables) => BigNumMath.E;
 
     public override int Priority
     {
@@ -88,7 +96,7 @@ public class ConstantPI : ExpressionType
 {
     public override ExpressionType Derivative(char variable) => new NumberExpression(RealNumbers.Real0);
 
-    public override RealNumbers Evaluate(RealNumbers x) => BigNumMath.PI;
+    public override RealNumbers Evaluate(List<(char, RealNumbers)> variables) => BigNumMath.PI;
 
     public override int Priority
     {

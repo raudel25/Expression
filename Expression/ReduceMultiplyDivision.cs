@@ -122,8 +122,8 @@ public static class ReduceMultiplyDivision
         }
 
         if (left is NumberExpression && right is NumberExpression)
-            return new NumberExpression(BigNumMath.Pow(left.Evaluate(RealNumbers.Real0), indLeft) *
-                                        BigNumMath.Pow(right.Evaluate(RealNumbers.Real0), indRight));
+            return new NumberExpression(BigNumMath.Pow(left.Evaluate(new List<(char, RealNumbers)>()), indLeft) *
+                                        BigNumMath.Pow(right.Evaluate(new List<(char, RealNumbers)>()), indRight));
 
         return null;
     }
@@ -245,8 +245,8 @@ public static class ReduceMultiplyDivision
         }
 
         if (left is NumberExpression && right is NumberExpression)
-            return new NumberExpression(BigNumMath.Pow(left.Evaluate(RealNumbers.Real0), indLeft) /
-                                        BigNumMath.Pow(right.Evaluate(RealNumbers.Real0), indRight));
+            return new NumberExpression(BigNumMath.Pow(left.Evaluate(new List<(char, RealNumbers)>()), indLeft) /
+                                        BigNumMath.Pow(right.Evaluate(new List<(char, RealNumbers)>()), indRight));
 
         return null;
     }

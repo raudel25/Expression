@@ -1,5 +1,3 @@
-using BigNum;
-
 namespace Expression;
 
 public static class Aux
@@ -25,15 +23,20 @@ public static class Aux
         return exp.Priority == 1 ? $"-({exp})" : $"-{exp}";
     }
 
-    public static int CantVariable(ExpressionType exp)
+    /// <summary>
+    /// Determinar las varibles de una expresion
+    /// </summary>
+    /// <param name="exp">Expresion</param>
+    /// <returns>Lista de variables de la expresion</returns>
+    public static List<char> VariablesToExpression(ExpressionType exp)
     {
         HashSet<char> variables = new HashSet<char>();
-        CantVariable(exp, variables);
+        VariablesToExpression(exp, variables);
 
-        return variables.Count;
+        return variables.ToList();
     }
 
-    public static void CantVariable(ExpressionType exp, HashSet<char> variables)
+    public static void VariablesToExpression(ExpressionType exp, HashSet<char> variables)
     {
         VariableExpression? variable = exp as VariableExpression;
 
@@ -47,13 +50,13 @@ public static class Aux
 
         if (binary != null)
         {
-            CantVariable(binary.Left, variables);
-            CantVariable(binary.Right, variables);
+            VariablesToExpression(binary.Left, variables);
+            VariablesToExpression(binary.Right, variables);
             return;
         }
 
         UnaryExpression? unary = exp as UnaryExpression;
 
-        if (unary != null) CantVariable(unary.Value, variables);
+        if (unary != null) VariablesToExpression(unary.Value, variables);
     }
 }

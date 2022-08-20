@@ -118,8 +118,8 @@ internal static class ReduceSumSubtraction
         }
 
         if (left is NumberExpression && right is NumberExpression)
-            return new NumberExpression(left.Evaluate(RealNumbers.Real0) * indLeft +
-                                        right.Evaluate(RealNumbers.Real0) * indRight);
+            return new NumberExpression(left.Evaluate(new List<(char, RealNumbers)>()) * indLeft +
+                                        right.Evaluate(new List<(char, RealNumbers)>()) * indRight);
 
         return null;
     }
@@ -239,8 +239,8 @@ internal static class ReduceSumSubtraction
         }
 
         if (left is NumberExpression && right is NumberExpression)
-            return new NumberExpression(left.Evaluate(RealNumbers.Real0) * indLeft -
-                                        right.Evaluate(RealNumbers.Real0) * indRight);
+            return new NumberExpression(left.Evaluate(new List<(char, RealNumbers)>()) * indLeft -
+                                        right.Evaluate(new List<(char, RealNumbers)>()) * indRight);
 
         return null;
     }

@@ -45,7 +45,7 @@ public static class ReduceExpression
     internal static ExpressionType? Numbers(BinaryExpression binary)
     {
         if (binary.Left is NumberExpression && binary.Right is NumberExpression)
-            return new NumberExpression(binary.Evaluate(RealNumbers.Real0));
+            return new NumberExpression(binary.Evaluate(new List<(char, RealNumbers)>()));
 
         return null;
     }

@@ -14,7 +14,7 @@ public class Taylor
     /// </summary>
     public readonly RealNumbers ValueResult;
 
-    public Taylor(ExpressionType exp, RealNumbers value, RealNumbers center, int precision = 20)
+    /*public Taylor(ExpressionType exp, RealNumbers value, RealNumbers center, int precision = 20)
     {
         this.ExpressionResult = TaylorSerial(exp, center, precision);
         this.ValueResult = this.ExpressionResult.Evaluate(value);
@@ -52,5 +52,5 @@ public class Taylor
         }
 
         return taylorValue;
-    }
+    }*/
 }
