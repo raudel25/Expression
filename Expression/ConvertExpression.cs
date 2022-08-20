@@ -6,7 +6,7 @@ public static class ConvertExpression
 {
     private delegate Operators OperatorsArrayDelegate();
 
-    private static int _maxPriority = 10;
+    private static int _maxPriority = 8;
 
     private static int _maxLenOperator = 6;
 

@@ -19,7 +19,7 @@ public class NumberExpression : ExpressionType
 
     public override int Priority
     {
-        get => 9;
+        get => 7;
     }
 
     public override bool Equals(object? obj)
@@ -50,7 +50,7 @@ public class VariableExpression : ExpressionType
 
     public override int Priority
     {
-        get => 8;
+        get => 7;
     }
 
     public override bool Equals(object? obj)
@@ -74,7 +74,7 @@ public class ConstantE : ExpressionType
 
     public override int Priority
     {
-        get => 8;
+        get => 7;
     }
 
     public override string ToString() => "e";
@@ -92,7 +92,7 @@ public class ConstantPI : ExpressionType
 
     public override int Priority
     {
-        get => 8;
+        get => 7;
     }
 
     public override string ToString() => "pi";
