@@ -238,9 +238,9 @@ internal static class ReduceSumSubtraction
             return pow;
         }
 
-        if (left is NumberExpression && right is NumberExpression)
-            return new NumberExpression(left.Evaluate(new List<(char, RealNumbers)>()) * indLeft -
-                                        right.Evaluate(new List<(char, RealNumbers)>()) * indRight);
+        // if (left is NumberExpression && right is NumberExpression)
+        //     return new NumberExpression(left.Evaluate(new List<(char, RealNumbers)>()) * indLeft -
+        //                                 right.Evaluate(new List<(char, RealNumbers)>()) * indRight);
 
         return null;
     }

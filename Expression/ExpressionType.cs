@@ -132,7 +132,7 @@ public abstract class BinaryExpression : ExpressionType
     public override int GetHashCode() => this.Left.GetHashCode() * this.Right.GetHashCode();
 
     /// <summary>
-    /// Reterminar la prioridad u colocar parentesis
+    /// Reterminar la prioridad o colocar parentesis
     /// </summary>
     /// <returns>Cadenas modificadas</returns>
     protected (string, string) DeterminatePriority() => (
