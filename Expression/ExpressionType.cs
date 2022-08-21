@@ -19,6 +19,13 @@ public abstract class ExpressionType
     public abstract RealNumbers Evaluate(List<(char, RealNumbers)> variables);
 
     /// <summary>
+    /// Evaluar la expresion mediante otra expresion
+    /// </summary>
+    /// <param name="variables">Lista de variables con sus respectivas expresiones</param>
+    /// <returns>Nueva expresion</returns>
+    public abstract ExpressionType EvaluateExpression(List<(char, ExpressionType)> variables);
+
+    /// <summary>
     /// Prioridad de la operacion
     /// </summary>
     public abstract int Priority { get; }
@@ -80,11 +87,16 @@ public abstract class BinaryExpression : ExpressionType
     public override ExpressionType Derivative(char variable) => this.Derivative(variable, this.Left, this.Right);
 
     public override RealNumbers Evaluate(List<(char, RealNumbers)> variables) =>
-        this.EvaluateBinary(this.Left.Evaluate(variables), this.Right.Evaluate(variables));
+        this.Evaluate(this.Left.Evaluate(variables), this.Right.Evaluate(variables));
+
+    public override ExpressionType EvaluateExpression(List<(char, ExpressionType)> variables) =>
+        this.EvaluateExpression(this.Left.EvaluateExpression(variables), this.Right.EvaluateExpression(variables));
 
     protected abstract ExpressionType Derivative(char variable, ExpressionType left, ExpressionType right);
 
-    protected abstract RealNumbers EvaluateBinary(RealNumbers left, RealNumbers right);
+    protected abstract RealNumbers Evaluate(RealNumbers left, RealNumbers right);
+
+    protected abstract ExpressionType EvaluateExpression(ExpressionType left, ExpressionType right);
 
     protected abstract bool IsBinaryImplement();
 
@@ -145,11 +157,17 @@ public abstract class UnaryExpression : ExpressionType
         this.Derivative(this.Value) * this.Value.Derivative(variable);
 
     public override RealNumbers Evaluate(List<(char, RealNumbers)> variables) =>
-        this.EvaluateUnary(this.Value.Evaluate(variables));
+        this.Evaluate(this.Value.Evaluate(variables));
+
+    public override ExpressionType EvaluateExpression(List<(char, ExpressionType)> variables) =>
+        this.EvaluateExpression(this.Value.EvaluateExpression(variables));
+
 
     protected abstract ExpressionType Derivative(ExpressionType value);
 
-    protected abstract RealNumbers EvaluateUnary(RealNumbers x);
+    protected abstract RealNumbers Evaluate(RealNumbers x);
+
+    protected abstract ExpressionType EvaluateExpression(ExpressionType value);
 
     public override int Priority
     {

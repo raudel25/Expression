@@ -22,10 +22,13 @@ public class Log : BinaryExpression
     {
     }
 
-    protected override ExpressionType Derivative(char variable,ExpressionType left, ExpressionType right) =>
+    protected override ExpressionType Derivative(char variable, ExpressionType left, ExpressionType right) =>
         (new Ln(right) / new Ln(left)).Derivative(variable);
 
-    protected override RealNumbers EvaluateBinary(RealNumbers left, RealNumbers right) => BigNumMath.Log(left, right);
+    protected override RealNumbers Evaluate(RealNumbers left, RealNumbers right) => BigNumMath.Log(left, right);
+
+    protected override ExpressionType EvaluateExpression(ExpressionType left, ExpressionType right) =>
+        DeterminateLog(left, right);
 
     protected override bool IsBinaryImplement() => false;
 
@@ -50,10 +53,10 @@ public class Ln : Log
     {
     }
 
-    protected override ExpressionType Derivative(char variable,ExpressionType left, ExpressionType right) =>
+    protected override ExpressionType Derivative(char variable, ExpressionType left, ExpressionType right) =>
         new NumberExpression(RealNumbers.Real1) / right * right.Derivative(variable);
 
-    protected override RealNumbers EvaluateBinary(RealNumbers left, RealNumbers right) => BigNumMath.Ln(right);
+    protected override RealNumbers Evaluate(RealNumbers left, RealNumbers right) => BigNumMath.Ln(right);
 
     public override string ToString()
     {

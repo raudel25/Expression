@@ -23,7 +23,10 @@ public class Pow : BinaryExpression
     protected override ExpressionType Derivative(char variable, ExpressionType left, ExpressionType right) =>
         new PowE(right * new Ln(left)) * (right * new Ln(left)).Derivative(variable);
 
-    protected override RealNumbers EvaluateBinary(RealNumbers left, RealNumbers right) => BigNumMath.Pow(left, right);
+    protected override RealNumbers Evaluate(RealNumbers left, RealNumbers right) => BigNumMath.Pow(left, right);
+
+    protected override ExpressionType EvaluateExpression(ExpressionType left, ExpressionType right) =>
+        DeterminatePow(left, right);
 
     protected override bool IsBinaryImplement() =>
         !(this.Left.ToString() == "0" || this.Right.ToString() == "0" || this.Left.ToString() == "1");
@@ -57,8 +60,10 @@ public class PowVariable : Pow
     }
 
     protected override ExpressionType Derivative(char variable, ExpressionType left, ExpressionType right) =>
-        right * new PowVariable((VariableExpression) left,
-            new NumberExpression(right.Evaluate(new List<(char, RealNumbers)>()) - RealNumbers.Real1));
+        variable == ((VariableExpression) this.Left).Variable
+            ? right * new PowVariable((VariableExpression) left,
+                new NumberExpression(right.Evaluate(new List<(char, RealNumbers)>()) - RealNumbers.Real1))
+            : new NumberExpression(RealNumbers.Real0);
 }
 
 public class PowE : Pow

@@ -11,7 +11,9 @@ public class Sum : BinaryExpression
     protected override ExpressionType Derivative(char variable, ExpressionType left, ExpressionType right) =>
         left.Derivative(variable) + right.Derivative(variable);
 
-    protected override RealNumbers EvaluateBinary(RealNumbers left, RealNumbers right) => left + right;
+    protected override RealNumbers Evaluate(RealNumbers left, RealNumbers right) => left + right;
+
+    protected override ExpressionType EvaluateExpression(ExpressionType left, ExpressionType right) => left + right;
 
     protected override bool IsBinaryImplement() => !(this.Left.ToString() == "0" || this.Right.ToString() == "0");
 
@@ -47,7 +49,9 @@ public class Subtraction : BinaryExpression
     protected override ExpressionType Derivative(char variable, ExpressionType left, ExpressionType right) =>
         left.Derivative(variable) - right.Derivative(variable);
 
-    protected override RealNumbers EvaluateBinary(RealNumbers left, RealNumbers right) => left - right;
+    protected override RealNumbers Evaluate(RealNumbers left, RealNumbers right) => left - right;
+
+    protected override ExpressionType EvaluateExpression(ExpressionType left, ExpressionType right) => left - right;
 
     protected override bool IsBinaryImplement() => !(this.Left.ToString() == "0" || this.Right.ToString() == "0");
 
@@ -79,7 +83,9 @@ public class Multiply : BinaryExpression
     protected override ExpressionType Derivative(char variable, ExpressionType left, ExpressionType right) =>
         left.Derivative(variable) * right + left * right.Derivative(variable);
 
-    protected override RealNumbers EvaluateBinary(RealNumbers left, RealNumbers right) => left * right;
+    protected override RealNumbers Evaluate(RealNumbers left, RealNumbers right) => left * right;
+
+    protected override ExpressionType EvaluateExpression(ExpressionType left, ExpressionType right) => left * right;
 
     protected override bool IsBinaryImplement()
     {
@@ -95,11 +101,11 @@ public class Multiply : BinaryExpression
         get => 2;
     }
 
-    
+
     public override bool Equals(object? obj) => EqualsCommutative(obj);
 
     public override int GetHashCode() => base.GetHashCode();
-    
+
     public override string ToString()
     {
         if (this.Left.ToString() == "0" || this.Right.ToString() == "0") return "0";
@@ -130,7 +136,9 @@ public class Division : BinaryExpression
     protected override ExpressionType Derivative(char variable, ExpressionType left, ExpressionType right) =>
         (left.Derivative(variable) * right - left * right.Derivative(variable)) / (right * right);
 
-    protected override RealNumbers EvaluateBinary(RealNumbers left, RealNumbers right) => left / right;
+    protected override RealNumbers Evaluate(RealNumbers left, RealNumbers right) => left / right;
+
+    protected override ExpressionType EvaluateExpression(ExpressionType left, ExpressionType right) => left / right;
 
     protected override bool IsBinaryImplement() => !(this.Left.ToString() == "0" || this.Right.ToString() == "1");
 

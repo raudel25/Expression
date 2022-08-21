@@ -2,10 +2,13 @@
 using BigNum;
 using Expression;
 
-string s = "1+e+4*e+a";
+string s = "ln(x+y)";
 ExpressionType e = ConvertExpression.Parsing(s);
-Console.WriteLine(e);
-Console.WriteLine(e.Evaluate(new List<(char, RealNumbers)>(){('a',RealNumbers.Real1),('b',RealNumbers.Real1)}));
+Console.WriteLine(e.EvaluateExpression(new List<(char, ExpressionType)>(){('x',new Sin(new VariableExpression('x')))}));
+
+// List<(char, RealNumbers)> a = new List<(char, RealNumbers)>() {('x', RealNumbers.Real1), ('y', RealNumbers.Real1)};
+//
+// Taylor t = new Taylor(e, a, a, 3);
 
 
 
