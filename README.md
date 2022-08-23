@@ -11,13 +11,13 @@ genera dicha expresión.
 El proyecto está implementado en C# 10 y .NET Core 6.0, para ejecutar el proyecto, solo debe escribir en consola:
 
 ```bash
-make dev
+make
 ```
 
 si estas en linux y
 
 ```bash
-dotnet run --project Test
+dotnet run --project UserInterface
 ```
 
 si estas en windows.
