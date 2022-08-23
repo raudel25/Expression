@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BigNum", "BigNum\BigNum.csproj", "{31B57FC4-9BA1-44AA-9F63-7A21C135B79C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{E61EDBA9-548D-4B32-84B4-46D9487DBCAD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserInterface", "UserInterface\UserInterface.csproj", "{E61EDBA9-548D-4B32-84B4-46D9487DBCAD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Expression", "Expression\Expression.csproj", "{E061D6ED-B10A-4E64-BEB5-D2C39500E185}"
 EndProject

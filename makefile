@@ -1,2 +1,2 @@
-dev:	
-		dotnet run --project Test
+run:	
+		dotnet run --project UserInterface
