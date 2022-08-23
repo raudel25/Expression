@@ -51,6 +51,16 @@ public class Pow : BinaryExpression
 
         return $"{left} ^ {right}";
     }
+
+    public override bool Equals(object? obj)
+    {
+        Pow? binary = obj as Pow;
+        if (binary is null) return false;
+
+        return this.Left.Equals(binary.Left) && this.Right.Equals(binary.Right);
+    }
+
+    public override int GetHashCode() => 6 * this.Left.GetHashCode() * this.Right.GetHashCode();
 }
 
 public class PowVariable : Pow

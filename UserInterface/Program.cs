@@ -77,7 +77,7 @@ static void Derivative(ExpressionType exp)
     }
 
     ExpressionType derivative = exp.Derivative(variable[0]);
-    ExpressionResult(derivative);
+    ExpressionResult(ReduceExpression.Reduce(derivative));
 }
 
 static void Evaluate(ExpressionType exp)
@@ -96,7 +96,7 @@ static void EvaluateFunc(ExpressionType exp)
     Show(exp);
     List<(char, ExpressionType)> evaluate = DeterminateVariablesFunc(exp);
 
-    ExpressionResult(exp.EvaluateExpression(evaluate));
+    ExpressionResult(ReduceExpression.Reduce(exp.EvaluateExpression(evaluate)));
 }
 
 static void Taylor(ExpressionType exp)
@@ -111,7 +111,7 @@ static void Taylor(ExpressionType exp)
     while (!int.TryParse(Console.ReadLine(), out cant)) Error();
 
     Taylor taylor = new Taylor(exp, evaluate, cant);
-    ExpressionResult(taylor.ExpressionResult);
+    ExpressionResult(ReduceExpression.Reduce(taylor.ExpressionResult));
 }
 
 static void ExpressionResult(ExpressionType exp)

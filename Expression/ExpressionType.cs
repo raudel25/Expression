@@ -107,30 +107,6 @@ public abstract class BinaryExpression : ExpressionType
         return IsBinaryImplement();
     }
 
-    public override bool Equals(object? obj)
-    {
-        BinaryExpression? binary = obj as BinaryExpression;
-        if (binary is null) return false;
-
-        return this.Left.Equals(binary.Left) && this.Right.Equals(binary.Right);
-    }
-
-    /// <summary>
-    /// Determinar la igualdad de expresiones conmutativas
-    /// </summary>
-    /// <param name="obj">Objeto para comparar</param>
-    /// <returns>Igualdad de las expresiones</returns>
-    protected bool EqualsCommutative(object? obj)
-    {
-        BinaryExpression? binary = obj as BinaryExpression;
-        if (binary is null) return false;
-
-        return (this.Left.Equals(binary.Left) && this.Right.Equals(binary.Right)) ||
-               (this.Left.Equals(binary.Right) && this.Right.Equals(binary.Left));
-    }
-
-    public override int GetHashCode() => this.Left.GetHashCode() * this.Right.GetHashCode();
-
     /// <summary>
     /// Reterminar la prioridad o colocar parentesis
     /// </summary>
@@ -173,14 +149,4 @@ public abstract class UnaryExpression : ExpressionType
     {
         get => 4;
     }
-
-    public override bool Equals(object? obj)
-    {
-        UnaryExpression? unary = obj as UnaryExpression;
-        if (unary is null) return false;
-
-        return this.Value.Equals(unary.Value);
-    }
-
-    public override int GetHashCode() => this.Value.GetHashCode();
 }

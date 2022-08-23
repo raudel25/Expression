@@ -15,6 +15,16 @@ public class Sin : UnaryExpression
     protected override ExpressionType EvaluateExpression(ExpressionType value) => new Sin(value);
 
     public override string ToString() => $"sin({this.Value})";
+
+    public override bool Equals(object? obj)
+    {
+        Sin? unary = obj as Sin;
+        if (unary is null) return false;
+
+        return this.Value.Equals(unary.Value);
+    }
+
+    public override int GetHashCode() => this.Value.GetHashCode();
 }
 
 public class Cos : UnaryExpression
@@ -31,6 +41,16 @@ public class Cos : UnaryExpression
     protected override ExpressionType EvaluateExpression(ExpressionType value) => new Cos(value);
 
     public override string ToString() => $"cos({this.Value})";
+
+    public override bool Equals(object? obj)
+    {
+        Cos? unary = obj as Cos;
+        if (unary is null) return false;
+
+        return this.Value.Equals(unary.Value);
+    }
+
+    public override int GetHashCode() => 2 * this.Value.GetHashCode();
 }
 
 public class Tan : UnaryExpression
@@ -47,6 +67,16 @@ public class Tan : UnaryExpression
     protected override ExpressionType EvaluateExpression(ExpressionType value) => new Tan(value);
 
     public override string ToString() => $"tan({this.Value})";
+
+    public override bool Equals(object? obj)
+    {
+        Tan? unary = obj as Tan;
+        if (unary is null) return false;
+
+        return this.Value.Equals(unary.Value);
+    }
+
+    public override int GetHashCode() => 3 * this.Value.GetHashCode();
 }
 
 public class Cot : UnaryExpression
@@ -63,6 +93,16 @@ public class Cot : UnaryExpression
     protected override ExpressionType EvaluateExpression(ExpressionType value) => new Cot(value);
 
     public override string ToString() => $"cot({this.Value})";
+
+    public override bool Equals(object? obj)
+    {
+        Cot? unary = obj as Cot;
+        if (unary is null) return false;
+
+        return this.Value.Equals(unary.Value);
+    }
+
+    public override int GetHashCode() => 4 * this.Value.GetHashCode();
 }
 
 public class Sec : UnaryExpression
@@ -78,6 +118,16 @@ public class Sec : UnaryExpression
     protected override ExpressionType EvaluateExpression(ExpressionType value) => new Sec(value);
 
     public override string ToString() => $"sec({this.Value})";
+
+    public override bool Equals(object? obj)
+    {
+        Sec? unary = obj as Sec;
+        if (unary is null) return false;
+
+        return this.Value.Equals(unary.Value);
+    }
+
+    public override int GetHashCode() => 5 * this.Value.GetHashCode();
 }
 
 public class Csc : UnaryExpression
@@ -93,6 +143,16 @@ public class Csc : UnaryExpression
     protected override ExpressionType EvaluateExpression(ExpressionType value) => new Csc(value);
 
     public override string ToString() => $"csc({this.Value})";
+
+    public override bool Equals(object? obj)
+    {
+        Csc? unary = obj as Csc;
+        if (unary is null) return false;
+
+        return this.Value.Equals(unary.Value);
+    }
+
+    public override int GetHashCode() => 6 * this.Value.GetHashCode();
 }
 
 public class Asin : UnaryExpression
@@ -111,6 +171,16 @@ public class Asin : UnaryExpression
     protected override ExpressionType EvaluateExpression(ExpressionType value) => new Asin(value);
 
     public override string ToString() => $"arcsin({this.Value})";
+
+    public override bool Equals(object? obj)
+    {
+        Asin? unary = obj as Asin;
+        if (unary is null) return false;
+
+        return this.Value.Equals(unary.Value);
+    }
+
+    public override int GetHashCode() => 7 * this.Value.GetHashCode();
 }
 
 public class Acos : UnaryExpression
@@ -129,6 +199,16 @@ public class Acos : UnaryExpression
     protected override ExpressionType EvaluateExpression(ExpressionType value) => new Acos(value);
 
     public override string ToString() => $"arccos({this.Value})";
+
+    public override bool Equals(object? obj)
+    {
+        Acos? unary = obj as Acos;
+        if (unary is null) return false;
+
+        return this.Value.Equals(unary.Value);
+    }
+
+    public override int GetHashCode() => 8 * this.Value.GetHashCode();
 }
 
 public class Atan : UnaryExpression
@@ -147,6 +227,16 @@ public class Atan : UnaryExpression
     protected override ExpressionType EvaluateExpression(ExpressionType value) => new Atan(value);
 
     public override string ToString() => $"arctan({this.Value})";
+
+    public override bool Equals(object? obj)
+    {
+        Atan? unary = obj as Atan;
+        if (unary is null) return false;
+
+        return this.Value.Equals(unary.Value);
+    }
+
+    public override int GetHashCode() => 9 * this.Value.GetHashCode();
 }
 
 public class Acot : UnaryExpression
@@ -165,4 +255,14 @@ public class Acot : UnaryExpression
     protected override ExpressionType EvaluateExpression(ExpressionType value) => new Acot(value);
 
     public override string ToString() => $"arccot({this.Value})";
+
+    public override bool Equals(object? obj)
+    {
+        Acot? unary = obj as Acot;
+        if (unary is null) return false;
+
+        return this.Value.Equals(unary.Value);
+    }
+
+    public override int GetHashCode() => 10 * this.Value.GetHashCode();
 }

@@ -22,9 +22,16 @@ public class Sum : BinaryExpression
         get => 1;
     }
 
-    public override bool Equals(object? obj) => EqualsCommutative(obj);
+    public override bool Equals(object? obj)
+    {
+        Sum? binary = obj as Sum;
+        if (binary is null) return false;
 
-    public override int GetHashCode() => base.GetHashCode();
+        return (this.Left.Equals(binary.Left) && this.Right.Equals(binary.Right)) ||
+               (this.Left.Equals(binary.Right) && this.Right.Equals(binary.Left));
+    }
+
+    public override int GetHashCode() => this.Left.GetHashCode() * this.Right.GetHashCode();
 
     public override string ToString()
     {
@@ -72,6 +79,16 @@ public class Subtraction : BinaryExpression
 
         return $"{left} - {right}";
     }
+
+    public override bool Equals(object? obj)
+    {
+        Subtraction? binary = obj as Subtraction;
+        if (binary is null) return false;
+
+        return this.Left.Equals(binary.Left) && this.Right.Equals(binary.Right);
+    }
+
+    public override int GetHashCode() => 2 * this.Left.GetHashCode() * this.Right.GetHashCode();
 }
 
 public class Multiply : BinaryExpression
@@ -101,10 +118,16 @@ public class Multiply : BinaryExpression
         get => 2;
     }
 
+    public override bool Equals(object? obj)
+    {
+        Multiply? binary = obj as Multiply;
+        if (binary is null) return false;
 
-    public override bool Equals(object? obj) => EqualsCommutative(obj);
+        return (this.Left.Equals(binary.Left) && this.Right.Equals(binary.Right)) ||
+               (this.Left.Equals(binary.Right) && this.Right.Equals(binary.Left));
+    }
 
-    public override int GetHashCode() => base.GetHashCode();
+    public override int GetHashCode() => 3 * this.Left.GetHashCode() * this.Right.GetHashCode();
 
     public override string ToString()
     {
@@ -162,4 +185,14 @@ public class Division : BinaryExpression
 
         return $"{left} / {right}";
     }
+
+    public override bool Equals(object? obj)
+    {
+        Division? binary = obj as Division;
+        if (binary is null) return false;
+
+        return this.Left.Equals(binary.Left) && this.Right.Equals(binary.Right);
+    }
+
+    public override int GetHashCode() => 4 * this.Left.GetHashCode() * this.Right.GetHashCode();
 }

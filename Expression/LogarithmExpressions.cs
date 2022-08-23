@@ -45,6 +45,16 @@ public class Log : BinaryExpression
 
         return $"log({left})({right})";
     }
+
+    public override bool Equals(object? obj)
+    {
+        Log? binary = obj as Log;
+        if (binary is null) return false;
+
+        return this.Left.Equals(binary.Left) && this.Right.Equals(binary.Right);
+    }
+
+    public override int GetHashCode() => 5 * this.Left.GetHashCode() * this.Right.GetHashCode();
 }
 
 public class Ln : Log
