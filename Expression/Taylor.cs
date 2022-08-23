@@ -9,12 +9,7 @@ public class Taylor
     /// </summary>
     public readonly ExpressionType ExpressionResult;
 
-    /// <summary>
-    /// Valor de la expresion resultante
-    /// </summary>
-    public readonly RealNumbers ValueResult;
-
-    public Taylor(ExpressionType exp, List<(char, RealNumbers)> value, List<(char, RealNumbers)> center,
+    public Taylor(ExpressionType exp, List<(char, RealNumbers)> center,
         int precision)
     {
         if (!Check(center, exp))
@@ -25,7 +20,6 @@ public class Taylor
         foreach (var item in center) centerExpression.Add((item.Item1, new NumberExpression(item.Item2)));
 
         this.ExpressionResult = TaylorSerial(exp, centerExpression, precision);
-        this.ValueResult = this.ExpressionResult.Evaluate(value);
     }
 
     /// <summary>

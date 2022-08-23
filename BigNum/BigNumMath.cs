@@ -191,6 +191,8 @@ public static class BigNumMath
     /// <returns>Resultado entero</returns>
     public static IntegerNumbers RealToInteger(RealNumbers n) => new IntegerNumbers(n.PartNumber, "0", n.Positive());
 
+    public static bool IsInteger(RealNumbers n) => n.PartDecimal == "0";
+
     /// <summary>
     /// Maximo comun divisor entre 2 numeros
     /// </summary>

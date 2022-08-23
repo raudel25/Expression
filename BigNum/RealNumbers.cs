@@ -46,7 +46,7 @@ public class RealNumbers : IComparable<RealNumbers>
         this.Abs = positive ? this : new RealNumbers(this.PartNumber, this.PartDecimal);
     }
 
-    private bool Check(string s)
+    public static bool Check(string s)
     {
         string[] part = s.Split('.');
 
@@ -60,7 +60,7 @@ public class RealNumbers : IComparable<RealNumbers>
         return true;
     }
 
-    protected bool CheckNumber(string number)
+    protected static bool CheckNumber(string number)
     {
         foreach (var item in number)
             if (!char.IsNumber(item))

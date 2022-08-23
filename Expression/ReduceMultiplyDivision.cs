@@ -244,9 +244,9 @@ public static class ReduceMultiplyDivision
             return pow;
         }
 
-        if (left is NumberExpression && right is NumberExpression)
-            return new NumberExpression(BigNumMath.Pow(left.Evaluate(new List<(char, RealNumbers)>()), indLeft) /
-                                        BigNumMath.Pow(right.Evaluate(new List<(char, RealNumbers)>()), indRight));
+        // if (left is NumberExpression && right is NumberExpression)
+        //     return new NumberExpression(BigNumMath.Pow(left.Evaluate(new List<(char, RealNumbers)>()), indLeft) /
+        //                                 BigNumMath.Pow(right.Evaluate(new List<(char, RealNumbers)>()), indRight));
 
         return null;
     }
