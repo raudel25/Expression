@@ -1,20 +1,25 @@
 ﻿using BigNum;
 using Expression;
 
-while (true)
+UserInterface();
+
+static void UserInterface()
 {
-    Console.Clear();
-    Console.WriteLine("Introduzca su expresion o s para salir");
+    while (true)
+    {
+        Console.Clear();
+        Console.WriteLine("Introduzca su expresion o s para salir");
 
-    string? expTxt = Console.ReadLine();
+        string? expTxt = Console.ReadLine();
 
-    if (expTxt == "s") break;
-    if (expTxt is null) continue;
+        if (expTxt == "s") break;
+        if (expTxt is null) continue;
 
-    ExpressionType? exp = ConvertExpression.Parsing(expTxt);
+        ExpressionType? exp = ConvertExpression.Parsing(expTxt);
 
-    if (exp is null) Console.WriteLine("La expresion introducida no es correcta");
-    else Options(exp);
+        if (exp is null) Console.WriteLine("La expresion introducida no es correcta");
+        else Options(exp);
+    }
 }
 
 static void Options(ExpressionType exp)
@@ -24,7 +29,7 @@ static void Options(ExpressionType exp)
     while (!stop)
     {
         Console.Clear();
-        Console.WriteLine(exp);
+        Show(exp);
         Console.WriteLine(
             "Introduza d para derivar su expresion, e para evaluar la expresion, f para sustituir por otra expresion, t para hallar el polinomio de taylor o s para volver");
 
@@ -56,10 +61,11 @@ static void Error()
     Thread.Sleep(500);
 }
 
-static void Show(ExpressionType exp)
+static void Show(ExpressionType exp, string message = "")
 {
     Console.Clear();
     Console.WriteLine(exp);
+    if(message!="") Console.WriteLine(message);
 }
 
 static void Derivative(ExpressionType exp)
@@ -102,8 +108,7 @@ static void EvaluateFunc(ExpressionType exp)
 static void Taylor(ExpressionType exp)
 {
     Show(exp);
-    Console.WriteLine("Introduzca el centro");
-    List<(char, RealNumbers)> evaluate = DeterminateVariables(exp);
+    List<(char, RealNumbers)> evaluate = DeterminateVariables(exp,"Introduzca los valores del centro");
 
     Show(exp);
     Console.WriteLine("Introduzca la cantidad de terminos");
@@ -125,9 +130,9 @@ static void ExpressionResult(ExpressionType exp)
     if (s == "a") Options(exp);
 }
 
-static List<(char, RealNumbers)> DeterminateVariables(ExpressionType exp)
+static List<(char, RealNumbers)> DeterminateVariables(ExpressionType exp,string message="")
 {
-    Console.WriteLine("Ingrese los valores de las variables");
+    if (message == "") message = "Ingrese los valores de las variables";
     List<char> variables = Aux.VariablesToExpression(exp);
     List<(char, RealNumbers)> evaluate = new List<(char, RealNumbers)>();
 
@@ -138,7 +143,7 @@ static List<(char, RealNumbers)> DeterminateVariables(ExpressionType exp)
 
         while (true)
         {
-            Show(exp);
+            Show(exp,message);
             Console.Write($"{item} = ");
 
             s = Console.ReadLine();
@@ -163,7 +168,7 @@ static List<(char, RealNumbers)> DeterminateVariables(ExpressionType exp)
 
 static List<(char, ExpressionType)> DeterminateVariablesFunc(ExpressionType exp)
 {
-    Console.WriteLine("Ingrese los valores de las variables");
+    string message = "Ingrese los valores de las variables";
     List<char> variables = Aux.VariablesToExpression(exp);
     List<(char, ExpressionType)> evaluate = new List<(char, ExpressionType)>();
 
@@ -174,7 +179,7 @@ static List<(char, ExpressionType)> DeterminateVariablesFunc(ExpressionType exp)
 
         while (true)
         {
-            Show(exp);
+            Show(exp, message);
             Console.Write($"{item} = ");
 
             s = Console.ReadLine();
