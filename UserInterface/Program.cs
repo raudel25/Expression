@@ -102,6 +102,7 @@ static void EvaluateFunc(ExpressionType exp)
 static void Taylor(ExpressionType exp)
 {
     Show(exp);
+    Console.WriteLine("Introduzca el centro");
     List<(char, RealNumbers)> evaluate = DeterminateVariables(exp);
 
     Show(exp);

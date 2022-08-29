@@ -1,3 +1,5 @@
+using BigNum;
+
 namespace Expression;
 
 public static class Aux
@@ -58,5 +60,18 @@ public static class Aux
         UnaryExpression? unary = exp as UnaryExpression;
 
         if (unary != null) VariablesToExpression(unary.Value, variables);
+    }
+    
+    /// <summary>
+    /// Determinar si la expresion es completamente numerica
+    /// </summary>
+    /// <param name="binary">Expresion binaria</param>
+    /// <returns>Expresion resultante(si es null es que no se pudo reducir)</returns>
+    internal static NumberExpression? Numbers(BinaryExpression binary)
+    {
+        if (binary.Left is NumberExpression && binary.Right is NumberExpression)
+            return new NumberExpression(binary.Evaluate(new List<(char, RealNumbers)>()));
+
+        return null;
     }
 }

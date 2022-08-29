@@ -148,7 +148,7 @@ internal static class ReduceSumSubtraction
     internal static ExpressionType? ReduceSubtractionSimple(BinaryExpression binary)
     {
         if (binary.Left.Equals(new NumberExpression(RealNumbers.Real0)))
-            return new NumberExpression(RealNumbers.RealN1) * binary.Right;
+            return ReduceMultiplyDivision.ReduceMultiply(new NumberExpression(RealNumbers.RealN1) * binary.Right);
         if (binary.Right.Equals(new NumberExpression(RealNumbers.Real0))) return binary.Left;
 
         return null;

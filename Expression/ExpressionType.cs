@@ -126,7 +126,7 @@ public abstract class UnaryExpression : ExpressionType
 
     public UnaryExpression(ExpressionType value)
     {
-        this.Value = value;
+        this.Value = ReduceExpression.Reduce(value);
     }
 
     public override ExpressionType Derivative(char variable) =>

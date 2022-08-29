@@ -115,7 +115,7 @@ public static class ReduceMultiplyDivision
         if (left.Equals(right))
         {
             BinaryExpression pow = Pow.DeterminatePow(left, new NumberExpression(indLeft + indRight));
-            aux = ReduceExpression.ReducePowSimple(pow);
+            aux = ReducePowLogarithm.ReducePowSimple(pow);
             if (aux is not null) return aux;
 
             return pow;
@@ -238,7 +238,7 @@ public static class ReduceMultiplyDivision
         if (left.Equals(right))
         {
             BinaryExpression pow = Pow.DeterminatePow(left, new NumberExpression(indLeft - indRight));
-            aux = ReduceExpression.ReducePowSimple(pow);
+            aux = ReducePowLogarithm.ReducePowSimple(pow);
             if (aux is not null) return aux;
 
             return pow;
