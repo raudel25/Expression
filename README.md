@@ -180,13 +180,15 @@ debe realizarse primero).
 Prioridad 1:
 
 - Suma (**x + y**): efectúa la suma entre dos expresiones.
-- Resta (**x - y**): efectúa la resta entre dos expresiones, si actúa sobre una sola expresión, devuelve su opuesto(**-x**).
+- Resta (**x - y**): efectúa la resta entre dos expresiones, si actúa sobre una sola expresión, devuelve su opuesto(**
+  -x**).
 
 Prioridad 2:
 
 - Multiplicación (**x * y**): efectúa la multiplicación entre dos expresiones.
 
 Prioridad 3:
+
 - División (**x / y**): efectúa la división entre dos expresiones.
 
 Prioridad 4:
@@ -219,6 +221,7 @@ Prioridad 7:
 - Constante $e$ (**e**): número $e$.
 
 ### ReduceExpression
+
 Para acortar el árbol de expresiones la biblioteca cuenta con la clase `ReduceExpression`, que se encarga de
 reducir las expresiones (ejem: $a\cdot 1=1$ ó $a+0=a$). Para ello cada operación cuenta con una implementación de
 como reducirse bajo ciertas condiciones.

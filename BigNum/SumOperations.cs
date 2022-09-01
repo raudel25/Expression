@@ -71,7 +71,7 @@ internal static class SumOperations
 
         for (int i = 0; i < len; i++)
         {
-            int n = int.Parse(x[len - 1 - i] + "") + int.Parse(y[len - 1 - i] + "");
+            int n = x[len - 1 - i] - 48 + y[len - 1 - i] - 48;
 
             n = drag ? n + 1 : n;
             drag = n >= 10;
@@ -97,7 +97,7 @@ internal static class SumOperations
 
         for (int i = 0; i < len; i++)
         {
-            int n = int.Parse(x[len - 1 - i] + "") - int.Parse(y[len - 1 - i] + "");
+            int n = x[len - 1 - i] - 48 - (y[len - 1 - i] - 48);
 
             n = drag ? n - 1 : n;
             drag = n < 0;

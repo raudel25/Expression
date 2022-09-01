@@ -65,7 +65,7 @@ static void Show(ExpressionType exp, string message = "")
 {
     Console.Clear();
     Console.WriteLine(exp);
-    if(message!="") Console.WriteLine(message);
+    if (message != "") Console.WriteLine(message);
 }
 
 static void Derivative(ExpressionType exp)
@@ -108,7 +108,7 @@ static void EvaluateFunc(ExpressionType exp)
 static void Taylor(ExpressionType exp)
 {
     Show(exp);
-    List<(char, RealNumbers)> evaluate = DeterminateVariables(exp,"Introduzca los valores del centro");
+    List<(char, RealNumbers)> evaluate = DeterminateVariables(exp, "Introduzca los valores del centro");
 
     Show(exp);
     Console.WriteLine("Introduzca la cantidad de terminos");
@@ -130,7 +130,7 @@ static void ExpressionResult(ExpressionType exp)
     if (s == "a") Options(exp);
 }
 
-static List<(char, RealNumbers)> DeterminateVariables(ExpressionType exp,string message="")
+static List<(char, RealNumbers)> DeterminateVariables(ExpressionType exp, string message = "")
 {
     if (message == "") message = "Ingrese los valores de las variables";
     List<char> variables = Aux.VariablesToExpression(exp);
@@ -143,7 +143,7 @@ static List<(char, RealNumbers)> DeterminateVariables(ExpressionType exp,string 
 
         while (true)
         {
-            Show(exp,message);
+            Show(exp, message);
             Console.Write($"{item} = ");
 
             s = Console.ReadLine();

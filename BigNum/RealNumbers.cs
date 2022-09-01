@@ -103,8 +103,8 @@ public class RealNumbers : IComparable<RealNumbers>
 
         for (int i = 0; i < m.PartNumber.Length; i++)
         {
-            int x = int.Parse(m.PartNumber[i] + "");
-            int y = int.Parse(n.PartNumber[i] + "");
+            int x = m.PartNumber[i] - 48;
+            int y = n.PartNumber[i] - 48;
 
             if (x > y) return 1;
             if (x < y) return -1;
@@ -112,8 +112,8 @@ public class RealNumbers : IComparable<RealNumbers>
 
         for (int i = 0; i < Math.Min(m.PartDecimal.Length, n.PartDecimal.Length); i++)
         {
-            int x = int.Parse(m.PartDecimal[i] + "");
-            int y = int.Parse(n.PartDecimal[i] + "");
+            int x = m.PartDecimal[i] - 48;
+            int y = n.PartDecimal[i] - 48;
 
             if (x > y) return 1;
             if (x < y) return -1;
