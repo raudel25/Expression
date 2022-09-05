@@ -177,6 +177,8 @@ public class Division : BinaryExpression
 
         (string left, string right) = this.DeterminatePriority();
 
+        if (this.Right is Division) right = Aux.Colocated(right);
+
         (bool leftOpposite, bool rightOpposite) = (left[0] == '-', right[0] == '-');
 
         if (leftOpposite && rightOpposite)

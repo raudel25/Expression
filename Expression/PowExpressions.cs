@@ -44,6 +44,8 @@ public class Pow : BinaryExpression
 
         (string left, string right) = this.DeterminatePriority();
 
+        if (this.Right is Pow) right = Aux.Colocated(right);
+
         (bool leftOpposite, bool rightOpposite) = (left[0] == '-', right[0] == '-');
 
         if (leftOpposite) return $"{Aux.Colocated(left)} ^ {right}";
