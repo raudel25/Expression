@@ -167,7 +167,7 @@ public class Division : BinaryExpression
 
     public override int Priority
     {
-        get => 3;
+        get => 2;
     }
 
     public override string ToString()

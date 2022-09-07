@@ -147,6 +147,6 @@ public abstract class UnaryExpression : ExpressionType
 
     public override int Priority
     {
-        get => 4;
+        get => 5;
     }
 }

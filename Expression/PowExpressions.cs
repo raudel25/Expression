@@ -33,7 +33,7 @@ public class Pow : BinaryExpression
 
     public override int Priority
     {
-        get => 4;
+        get => 3;
     }
 
     public override string ToString()

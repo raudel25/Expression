@@ -34,7 +34,7 @@ public class Log : BinaryExpression
 
     public override int Priority
     {
-        get => 5;
+        get => 4;
     }
 
     public override string ToString()
