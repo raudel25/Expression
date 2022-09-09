@@ -6,9 +6,8 @@ public class Pow : BinaryExpression
 {
     public static Pow DeterminatePow(ExpressionType left, ExpressionType right)
     {
-        (VariableExpression? variable, NumberExpression? number) =
-            (left as VariableExpression, right as NumberExpression);
-        if (variable != null && number != null) return new PowVariable(variable, number);
+        NumberExpression? number = right as NumberExpression;
+        if (number != null) return new PowExponentNumber(left, number);
 
         ConstantE? e = left as ConstantE;
         if (e != null) return new PowE(right);
@@ -65,17 +64,15 @@ public class Pow : BinaryExpression
     public override int GetHashCode() => 6 * this.Left.GetHashCode() * this.Right.GetHashCode();
 }
 
-public class PowVariable : Pow
+public class PowExponentNumber : Pow
 {
-    public PowVariable(VariableExpression variable, NumberExpression number) : base(variable, number)
+    public PowExponentNumber(ExpressionType exp, NumberExpression number) : base(exp, number)
     {
     }
 
-    protected override ExpressionType Derivative(char variable, ExpressionType left, ExpressionType right) =>
-        variable == ((VariableExpression) this.Left).Variable
-            ? right * new PowVariable((VariableExpression) left,
-                new NumberExpression(right.Evaluate(new List<(char, RealNumbers)>()) - RealNumbers.Real1))
-            : new NumberExpression(RealNumbers.Real0);
+    protected override ExpressionType Derivative(char variable, ExpressionType left, ExpressionType right) => right *
+        new PowExponentNumber(left, new NumberExpression(((NumberExpression) right).Value - RealNumbers.Real1)) *
+        left.Derivative(variable);
 }
 
 public class PowE : Pow
