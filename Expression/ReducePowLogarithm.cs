@@ -23,6 +23,22 @@ internal static class ReducePowLogarithm
             if (log.Left.Equals(binary.Left)) return log.Right;
         }
 
+        Multiply? mult = binary.Left as Multiply;
+        if (mult is not null)
+        {
+            if (binary.Right is NumberExpression && (mult.Left is NumberExpression || mult.Right is NumberExpression))
+                return ReduceMultiplyDivision.ReduceMultiply(Pow.DeterminatePow(mult.Left, binary.Right) *
+                                                             Pow.DeterminatePow(mult.Right, binary.Right));
+        }
+
+        Division? div = binary.Left as Division;
+        if (div is not null)
+        {
+            if (binary.Right is NumberExpression && (div.Left is NumberExpression || div.Right is NumberExpression))
+                return ReduceMultiplyDivision.ReduceDivision(Pow.DeterminatePow(div.Left, binary.Right) /
+                                                             Pow.DeterminatePow(div.Right, binary.Right));
+        }
+
         return binary;
     }
 
