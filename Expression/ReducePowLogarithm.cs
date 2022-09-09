@@ -11,6 +11,19 @@ internal static class ReducePowLogarithm
     /// <returns>Expresion resultante</returns>
     internal static ExpressionType ReducePow(BinaryExpression binary)
     {
+        ExpressionType? aux = ReducePowPossible(binary);
+        if (aux is not null) return aux;
+
+        return binary;
+    }
+
+    /// <summary>
+    /// Determina si es posible reducir una potencia
+    /// </summary>
+    /// <param name="binary">Expresion binaria</param>
+    /// <returns>Expresion resultante(si es null no es posible)</returns>
+    private static ExpressionType? ReducePowPossible(BinaryExpression binary)
+    {
         ExpressionType? aux = ReducePowSimple(binary);
         if (aux is not null) return aux;
 
@@ -39,7 +52,25 @@ internal static class ReducePowLogarithm
                                                              Pow.DeterminatePow(div.Right, binary.Right));
         }
 
-        return binary;
+        mult = binary.Right as Multiply;
+        if (mult is not null)
+        {
+            aux = ReducePowPossible(Pow.DeterminatePow(binary.Left, mult.Right));
+            if (aux is not null) return ReducePow(Pow.DeterminatePow(aux,mult.Left));
+            
+            aux = ReducePowPossible(Pow.DeterminatePow(binary.Left, mult.Left));
+            if (aux is not null) return ReducePow(Pow.DeterminatePow(aux,mult.Right));
+        }
+        
+        div = binary.Right as Division;
+        if (div is not null)
+        {
+            aux = ReducePowPossible(Pow.DeterminatePow(binary.Left, div.Left));
+            if (aux is not null)
+                return ReducePow(Pow.DeterminatePow(aux, new NumberExpression(RealNumbers.Real1) / div.Right));
+        }
+
+        return null;
     }
 
     /// <summary>
