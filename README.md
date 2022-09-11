@@ -145,8 +145,7 @@ public static RealNumbers Acos(RealNumbers x) => PI / new RealNumbers("2", "0") 
 ```
 
 - Arcotangente: Se aproxima mediante la serie de <a href="https://es.wikipedia.org/wiki/Serie_de_Taylor">Taylor</a> de
-  la función $arctan(x)$, con $|x| \leq 1$, si $|x| > 1$ se utiliza la siguiente identidad $arctan(x)={\pi \over
-  2}-arctan({1 \over x})$.
+  la función $arctan(x)$, con $|x| \leq 1$, si $|x| > 1$ se utiliza la siguiente identidad $arctan(x)={\pi \over 2}-arctan({1 \over x})$.
 
 ```csharp
 public static RealNumbers Atan(RealNumbers x) => TrigonometryOperations.Atan(x);
@@ -220,6 +219,6 @@ Prioridad 6:
 ### ReduceExpression
 
 Para acortar el árbol de expresiones la biblioteca cuenta con la clase `ReduceExpression`, que se encarga de
-reducir las expresiones (ejem: $a\cdot 1=1$ ó $a+0=a$). Para ello cada operación cuenta con una implementación de
+reducir las expresiones (ejem: $a\cdot 1=a$ ó $a+0=a$). Para ello cada operación cuenta con una implementación de
 como reducirse bajo ciertas condiciones.
 
