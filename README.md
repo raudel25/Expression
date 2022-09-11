@@ -3,7 +3,7 @@
 Este proyecto tiene como objetivo crear un generador de expresiones matemáticas e implementar la
 biblioteca `BigNum`, la cual cual se encarga de realizar los cálculos que generan las expresiones con un nivel de
 precisión un poco mas elevado que las bibliotecas ofrecidas por el lenguaje. Cuenta con la posibilidad de generar
-expresiones matemáticas dadas mediante una cadena de texto, hallar la derivada de dicha y los valores numéricos que
+expresiones matemáticas dadas mediante una cadena de texto, hallar la derivada y los valores numéricos que
 genera dicha expresión.
 
 ## Dependencias
@@ -186,21 +186,18 @@ Prioridad 1:
 Prioridad 2:
 
 - Multiplicación (**x * y**): efectúa la multiplicación entre dos expresiones.
+- División (**x / y**): efectúa la división entre dos expresiones.
 
 Prioridad 3:
 
-- División (**x / y**): efectúa la división entre dos expresiones.
-
-Prioridad 4:
-
 - Potencia (**x ^ y**): efectúa la exponenciasión entre dos expresiones.
 
-Prioridad 5:
+Prioridad 4:
 
 - Logaritmo (**log(x)(y)**): efectúa el logaritmo **y** en base **x**.
 - Logaritmo en base $e$ (**ln(x)**): efectúa el logaritmo **x** en base $e$.
 
-Prioridad 6:
+Prioridad 5:
 
 - Seno (**sin(x)**): efectúa el seno de una expresión.
 - Coseno (**cos(x)**): efectúa el coseno de una expresión.
@@ -213,7 +210,7 @@ Prioridad 6:
 - Arcotangente (**arctan(x)**): efectúa la arcotangente de una expresión.
 - Arcocotangente (**arccot(x)**): efectúa la arcocotangente de una expresión.
 
-Prioridad 7:
+Prioridad 6:
 
 - Números (**0.98**): número real.
 - Variable (**x**): variable real.

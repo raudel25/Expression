@@ -21,7 +21,7 @@ public class NumberExpression : ExpressionType
 
     public override int Priority
     {
-        get => 7;
+        get => 6;
     }
 
     public override bool Equals(object? obj)
@@ -70,7 +70,7 @@ public class VariableExpression : ExpressionType
 
     public override int Priority
     {
-        get => 7;
+        get => 6;
     }
 
     public override bool Equals(object? obj)
@@ -91,12 +91,12 @@ public class ConstantE : ExpressionType
     public override ExpressionType Derivative(char variable) => new NumberExpression(RealNumbers.Real0);
 
     public override RealNumbers Evaluate(List<(char, RealNumbers)> variables) => BigNumMath.E;
-    
+
     public override ExpressionType EvaluateExpression(List<(char, ExpressionType)> variables) => this;
 
     public override int Priority
     {
-        get => 7;
+        get => 6;
     }
 
     public override string ToString() => "e";
@@ -111,12 +111,12 @@ public class ConstantPI : ExpressionType
     public override ExpressionType Derivative(char variable) => new NumberExpression(RealNumbers.Real0);
 
     public override RealNumbers Evaluate(List<(char, RealNumbers)> variables) => BigNumMath.PI;
-    
+
     public override ExpressionType EvaluateExpression(List<(char, ExpressionType)> variables) => this;
 
     public override int Priority
     {
-        get => 7;
+        get => 6;
     }
 
     public override string ToString() => "pi";
