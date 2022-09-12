@@ -17,7 +17,7 @@ static void UserInterface()
 
         ExpressionType? exp = ConvertExpression.Parsing(expTxt);
 
-        if (exp is null) Console.WriteLine("La expresion introducida no es correcta");
+        if (exp is null) Error("La expresion introducida no es correcta");
         else Options(exp);
     }
 }
@@ -55,10 +55,17 @@ static void Options(ExpressionType exp)
     }
 }
 
-static void Error()
+static void Error(string message = "Operacion invalida")
 {
-    Console.WriteLine("Operacion invalida");
-    Thread.Sleep(500);
+    Console.Clear();
+    Console.WriteLine(message);
+    ReturnWith();
+}
+
+static void ReturnWith()
+{
+    Console.WriteLine("Presiona cualquier tecla para volver");
+    Console.ReadLine();
 }
 
 static void Show(ExpressionType exp, string message = "")
@@ -93,8 +100,7 @@ static void Evaluate(ExpressionType exp)
 
     Show(exp);
     Console.WriteLine($"= {exp.Evaluate(evaluate)}");
-    Console.WriteLine("Presiona cualquier tecla para volver");
-    Console.ReadLine();
+    ReturnWith();
 }
 
 static void EvaluateFunc(ExpressionType exp)
@@ -156,8 +162,21 @@ static List<(char, RealNumbers)> DeterminateVariables(ExpressionType exp, string
             positive = s[0] != '-';
 
             if (RealNumbers.Check(positive ? s : s.Substring(1, s.Length - 1))) break;
+            if (s == "pi" || s == "e") break;
 
             Error();
+        }
+
+        if (s == "pi")
+        {
+            evaluate.Add((item, BigNumMath.PI));
+            continue;
+        }
+
+        if (s == "e")
+        {
+            evaluate.Add((item, BigNumMath.E));
+            continue;
         }
 
         evaluate.Add((item, new RealNumbers(s, positive)));
