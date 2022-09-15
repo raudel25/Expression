@@ -171,7 +171,7 @@ las demás expreiones.
 
 El parsing de las expresiones está basado en el
 algoritmo <a href="https://es.wikipedia.org/wiki/Algoritmo_shunting_yard">shunting_yard</a>
-y se realiza en el método `Parsing`de la clase `ConvertExpression` que recibe un `string` y devuelve un árbol
+y se realiza en el método `Parsing` de la clase `ConvertExpression` que recibe un `string` y devuelve un árbol
 de expresiones (si este es `null` la expresión no es valida). Las expresiones se manejan con el siguiente lenguaje,
 que describe los operadores usados y su nivel de prioridad (un nivel de prioridad mayor indica que la operación
 debe realizarse primero).
@@ -179,8 +179,7 @@ debe realizarse primero).
 Prioridad 1:
 
 - Suma (**x + y**): efectúa la suma entre dos expresiones.
-- Resta (**x - y**): efectúa la resta entre dos expresiones, si actúa sobre una sola expresión, devuelve su opuesto(**
-  -x**).
+- Resta (**x - y**): efectúa la resta entre dos expresiones, si actúa sobre una sola expresión, devuelve su opuesto(**-x**).
 
 Prioridad 2:
 
