@@ -106,7 +106,7 @@ public static class ConvertExpression
         }
 
         //Si no quedan operadores procedemos verificamos si la expresion es una variable o un numero
-        if (index == -1) return VariableOrNumber(s.Substring(start, end - start + 1));
+        if (index == -1) return VariableOrNumberOrFact(s.Substring(start, end - start + 1));
 
         if (operators[index].Binary) return ConvertBinary(s, start, end, visited, operators, index);
 
@@ -152,7 +152,7 @@ public static class ConvertExpression
     /// </summary>
     /// <param name="s">Cadena</param>
     /// <returns>Expresion resultante</returns>
-    private static ExpressionType? VariableOrNumber(string s)
+    private static ExpressionType? VariableOrNumberOrFact(string s)
     {
         (int start, int end) = (EliminateParentLeft(s, 0, s.Length - 1), EliminateParentRight(s, 0, s.Length - 1));
         if (start == -1 || end == -1) return null;
@@ -169,6 +169,13 @@ public static class ConvertExpression
 
         double number = 0;
         if (double.TryParse(aux, out number)) return new NumberExpression(new RealNumbers(aux));
+
+        if (aux[aux.Length - 1] == '!')
+        {
+            int integer = -1;
+            if (int.TryParse(aux.Substring(0, aux.Length - 1), out integer) && integer >= 0)
+                return new Factorial(new IntegerNumbers(aux.Substring(0, aux.Length - 1)));
+        }
 
         return null;
     }

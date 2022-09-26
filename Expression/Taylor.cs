@@ -32,8 +32,8 @@ public class Taylor
     private ExpressionType TaylorSerial(ExpressionType exp, List<(char, ExpressionType)> center, int precision)
     {
         ExpressionType taylorValue = exp.EvaluateExpression(center);
-        RealNumbers fact = RealNumbers.Real1;
-        RealNumbers index = RealNumbers.Real1;
+        IntegerNumbers fact = IntegerNumbers.Integer1;
+        IntegerNumbers index = IntegerNumbers.Integer1;
         Queue<(ExpressionType, int[])> taylorFunction = new Queue<(ExpressionType, int[])>();
         taylorFunction.Enqueue((exp, new int[center.Count]));
 
@@ -42,8 +42,10 @@ public class Taylor
         for (int i = 1; i < precision; i++)
         {
             fact *= index;
-
-            taylorValue += Derivative(taylorFunction, center, i) / new NumberExpression(fact);
+            Factorial expFact = new Factorial(index);
+            expFact.Value = fact;
+            
+            taylorValue += Derivative(taylorFunction, center, i) / expFact;
 
             index++;
         }

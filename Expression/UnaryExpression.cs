@@ -125,3 +125,53 @@ public class ConstantPI : ExpressionType
 
     public override int GetHashCode() => (int) Math.PI;
 }
+
+public class Factorial : ExpressionType
+{
+    private readonly IntegerNumbers _integer;
+
+    private IntegerNumbers _value;
+
+    public IntegerNumbers Value
+    {
+        get
+        {
+            if (_value == IntegerNumbers.IntegerN1) _value = BigNumMath.Factorial(_integer);
+
+            return _value;
+        }
+        set
+        {
+            if (_value == IntegerNumbers.IntegerN1) _value = value;
+        }
+    }
+
+    public Factorial(IntegerNumbers value)
+    {
+        this._integer = value;
+        this._value = IntegerNumbers.IntegerN1;
+    }
+
+    public override ExpressionType Derivative(char variable) => new NumberExpression(RealNumbers.Real0);
+
+    public override RealNumbers Evaluate(List<(char, RealNumbers)> variables) => this.Value;
+
+    public override ExpressionType EvaluateExpression(List<(char, ExpressionType)> variables) => this;
+
+    public override string ToString() => $"{this._integer}!";
+
+    public override int Priority
+    {
+        get => 5;
+    }
+
+    public override bool Equals(object? obj)
+    {
+        NumberExpression? exp = obj as NumberExpression;
+        if (exp is null) return false;
+
+        return exp.Value == this.Value;
+    }
+
+    public override int GetHashCode() => this.Value.GetHashCode();
+}
