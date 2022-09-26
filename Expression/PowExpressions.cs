@@ -30,10 +30,7 @@ public class Pow : BinaryExpression
     protected override bool IsBinaryImplement() =>
         !(this.Left.ToString() == "0" || this.Right.ToString() == "0" || this.Left.ToString() == "1");
 
-    public override int Priority
-    {
-        get => 3;
-    }
+    public override int Priority => 3;
 
     public override string ToString()
     {

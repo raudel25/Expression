@@ -1,5 +1,3 @@
-using BigNum;
-
 namespace Expression;
 
 public static class ReduceExpression

@@ -145,8 +145,5 @@ public abstract class UnaryExpression : ExpressionType
 
     protected abstract ExpressionType EvaluateExpression(ExpressionType value);
 
-    public override int Priority
-    {
-        get => 5;
-    }
+    public override int Priority => 5;
 }

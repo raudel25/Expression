@@ -17,10 +17,7 @@ public class Sum : BinaryExpression
 
     protected override bool IsBinaryImplement() => !(this.Left.ToString() == "0" || this.Right.ToString() == "0");
 
-    public override int Priority
-    {
-        get => 1;
-    }
+    public override int Priority => 1;
 
     public override bool Equals(object? obj)
     {
@@ -62,10 +59,7 @@ public class Subtraction : BinaryExpression
 
     protected override bool IsBinaryImplement() => !(this.Left.ToString() == "0" || this.Right.ToString() == "0");
 
-    public override int Priority
-    {
-        get => 1;
-    }
+    public override int Priority => 1;
 
     public override string ToString()
     {
@@ -113,10 +107,7 @@ public class Multiply : BinaryExpression
         return true;
     }
 
-    public override int Priority
-    {
-        get => 2;
-    }
+    public override int Priority => 2;
 
     public override bool Equals(object? obj)
     {
@@ -165,10 +156,7 @@ public class Division : BinaryExpression
 
     protected override bool IsBinaryImplement() => !(this.Left.ToString() == "0" || this.Right.ToString() == "1");
 
-    public override int Priority
-    {
-        get => 2;
-    }
+    public override int Priority => 2;
 
     public override string ToString()
     {

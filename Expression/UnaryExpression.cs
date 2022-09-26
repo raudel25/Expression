@@ -19,10 +19,7 @@ public class NumberExpression : ExpressionType
 
     public override string ToString() => this.Value.ToString();
 
-    public override int Priority
-    {
-        get => 6;
-    }
+    public override int Priority => 6;
 
     public override bool Equals(object? obj)
     {
@@ -68,10 +65,7 @@ public class VariableExpression : ExpressionType
         return this;
     }
 
-    public override int Priority
-    {
-        get => 6;
-    }
+    public override int Priority => 6;
 
     public override bool Equals(object? obj)
     {
@@ -94,10 +88,7 @@ public class ConstantE : ExpressionType
 
     public override ExpressionType EvaluateExpression(List<(char, ExpressionType)> variables) => this;
 
-    public override int Priority
-    {
-        get => 6;
-    }
+    public override int Priority => 6;
 
     public override string ToString() => "e";
 
@@ -114,10 +105,7 @@ public class ConstantPI : ExpressionType
 
     public override ExpressionType EvaluateExpression(List<(char, ExpressionType)> variables) => this;
 
-    public override int Priority
-    {
-        get => 6;
-    }
+    public override int Priority => 6;
 
     public override string ToString() => "pi";
 

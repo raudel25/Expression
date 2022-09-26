@@ -32,10 +32,7 @@ public class Log : BinaryExpression
 
     protected override bool IsBinaryImplement() => false;
 
-    public override int Priority
-    {
-        get => 4;
-    }
+    public override int Priority => 4;
 
     public override string ToString()
     {
