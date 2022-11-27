@@ -12,9 +12,12 @@ internal static class PowOperations
     {
         if (y == RealNumbers.Real0) return RealNumbers.Real1;
 
-        int cant = y.PartDecimal.Length;
-        IntegerNumbers denominator = new IntegerNumbers(AuxOperations.AddZerosRight("1", cant), "0");
-        IntegerNumbers numerator = new IntegerNumbers(y.PartNumber + y.PartDecimal, "0");
+        string[] s = y.ToString().Split('.');
+        (string partNumber, string partDecimal) = (s[0], s[1]);
+
+        int cant = partDecimal.Length;
+        IntegerNumbers denominator = new IntegerNumbers(AuxOperations.AddZerosRight("1", cant));
+        IntegerNumbers numerator = new IntegerNumbers(partNumber + partDecimal);
         IntegerNumbers mcd = BigNumMath.Mcd(numerator, denominator);
 
         RealNumbers pow = SqrtOperations.Sqrt(x, denominator / mcd);
@@ -32,7 +35,7 @@ internal static class PowOperations
     internal static RealNumbers Pow(RealNumbers x, IntegerNumbers y)
     {
         RealNumbers result = RealNumbers.Real1;
-        int pow = int.Parse(y.PartNumber);
+        int pow = int.Parse(y.ToString());
 
         for (int i = 0; i < Math.Abs(pow); i++) result *= x;
 
@@ -49,7 +52,7 @@ internal static class PowOperations
     /// <returns>Resultado fraccion real</returns>
     internal static Fraction Pow(Fraction x, IntegerNumbers pow)
     {
-        int powInt = int.Parse(pow.PartNumber);
+        int powInt = int.Parse(pow.ToString());
 
         Fraction result = new Fraction(RealNumbers.Real1, RealNumbers.Real1);
 

@@ -15,47 +15,47 @@ internal static class SumOperations
         if (x == RealNumbers.Real0) return y;
         if (y == RealNumbers.Real0) return x;
 
-        if (x.Sign == y.Sign) return SumOperation(x, y, true, x.Positive());
+        if (x.Sign == y.Sign) return new RealNumbers(Sum(x.NumberValue,y.NumberValue,x.Base10),x.Positive());
 
         int compare = x.Abs.CompareTo(y.Abs);
         if (compare == 0) return RealNumbers.Real0;
-        if (compare == 1) return SumOperation(x.Abs, y.Abs, false, x.Positive());
+        if (compare == 1) return new RealNumbers(Subtraction(x.NumberValue,y.NumberValue,x.Base10),x.Positive());
 
-        return SumOperation(y.Abs, x.Abs, false, y.Positive());
+        return new RealNumbers(Subtraction(x.NumberValue,y.NumberValue,x.Base10),y.Positive());
     }
 
-    /// <summary>
-    /// Determinar los signos y el tipo de operacion a realizar
-    /// </summary>
-    /// <param name="x">Numero real</param>
-    /// <param name="y">Numero real</param>
-    /// <param name="sum">Operacion a realizar</param>
-    /// <param name="positive">Signo del resultado</param>
-    /// <returns>Resultado real</returns>
-    private static RealNumbers SumOperation(RealNumbers x, RealNumbers y, bool sum, bool positive)
-    {
-        (string xSumDecimal, string ySumDecimal) = (x.PartDecimal, y.PartDecimal);
-        (string xSumNumber, string ySumNumber) = (x.PartNumber, y.PartNumber);
-
-        int mayorDecimal = AuxOperations.EqualZerosRight(ref xSumDecimal, ref ySumDecimal);
-        int mayorNumber = AuxOperations.EqualZerosLeft(ref xSumNumber, ref ySumNumber);
-
-        string result = sum
-            ? Sum(xSumNumber + xSumDecimal, ySumNumber + ySumDecimal)
-            : Subtraction(xSumNumber + xSumDecimal, ySumNumber + ySumDecimal);
-
-        string partDecimal = result.Length == mayorDecimal + mayorNumber
-            ? result.Substring(mayorNumber, mayorDecimal)
-            : result.Substring(mayorNumber + 1, mayorDecimal);
-
-        string partNumber = result.Length == mayorDecimal + mayorNumber
-            ? result.Substring(0, mayorNumber)
-            : result.Substring(0, mayorNumber + 1);
-
-        return new RealNumbers(AuxOperations.EliminateZerosLeft(partNumber),
-            AuxOperations.EliminateZerosRight(partDecimal),
-            positive);
-    }
+    // /// <summary>
+    // /// Determinar los signos y el tipo de operacion a realizar
+    // /// </summary>
+    // /// <param name="x">Numero real</param>
+    // /// <param name="y">Numero real</param>
+    // /// <param name="sum">Operacion a realizar</param>
+    // /// <param name="positive">Signo del resultado</param>
+    // /// <returns>Resultado real</returns>
+    // private static RealNumbers SumOperation(RealNumbers x, RealNumbers y, bool sum, bool positive)
+    // {
+    //     (string xSumDecimal, string ySumDecimal) = (x.PartDecimal, y.PartDecimal);
+    //     (string xSumNumber, string ySumNumber) = (x.PartNumber, y.PartNumber);
+    //
+    //     int mayorDecimal = AuxOperations.EqualZerosRight(ref xSumDecimal, ref ySumDecimal);
+    //     int mayorNumber = AuxOperations.EqualZerosLeft(ref xSumNumber, ref ySumNumber);
+    //
+    //     string result = sum
+    //         ? Sum(xSumNumber + xSumDecimal, ySumNumber + ySumDecimal)
+    //         : Subtraction(xSumNumber + xSumDecimal, ySumNumber + ySumDecimal);
+    //
+    //     string partDecimal = result.Length == mayorDecimal + mayorNumber
+    //         ? result.Substring(mayorNumber, mayorDecimal)
+    //         : result.Substring(mayorNumber + 1, mayorDecimal);
+    //
+    //     string partNumber = result.Length == mayorDecimal + mayorNumber
+    //         ? result.Substring(0, mayorNumber)
+    //         : result.Substring(0, mayorNumber + 1);
+    //
+    //     return new RealNumbers(AuxOperations.EliminateZerosLeft(partNumber),
+    //         AuxOperations.EliminateZerosRight(partDecimal),
+    //         positive);
+    // }
 
     /// <summary>
     /// Sumar dos cadenas
@@ -63,24 +63,25 @@ internal static class SumOperations
     /// <param name="x">Cadena</param>
     /// <param name="y">Cadena</param>
     /// <returns>Resultado</returns>
-    private static string Sum(string x, string y)
+    internal static List<long> Sum(List<long> x, List<long> y,long base10)
     {
-        StringBuilder sum = new StringBuilder();
+        (x, y) = AuxOperations.EqualZerosLeftValue(x, y);
         bool drag = false;
-        int len = x.Length;
+        int len = x.Count;
+        List<long> sum = new List<long>(len);
 
         for (int i = 0; i < len; i++)
         {
-            int n = x[len - 1 - i] - 48 + y[len - 1 - i] - 48;
+            long n = x[i] + y[i];
 
             n = drag ? n + 1 : n;
-            drag = n >= 10;
-            sum.Insert(0, n % 10);
+            drag = n >= base10;
+            sum.Add(n % base10);
         }
 
-        if (drag) sum.Insert(0, 1);
+        if (drag) sum.Add(1);
 
-        return sum.ToString();
+        return sum;
     }
 
     /// <summary>
@@ -89,22 +90,23 @@ internal static class SumOperations
     /// <param name="x">Cadena</param>
     /// <param name="y">Cadena</param>
     /// <returns>Resultado</returns>
-    private static string Subtraction(string x, string y)
+    internal static List<long> Subtraction(List<long> x, List<long> y,long base10)
     {
-        StringBuilder sub = new StringBuilder();
+        (x, y) = AuxOperations.EqualZerosLeftValue(x, y);
         bool drag = false;
-        int len = x.Length;
+        int len = x.Count;
+        List<long> sub = new List<long>(len);
 
         for (int i = 0; i < len; i++)
         {
-            int n = x[len - 1 - i] - 48 - (y[len - 1 - i] - 48);
+            long n = x[i] - y[i];
 
             n = drag ? n - 1 : n;
             drag = n < 0;
-            n = n < 0 ? n + 10 : n;
-            sub.Insert(0, n);
+            n = n < 0 ? n + base10 : n;
+            sub.Add(n);
         }
 
-        return sub.ToString();
+        return sub;
     }
 }

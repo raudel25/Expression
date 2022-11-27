@@ -2,20 +2,17 @@ namespace BigNum;
 
 public class IntegerNumbers : RealNumbers
 {
-    public static readonly IntegerNumbers Integer0 = new IntegerNumbers("0","0");
+    public static readonly IntegerNumbers Integer0 = new IntegerNumbers("0");
 
-    public static readonly IntegerNumbers Integer1 = new IntegerNumbers("1","0");
+    public static readonly IntegerNumbers Integer1 = new IntegerNumbers("1");
 
-    public static readonly IntegerNumbers IntegerN1 = new IntegerNumbers("1", "0");
+    public static readonly IntegerNumbers IntegerN1 = new IntegerNumbers("1");
 
-    internal IntegerNumbers(string partNumber,string partDecimal, bool positive = true) : base(partNumber, "0", positive)
+    public IntegerNumbers(string partNumber, bool positive = true) : base($"{partNumber}.0", positive)
     {
     }
-    
-    public IntegerNumbers(string s, bool positive = true) : base(s, "0", positive)
-    {
-        if(!CheckNumber(s)) throw new Exception("El valor introducido no es correcto");
-    }
+
+    public override string ToString() => base.ToString().Split('.')[0];
 
     #region operadores
 

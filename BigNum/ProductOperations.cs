@@ -11,22 +11,13 @@ internal static class ProductOperations
     internal static RealNumbers Product(RealNumbers x, RealNumbers y)
     {
         bool positive = x.Sign == y.Sign;
-        int cantDecimal = x.PartDecimal.Length + y.PartDecimal.Length;
 
-        if (x.Abs == RealNumbers.Real1) return new RealNumbers(y.PartNumber, y.PartDecimal, positive);
-        if (y.Abs == RealNumbers.Real1) return new RealNumbers(x.PartNumber, x.PartDecimal, positive);
+        if (x.Abs == RealNumbers.Real1) return new RealNumbers(y.NumberValue, positive);
+        if (y.Abs == RealNumbers.Real1) return new RealNumbers(x.NumberValue, positive);
 
-        IntegerNumbers m = new IntegerNumbers(x.PartNumber + x.PartDecimal, "0");
-        IntegerNumbers n = new IntegerNumbers(y.PartNumber + y.PartDecimal, "0");
-
-        string result = KaratsubaAlgorithm(m, n).PartNumber;
-
-        if (result == "0") return RealNumbers.Real0;
-
-        if (result.Length < cantDecimal) result = AuxOperations.AddZerosLeft(result, cantDecimal - result.Length);
-
-        return new RealNumbers(result.Substring(0, result.Length - cantDecimal),
-            result.Substring(result.Length - cantDecimal, cantDecimal), positive);
+        (List<long> lx, List<long> ly) = AuxOperations.EqualZerosLeftValue(x.NumberValue, y.NumberValue);
+        
+        return new RealNumbers(KaratsubaAlgorithm(lx, ly, x.Base10).Skip(x.Precision).ToList(), positive);
     }
 
     /// <summary>
@@ -35,38 +26,45 @@ internal static class ProductOperations
     /// <param name="x">Numero entero</param>
     /// <param name="y">Numero entero</param>
     /// <returns>Resultado</returns>
-    private static IntegerNumbers KaratsubaAlgorithm(IntegerNumbers x, IntegerNumbers y)
+    private static List<long> KaratsubaAlgorithm(List<long> x, List<long> y, long base10)
     {
-        string xValor = x.PartNumber;
-        string yValor = y.PartNumber;
+        (x, y) = AuxOperations.EqualZerosLeftValue(x, y);
 
-        if (xValor == "0" || yValor == "0") return IntegerNumbers.Integer0;
-        if (xValor == "1") return y;
-        if (yValor == "1") return x;
-        if (xValor.Length == 1 && yValor.Length == 1)
-            return BigNumMath.ConvertToIntegerNumbers(int.Parse(xValor) * int.Parse(yValor));
+        if (x.Count == 1) return new List<long>() { x[0] * y[0] % base10, x[0] * y[0] / base10 };
 
-        AuxOperations.EqualZerosLeft(ref xValor, ref yValor);
+        //  Algortimo de Karatsuba
+        //  https: // es.wikipedia.org/wiki/Algoritmo_de_Karatsuba
 
-        //Algortimo de Karatsuba
-        //https://es.wikipedia.org/wiki/Algoritmo_de_Karatsuba#:~:text=El%20paso%20b%C3%A1sico%20del%20algoritmo,sumas%20y%20desplazamientos%20de%20d%C3%ADgitos.
-        int n = xValor.Length / 2;
-        int m = xValor.Length;
+        int n = x.Count / 2;
 
-        IntegerNumbers x1 = new IntegerNumbers(xValor.Substring(0, n), "0");
-        IntegerNumbers x0 = new IntegerNumbers(xValor.Substring(n, xValor.Length - n), "0");
-        IntegerNumbers y1 = new IntegerNumbers(yValor.Substring(0, n), "0");
-        IntegerNumbers y0 = new IntegerNumbers(yValor.Substring(n, yValor.Length - n), "0");
+        List<long> x0 = x.Take(n).ToList();
+        List<long> x1 = x.Skip(n).ToList();
+        List<long> y0 = y.Take(n).ToList();
+        List<long> y1 = y.Skip(n).ToList();
 
-        IntegerNumbers z2 =
-            new IntegerNumbers(AuxOperations.AddZerosRight(KaratsubaAlgorithm(x1, y1).PartNumber, 2 * (m - n)), "0");
-        IntegerNumbers z11 =
-            new IntegerNumbers(AuxOperations.AddZerosRight(KaratsubaAlgorithm(x1, y0).PartNumber, m - n), "0");
-        IntegerNumbers z12 =
-            new IntegerNumbers(AuxOperations.AddZerosRight(KaratsubaAlgorithm(y1, x0).PartNumber, m - n), "0");
-        IntegerNumbers z1 = z11 + z12;
-        IntegerNumbers z0 = new IntegerNumbers(KaratsubaAlgorithm(x0, y0).PartNumber, "0");
+        List<long> z2 = AuxOperations.AddZerosRightValue(KaratsubaAlgorithm(x1, y1, base10), 2 * n);
+        List<long> z11 = AuxOperations.AddZerosRightValue(KaratsubaAlgorithm(x1, y0, base10), n);
+        List<long> z12 = AuxOperations.AddZerosRightValue(KaratsubaAlgorithm(y1, x0, base10), n);
+        List<long> z1 = SumOperations.Sum(z11, z12, base10);
+        List<long> z0 = KaratsubaAlgorithm(x0, y0, base10);
 
-        return z2 + z1 + z0;
+        return SumOperations.Sum(z2, SumOperations.Sum(z1, z0, base10), base10);
+    }
+
+    internal static List<long> SimpleMultiplication(List<long> x, long y, long base10)
+    {
+        long drag = 0;
+        List<long> result = new List<long>(x.Count);
+
+        for (int i = 0; i < x.Count; i++)
+        {
+            long n = x[i] * y + drag;
+            drag = n / base10;
+            result.Add(n % base10);
+        }
+
+        if (drag != 0) result.Add(drag);
+
+        return result;
     }
 }

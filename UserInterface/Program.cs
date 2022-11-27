@@ -1,7 +1,13 @@
 ﻿using BigNum;
 using Expression;
 
-UserInterface();
+// UserInterface();
+RealNumbers a = new RealNumbers("3.0");
+
+RealNumbers b = new RealNumbers("1.0");
+Console.WriteLine(b);
+Console.WriteLine(b/a);
+Console.WriteLine(BigNumMath.PI);
 
 static void UserInterface()
 {

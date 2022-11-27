@@ -16,7 +16,7 @@ internal static class SqrtOperations
         if (x == RealNumbers.Real0) return RealNumbers.Real0;
         if (y == RealNumbers.Real1) return RealNumbers.Real1;
 
-        bool parity = y % new IntegerNumbers("2", "0") == IntegerNumbers.Integer0;
+        bool parity = y % new IntegerNumbers("2") == IntegerNumbers.Integer0;
         bool positive = parity || x.Positive();
 
         if (parity && !x.Positive()) throw new Exception("Operacion Invalida (el resultado no es real)");
@@ -24,8 +24,8 @@ internal static class SqrtOperations
         RealNumbers sqrt = AlgorithmSqrt(x.Abs, BigNumMath.Abs(y));
 
         return y.Positive()
-            ? new RealNumbers(sqrt.PartNumber, sqrt.PartDecimal, positive)
-            : RealNumbers.Real1 / new RealNumbers(sqrt.PartNumber, sqrt.PartDecimal, positive);
+            ? new RealNumbers(sqrt.NumberValue, positive)
+            : RealNumbers.Real1 / new RealNumbers(sqrt.NumberValue, positive);
     }
 
     /// <summary>
@@ -58,21 +58,21 @@ internal static class SqrtOperations
     /// <returns>Resultado entero</returns>
     private static (RealNumbers, bool) ApproximateInteger(RealNumbers x, IntegerNumbers y)
     {
-        int sqrt = int.Parse(y.PartNumber);
-        int cant = x.PartNumber.Length - 1;
-
+        int sqrt = int.Parse(y.ToString());
+        int cant = /*x.PartNumber.Length - 1*/0;
+    
         string s = "1";
         s = AuxOperations.AddZerosRight(s, cant / sqrt);
-        RealNumbers value = new RealNumbers(s, "0");
-
+        RealNumbers value = new RealNumbers($"{s}.0");
+    
         RealNumbers pow = BigNumMath.Pow(value, y);
-
+    
         while (pow < x)
         {
             value++;
             pow = BigNumMath.Pow(value, y);
         }
-
+    
         return pow == x ? (value, true) : (value - RealNumbers.Real1, false);
     }
 }

@@ -34,7 +34,7 @@ internal static class IntegerOperations
     internal static IntegerNumbers Factorial(IntegerNumbers x)
     {
         IntegerNumbers fact = IntegerNumbers.Integer1;
-        int xx = int.Parse(x.PartNumber);
+        int xx = int.Parse(x.ToString());
         IntegerNumbers index = IntegerNumbers.Integer1;
 
         for (int i = 1; i <= xx; i++) fact *= index++;
@@ -48,7 +48,7 @@ internal static class IntegerOperations
 
         IntegerNumbers index = x;
         IntegerNumbers fact = IntegerNumbers.Integer1;
-        int minInt = int.Parse(min.PartNumber);
+        int minInt = int.Parse(min.ToString());
 
         for (int i = 0; i < minInt; i++) fact *= index--;
 

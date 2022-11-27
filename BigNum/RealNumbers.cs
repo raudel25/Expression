@@ -2,17 +2,19 @@ namespace BigNum;
 
 public class RealNumbers : IComparable<RealNumbers>
 {
-    private static int _precision = 20;
+    internal int Precision { get; private set; }
 
-    public static readonly RealNumbers Real1 = new RealNumbers("1", "0");
+    internal long Base10 { get; private set; }
 
-    public static readonly RealNumbers RealN1 = new RealNumbers("1", "0", false);
+    internal int IndBase10 { get; private set; }
 
-    public static readonly RealNumbers Real0 = new RealNumbers("0", "0");
+    public static readonly RealNumbers Real1 = new RealNumbers("1");
 
-    internal readonly string PartDecimal;
+    public static readonly RealNumbers RealN1 = new RealNumbers("1",  false);
 
-    internal readonly string PartNumber;
+    public static readonly RealNumbers Real0 = new RealNumbers("0");
+
+    internal readonly List<long> NumberValue;
 
     internal readonly char Sign;
 
@@ -20,30 +22,69 @@ public class RealNumbers : IComparable<RealNumbers>
 
     public RealNumbers(string s, bool positive = true)
     {
+        int precision = 6;
+        int base10 = 100;
+        int indBase10 = 2;
+        
+        this.Base10 = base10;
+        this.IndBase10 = indBase10;
+        this.Precision = precision;
         if (!Check(s)) throw new Exception("El valor introducido no es correcto");
 
         string[] part = s.Split('.');
 
         (string partNumber, string partDecimal) = (AuxOperations.EliminateZerosLeft(part[0]),
             part.Length == 2 ? AuxOperations.EliminateZerosRight(part[1]) : "0");
+        this.NumberValue = CreateNumberValue(partNumber, partDecimal);
 
-        this.PartNumber = partNumber;
-        this.PartDecimal = DeterminatePrecision(partDecimal);
+
         CheckZero(ref positive);
         this.Sign = positive ? '+' : '-';
-        this.Abs = positive ? this : new RealNumbers(this.PartNumber, this.PartDecimal);
+        this.Abs = positive ? this : new RealNumbers(this.NumberValue);
     }
 
-    internal RealNumbers(string partNumber, string partDecimal, bool positive = true)
+    private List<long> CreateNumberValue(string partNumber, string partDecimal)
     {
-        (partNumber, partDecimal) = (AuxOperations.EliminateZerosLeft(partNumber),
-            AuxOperations.EliminateZerosRight(partDecimal));
+        List<long> numberValue = (new long[this.Precision + 1]).ToList();
 
-        this.PartNumber = partNumber;
-        this.PartDecimal = DeterminatePrecision(partDecimal);
+        partNumber = AuxOperations.AddZerosLeft(partNumber, this.IndBase10 - partNumber.Length % this.IndBase10);
+        partDecimal = AuxOperations.AddZerosRight(partDecimal, this.IndBase10 - partDecimal.Length % this.IndBase10);
+
+        for (int i = 0; i < partDecimal.Length / this.IndBase10; i++)
+        {
+            numberValue[numberValue.Count - i - 2] =
+                long.Parse(partDecimal.Substring(i * this.IndBase10, this.IndBase10));
+
+            if (i + 1 == this.Precision) break;
+        }
+
+
+        numberValue[numberValue.Count - 1] =
+            long.Parse(partNumber.Substring(partNumber.Length - this.IndBase10, this.IndBase10));
+
+        for (int i = 1; i < partNumber.Length / this.IndBase10; i++)
+        {
+            numberValue.Add(long.Parse(partNumber.Substring(partNumber.Length - (i+1) * this.IndBase10,
+                this.IndBase10)));
+        }
+        
+        return numberValue;
+    }
+
+    internal RealNumbers(List<long> numberValue, bool positive = true)
+    {
+        int precision = 6;
+        int base10 = 100;
+        int indBase10 = 2;
+        
+        this.Base10 = base10;
+        this.IndBase10 = indBase10;
+        this.Precision = precision;
+        this.NumberValue = AuxOperations.EliminateZerosLeftValue(numberValue, precision);
+
         CheckZero(ref positive);
         this.Sign = positive ? '+' : '-';
-        this.Abs = positive ? this : new RealNumbers(this.PartNumber, this.PartDecimal);
+        this.Abs = positive ? this : new RealNumbers(numberValue);
     }
 
     public static bool Check(string s)
@@ -74,12 +115,12 @@ public class RealNumbers : IComparable<RealNumbers>
         RealNumbers? n = obj as RealNumbers;
         if (n == null) return false;
 
-        return n.PartNumber == this.PartNumber && n.PartDecimal == this.PartDecimal && n.Sign == this.Sign;
+        return this.CompareTo(n) == 0;
     }
 
     public override int GetHashCode()
     {
-        return this.PartDecimal.GetHashCode() * this.PartNumber.GetHashCode() * this.Sign.GetHashCode();
+        return this.NumberValue.GetHashCode() * this.Sign.GetHashCode();
     }
 
     public int CompareTo(RealNumbers? n)
@@ -88,46 +129,46 @@ public class RealNumbers : IComparable<RealNumbers>
 
         if (this.Sign == n.Sign)
         {
-            if (this.Sign == '+') return CompareNumber(this, n);
-            return CompareNumber(n, this);
+            if (this.Sign == '+') return AuxOperations.CompareList(this.NumberValue, n.NumberValue);
+            return AuxOperations.CompareList(n.NumberValue, this.NumberValue);
         }
 
         if (this.Sign == '+') return 1;
         return -1;
     }
 
-    private static int CompareNumber(RealNumbers m, RealNumbers n)
-    {
-        if (m.PartNumber.Length > n.PartNumber.Length) return 1;
-        if (m.PartNumber.Length < n.PartNumber.Length) return -1;
-
-        for (int i = 0; i < m.PartNumber.Length; i++)
-        {
-            int x = m.PartNumber[i] - 48;
-            int y = n.PartNumber[i] - 48;
-
-            if (x > y) return 1;
-            if (x < y) return -1;
-        }
-
-        for (int i = 0; i < Math.Min(m.PartDecimal.Length, n.PartDecimal.Length); i++)
-        {
-            int x = m.PartDecimal[i] - 48;
-            int y = n.PartDecimal[i] - 48;
-
-            if (x > y) return 1;
-            if (x < y) return -1;
-        }
-
-        if (m.PartDecimal.Length > n.PartDecimal.Length) return -1;
-        if (m.PartDecimal.Length < n.PartDecimal.Length) return 1;
-
-        return 0;
-    }
+    // private static int CompareNumber(RealNumbers m, RealNumbers n)
+    // {
+    //     if (m.PartNumber.Length > n.PartNumber.Length) return 1;
+    //     if (m.PartNumber.Length < n.PartNumber.Length) return -1;
+    //
+    //     for (int i = 0; i < m.PartNumber.Length; i++)
+    //     {
+    //         int x = m.PartNumber[i] - 48;
+    //         int y = n.PartNumber[i] - 48;
+    //
+    //         if (x > y) return 1;
+    //         if (x < y) return -1;
+    //     }
+    //
+    //     for (int i = 0; i < Math.Min(m.PartDecimal.Length, n.PartDecimal.Length); i++)
+    //     {
+    //         int x = m.PartDecimal[i] - 48;
+    //         int y = n.PartDecimal[i] - 48;
+    //
+    //         if (x > y) return 1;
+    //         if (x < y) return -1;
+    //     }
+    //
+    //     if (m.PartDecimal.Length > n.PartDecimal.Length) return -1;
+    //     if (m.PartDecimal.Length < n.PartDecimal.Length) return 1;
+    //
+    //     return 0;
+    // }
 
     private void CheckZero(ref bool positive)
     {
-        if (this.PartNumber == "0" && this.PartDecimal == "0") positive = true;
+        if (AuxOperations.CompareList(new List<long>(){0},this.NumberValue)==0) positive = true;
     }
 
     public bool Positive() => this.Sign == '+';
@@ -135,12 +176,25 @@ public class RealNumbers : IComparable<RealNumbers>
     public override string ToString()
     {
         string sign = this.Sign == '-' ? "-" : "";
-        string partDecimal = this.PartDecimal == "0" ? "" : $".{this.PartDecimal}";
+        (string partDecimal, string partNumber) = ("", "");
+        
+        for (int i = 0; i < this.Precision; i++)
+        {
+            string aux = this.NumberValue[i].ToString();
+            partDecimal = $"{AuxOperations.AddZerosLeft(aux, this.IndBase10 - aux.Length)}{partDecimal}";
+        }
 
-        return $"{sign}{this.PartNumber}{partDecimal}";
+        for (int i = this.Precision;i<this.NumberValue.Count; i++)
+        {
+            string aux = this.NumberValue[i].ToString();
+            partNumber = $"{AuxOperations.AddZerosLeft(aux, this.IndBase10 - aux.Length)}{partNumber}";
+        }
+
+        (partNumber, partDecimal) = (AuxOperations.EliminateZerosLeft(partNumber),
+            AuxOperations.EliminateZerosRight(partDecimal));
+        
+        return $"{sign}{partNumber}.{partDecimal}";
     }
-
-    private static string DeterminatePrecision(string s) => s.Length >= _precision ? s.Substring(0, _precision) : s;
 
     #region operadores
 

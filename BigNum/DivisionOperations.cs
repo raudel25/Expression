@@ -1,14 +1,10 @@
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace BigNum;
 
 internal static class DivisionOperations
 {
-    /// <summary>
-    /// Cantidad maxima de cifras despues de la coma
-    /// </summary>
-    private static int _precision = 20;
-
     /// <summary>
     /// Dividir dos numeros reales
     /// </summary>
@@ -22,23 +18,9 @@ internal static class DivisionOperations
 
         if (y == RealNumbers.Real0) throw new Exception("Operacion Invalida (division por 0)");
         if (y.Abs == RealNumbers.Real1)
-            return (new RealNumbers(x.PartNumber, x.PartDecimal, positive), IntegerNumbers.Integer0);
+            return (new RealNumbers(x.NumberValue, positive), IntegerNumbers.Integer0);
 
-        (string xPartDecimal, string yPartDecimal) = (x.PartDecimal, y.PartDecimal);
-        AuxOperations.EqualZerosRight(ref xPartDecimal, ref yPartDecimal);
-        if (integer) (xPartDecimal, yPartDecimal) = ("", "");
-
-        IntegerNumbers m = new IntegerNumbers(x.PartNumber + xPartDecimal, "0");
-        IntegerNumbers n = new IntegerNumbers(y.PartNumber + yPartDecimal, "0");
-
-        int cantDecimal = 0;
-
-        (string result, IntegerNumbers rest) = DivisionAlgorithm(m, n, integer, ref cantDecimal);
-
-        if (cantDecimal != 0)
-            return (new RealNumbers(result.Substring(0, result.Length - cantDecimal),
-                result.Substring(result.Length - cantDecimal, cantDecimal), positive), rest);
-        return (new RealNumbers(result, "0", positive), rest);
+        return (new RealNumbers(AlgorithmD(x.NumberValue, y.NumberValue,false, x.Base10, x.Precision), positive),IntegerNumbers.Integer0);
     }
 
     /// <summary>
@@ -49,31 +31,32 @@ internal static class DivisionOperations
     /// <param name="integer">Determinar si los numeros son enteros</param>
     /// <param name="cantDecimal">Cantidad de cifras para correr la coma</param>
     /// <returns>Cociente y resto</returns>
-    private static (string, IntegerNumbers) DivisionAlgorithm(IntegerNumbers x, IntegerNumbers y, bool integer,
-        ref int cantDecimal)
+    private static List<long> AlgorithmD(List<long> x, List<long> y, bool integer, long base10,int precision)
     {
-        StringBuilder result = new StringBuilder();
-        IntegerNumbers rest = IntegerNumbers.Integer0;
+        (x, y) = Normalize(x, y, base10);
 
-        foreach (var t in x.PartNumber)
+        List<long> result = new List<long>();
+        List<long> rest = x.Skip(x.Count - y.Count+1).ToList();
+        long aux = 0;
+
+        for (int t = x.Count - y.Count; t >= 0; t--)
         {
-            IntegerNumbers div = new IntegerNumbers(rest.PartNumber + t, "0");
-
-            rest = DivisionImmediate(div, y, result);
+            (aux, rest) = DivisionImmediate((new [] { x[t] }).Concat(rest).ToList(), y, base10, precision);
+            result.Add(aux);
+        }
+        
+        for (int i = 0; i < precision; i++)
+        {
+            (aux, rest) = DivisionImmediate((new long[]{ 0 }).Concat(rest).ToList(), y, base10, precision);
+            result.Add(aux);
         }
 
-        while (rest != IntegerNumbers.Integer0 && !integer)
-        {
-            IntegerNumbers div = new IntegerNumbers(rest.PartNumber + "0", "0");
+        result.Reverse();
 
-            rest = DivisionImmediate(div, y, result);
-
-            cantDecimal++;
-
-            if (cantDecimal == _precision) break;
-        }
-
-        return (result.ToString(), rest);
+        
+        
+        return result;
+        
     }
 
     /// <summary>
@@ -83,20 +66,49 @@ internal static class DivisionOperations
     /// <param name="divisor">Divisor</param>
     /// <param name="result">Cociente</param>
     /// <returns>Resto de la divison</returns>
-    private static IntegerNumbers DivisionImmediate(IntegerNumbers div, IntegerNumbers divisor, StringBuilder result)
+    private static (long, List<long>) DivisionImmediate(List<long> div, List<long> divisor, long base10, int precision)
     {
-        IntegerNumbers aux = IntegerNumbers.Integer0;
-        for (int j = 9; j >= 0; j--)
-        {
-            aux = divisor * BigNumMath.ConvertToIntegerNumbers(j);
+        long result = 0;
+        if (div.Count < divisor.Count) return (0, div);
 
-            if (aux <= div)
-            {
-                result.Append(j);
-                break;
-            }
+        if (div.Count == divisor.Count) result = div[div.Count-1] / divisor[div.Count-1];
+        else result = (div[div.Count - 1] * base10 + div[div.Count - 2]) / divisor[divisor.Count-1];
+
+        List<long> aux;
+        while (true)
+        {
+            aux = ProductOperations.SimpleMultiplication(divisor, result, base10);
+
+            if (AuxOperations.CompareList(div, aux) != -1) break;
+
+            result -= 1;
         }
 
-        return div - aux;
+        return (result, AuxOperations.EliminateZerosLeftValue(SumOperations.Subtraction(div, aux, base10), precision));
+    }
+
+    private static (List<long>, List<long>) Normalize(List<long> x, List<long> y, long base10)
+    {
+        if (y[y.Count - 1] < base10 / 2)
+        {
+            long mult = 1;
+            long aux = y[y.Count - 1] / (base10 / 10);
+
+            if (aux == 0)
+            {
+                mult = base10 / (int)Math.Pow(10, (int)Math.Log10(y[y.Count - 1])) / 10;
+                aux = y[y.Count-1] * mult / (base10 / 10);
+            }
+
+            if (aux == 1) mult *= 5;
+            else if (aux == 2) mult *= 3;
+            else if (aux == 3) mult *= 2;
+            else if (aux == 4) mult *= 2;
+
+            return (ProductOperations.SimpleMultiplication(x, mult, base10),
+                ProductOperations.SimpleMultiplication(y, mult, base10));
+        }
+
+        return (x, y);
     }
 }

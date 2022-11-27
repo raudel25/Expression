@@ -107,4 +107,55 @@ internal static class AuxOperations
 
         return max;
     }
+
+    internal static List<long> EliminateZerosLeftValue(List<long> numberValue, int precision)
+    {
+        List<long> l = new List<long>();
+        bool act = false;
+
+        for (int i = numberValue.Count - 1; i >= 0; i--)
+        {
+            if (numberValue[i] != 0 || i == precision) act = true;
+
+            if (act) l.Add(numberValue[i]);
+        }
+
+        l.Reverse();
+        return l;
+    }
+
+    internal static List<long> AddZerosLeftValue(List<long> numberValue, int cant)
+    {
+        long[] aux = new long[cant];
+
+        return numberValue.Concat(aux).ToList();
+    }
+
+    internal static List<long> AddZerosRightValue(List<long> numberValue, int cant)
+    {
+        long[] aux = new long[cant];
+
+        return aux.Concat(numberValue).ToList();
+    }
+
+    internal static (List<long>, List<long>) EqualZerosLeftValue(List<long> x, List<long> y)
+    {
+        List<long> lx = AddZerosLeftValue(x, Math.Max(x.Count, y.Count) - x.Count);
+        List<long> ly = AddZerosLeftValue(y, Math.Max(x.Count, y.Count) - y.Count);
+
+        return (lx, ly);
+    }
+
+    internal static int CompareList(List<long> x, List<long> y)
+    {
+        (x, y) = EqualZerosLeftValue(x, y);
+
+        for (int i = x.Count - 1; i >= 0; i--)
+        {
+            if (x[i] > y[i]) return 1;
+            if (x[i] < y[i]) return -1;
+        }
+
+        return 0;
+    }
 }
