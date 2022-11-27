@@ -12,12 +12,12 @@ internal static class ProductOperations
     {
         bool positive = x.Sign == y.Sign;
 
-        if (x.Abs == RealNumbers.Real1) return new RealNumbers(y.NumberValue, positive);
-        if (y.Abs == RealNumbers.Real1) return new RealNumbers(x.NumberValue, positive);
+        if (x.Abs == RealNumbers.Real1) return new RealNumbers(y.NumberValue, positive, x.Precision);
+        if (y.Abs == RealNumbers.Real1) return new RealNumbers(x.NumberValue, positive, x.Precision);
 
         (List<long> lx, List<long> ly) = AuxOperations.EqualZerosLeftValue(x.NumberValue, y.NumberValue);
-        
-        return new RealNumbers(KaratsubaAlgorithm(lx, ly, x.Base10).Skip(x.Precision).ToList(), positive);
+
+        return new RealNumbers(KaratsubaAlgorithm(lx, ly, x.Base10).Skip(x.Precision).ToList(), positive, x.Precision);
     }
 
     /// <summary>
@@ -25,6 +25,7 @@ internal static class ProductOperations
     /// </summary>
     /// <param name="x">Numero entero</param>
     /// <param name="y">Numero entero</param>
+    /// <param name="base10">Base</param>
     /// <returns>Resultado</returns>
     private static List<long> KaratsubaAlgorithm(List<long> x, List<long> y, long base10)
     {

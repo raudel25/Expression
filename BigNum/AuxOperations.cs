@@ -146,6 +146,12 @@ internal static class AuxOperations
         return (lx, ly);
     }
 
+    /// <summary>
+    /// Comparar dos listas
+    /// </summary>
+    /// <param name="x">Lista</param>
+    /// <param name="y">Lista</param>
+    /// <returns>1 si x es mayor -1 si y es mayor 0 si son iguales</returns>
     internal static int CompareList(List<long> x, List<long> y)
     {
         (x, y) = EqualZerosLeftValue(x, y);

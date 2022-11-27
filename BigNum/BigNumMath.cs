@@ -44,7 +44,7 @@ public static class BigNumMath
     /// <param name="integer">Si es un numero entero</param>
     /// <returns>Resultado real</returns>
     public static RealNumbers Division(RealNumbers x, RealNumbers y, bool integer = false) =>
-        DivisionOperations.Division(x, y, integer).Item1;
+        DivisionOperations.Division(x, y, integer);
 
     /// <summary>
     /// Dividir dos fracciones reales
@@ -61,7 +61,7 @@ public static class BigNumMath
     /// <param name="y">Modulo</param>
     /// <returns>Resultado entero</returns>
     public static IntegerNumbers Rest(IntegerNumbers x, IntegerNumbers y) =>
-        DivisionOperations.Division(x, y, true).Item2;
+        x-RealToInteger(DivisionOperations.Division(x, y, true)*y);
 
     /// <summary>
     /// Potencia entre un numero real y un numero entero
@@ -154,7 +154,7 @@ public static class BigNumMath
     /// </summary>
     /// <param name="x">Numero real</param>
     /// <returns>Resultado real</returns>
-    public static RealNumbers Opposite(RealNumbers x) => new RealNumbers(x.NumberValue, !x.Positive());
+    public static RealNumbers Opposite(RealNumbers x) => new RealNumbers(x.NumberValue, !x.Positive(),x.Precision);
 
     /// <summary>
     /// Determinar el opuesto de un numero entero

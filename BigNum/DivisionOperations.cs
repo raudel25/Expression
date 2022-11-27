@@ -1,6 +1,3 @@
-using System.Runtime.CompilerServices;
-using System.Text;
-
 namespace BigNum;
 
 internal static class DivisionOperations
@@ -12,15 +9,17 @@ internal static class DivisionOperations
     /// <param name="y">Numero real</param>
     /// <param name="integer">Determinar si los numeros son enteros</param>
     /// <returns>Cociente y resto</returns>
-    internal static (RealNumbers, IntegerNumbers) Division(RealNumbers x, RealNumbers y, bool integer = false)
+    internal static RealNumbers Division(RealNumbers x, RealNumbers y, bool integer = false)
     {
         bool positive = x.Sign == y.Sign;
 
         if (y == RealNumbers.Real0) throw new Exception("Operacion Invalida (division por 0)");
         if (y.Abs == RealNumbers.Real1)
-            return (new RealNumbers(x.NumberValue, positive), IntegerNumbers.Integer0);
+            return new RealNumbers(x.NumberValue, positive, x.Precision);
+        
+        var result = AlgorithmD(x.NumberValue, y.NumberValue, integer, x.Base10, x.Precision);
 
-        return (new RealNumbers(AlgorithmD(x.NumberValue, y.NumberValue,false, x.Base10, x.Precision), positive),IntegerNumbers.Integer0);
+        return new RealNumbers(result, positive, x.Precision);
     }
 
     /// <summary>
@@ -29,34 +28,35 @@ internal static class DivisionOperations
     /// <param name="x">Numero entero</param>
     /// <param name="y">Numero entero</param>
     /// <param name="integer">Determinar si los numeros son enteros</param>
-    /// <param name="cantDecimal">Cantidad de cifras para correr la coma</param>
+    /// <param name="base10">Base</param>
+    /// <param name="precision">Precision decimal</param>
     /// <returns>Cociente y resto</returns>
-    private static List<long> AlgorithmD(List<long> x, List<long> y, bool integer, long base10,int precision)
+    private static List<long> AlgorithmD(List<long> x, List<long> y, bool integer, long base10, int precision)
     {
         (x, y) = Normalize(x, y, base10);
 
         List<long> result = new List<long>();
-        List<long> rest = x.Skip(x.Count - y.Count+1).ToList();
-        long aux = 0;
+        List<long> rest = x.Skip(x.Count - y.Count + 1).ToList();
+        long aux;
 
         for (int t = x.Count - y.Count; t >= 0; t--)
         {
-            (aux, rest) = DivisionImmediate((new [] { x[t] }).Concat(rest).ToList(), y, base10, precision);
+            (aux, rest) = DivisionImmediate(new[] { x[t] }.Concat(rest).ToList(), y, base10, precision);
             result.Add(aux);
         }
-        
+
         for (int i = 0; i < precision; i++)
         {
-            (aux, rest) = DivisionImmediate((new long[]{ 0 }).Concat(rest).ToList(), y, base10, precision);
+            if (!integer)
+                (aux, rest) = DivisionImmediate(new long[] { 0 }.Concat(rest).ToList(), y, base10, precision);
+            else aux = 0;
+
             result.Add(aux);
         }
 
         result.Reverse();
 
-        
-        
         return result;
-        
     }
 
     /// <summary>
@@ -64,15 +64,16 @@ internal static class DivisionOperations
     /// </summary>
     /// <param name="div">Numero a dividir</param>
     /// <param name="divisor">Divisor</param>
-    /// <param name="result">Cociente</param>
-    /// <returns>Resto de la divison</returns>
+    /// <param name="base10">Base</param>
+    /// <param name="precision">Precision decimal</param>
+    /// <returns>cociente y resto de la divison</returns>
     private static (long, List<long>) DivisionImmediate(List<long> div, List<long> divisor, long base10, int precision)
     {
-        long result = 0;
+        long result;
         if (div.Count < divisor.Count) return (0, div);
 
-        if (div.Count == divisor.Count) result = div[div.Count-1] / divisor[div.Count-1];
-        else result = (div[div.Count - 1] * base10 + div[div.Count - 2]) / divisor[divisor.Count-1];
+        if (div.Count == divisor.Count) result = div[div.Count - 1] / divisor[div.Count - 1];
+        else result = (div[div.Count - 1] * base10 + div[div.Count - 2]) / divisor[divisor.Count - 1];
 
         List<long> aux;
         while (true)
@@ -87,6 +88,13 @@ internal static class DivisionOperations
         return (result, AuxOperations.EliminateZerosLeftValue(SumOperations.Subtraction(div, aux, base10), precision));
     }
 
+    /// <summary>
+    /// Normalizar el divisor
+    /// </summary>
+    /// <param name="x">Dividendo</param>
+    /// <param name="y">Divisor</param>
+    /// <param name="base10">Base</param>
+    /// <returns>Dividendo y divisor normalizados</returns>
     private static (List<long>, List<long>) Normalize(List<long> x, List<long> y, long base10)
     {
         if (y[y.Count - 1] < base10 / 2)
@@ -97,7 +105,7 @@ internal static class DivisionOperations
             if (aux == 0)
             {
                 mult = base10 / (int)Math.Pow(10, (int)Math.Log10(y[y.Count - 1])) / 10;
-                aux = y[y.Count-1] * mult / (base10 / 10);
+                aux = y[y.Count - 1] * mult / (base10 / 10);
             }
 
             if (aux == 1) mult *= 5;

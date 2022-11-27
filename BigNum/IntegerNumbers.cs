@@ -8,7 +8,11 @@ public class IntegerNumbers : RealNumbers
 
     public static readonly IntegerNumbers IntegerN1 = new IntegerNumbers("1");
 
-    public IntegerNumbers(string partNumber, bool positive = true) : base($"{partNumber}.0", positive)
+    public IntegerNumbers(string partNumber, bool positive = true) : base($"{partNumber}.0", positive,1)
+    {
+    }
+    
+    internal IntegerNumbers(List<long> number, bool positive=true) : base(number,positive,1)
     {
     }
 

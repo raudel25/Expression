@@ -24,8 +24,8 @@ internal static class SqrtOperations
         RealNumbers sqrt = AlgorithmSqrt(x.Abs, BigNumMath.Abs(y));
 
         return y.Positive()
-            ? new RealNumbers(sqrt.NumberValue, positive)
-            : RealNumbers.Real1 / new RealNumbers(sqrt.NumberValue, positive);
+            ? new RealNumbers(sqrt.NumberValue, positive,x.Precision)
+            : RealNumbers.Real1 / new RealNumbers(sqrt.NumberValue, positive,x.Precision);
     }
 
     /// <summary>
@@ -59,7 +59,7 @@ internal static class SqrtOperations
     private static (RealNumbers, bool) ApproximateInteger(RealNumbers x, IntegerNumbers y)
     {
         int sqrt = int.Parse(y.ToString());
-        int cant = /*x.PartNumber.Length - 1*/0;
+        int cant = x.ToString().Split('.')[0].Length - 1;
     
         string s = "1";
         s = AuxOperations.AddZerosRight(s, cant / sqrt);

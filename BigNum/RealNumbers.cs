@@ -4,13 +4,13 @@ public class RealNumbers : IComparable<RealNumbers>
 {
     internal int Precision { get; private set; }
 
-    internal long Base10 { get; private set; }
+    internal long Base10 => 1000000000;
 
-    internal int IndBase10 { get; private set; }
+    internal int IndBase10 => 9;
 
     public static readonly RealNumbers Real1 = new RealNumbers("1");
 
-    public static readonly RealNumbers RealN1 = new RealNumbers("1",  false);
+    public static readonly RealNumbers RealN1 = new RealNumbers("1", false);
 
     public static readonly RealNumbers Real0 = new RealNumbers("0");
 
@@ -23,11 +23,7 @@ public class RealNumbers : IComparable<RealNumbers>
     public RealNumbers(string s, bool positive = true)
     {
         int precision = 6;
-        int base10 = 100;
-        int indBase10 = 2;
-        
-        this.Base10 = base10;
-        this.IndBase10 = indBase10;
+
         this.Precision = precision;
         if (!Check(s)) throw new Exception("El valor introducido no es correcto");
 
@@ -37,10 +33,25 @@ public class RealNumbers : IComparable<RealNumbers>
             part.Length == 2 ? AuxOperations.EliminateZerosRight(part[1]) : "0");
         this.NumberValue = CreateNumberValue(partNumber, partDecimal);
 
+        CheckZero(ref positive);
+        this.Sign = positive ? '+' : '-';
+        this.Abs = positive ? this : new RealNumbers(this.NumberValue, true, this.Precision);
+    }
+
+    protected RealNumbers(string s, bool positive,int precision)
+    {
+        this.Precision = precision;
+        if (!Check(s)) throw new Exception("El valor introducido no es correcto");
+
+        string[] part = s.Split('.');
+
+        (string partNumber, string partDecimal) = (AuxOperations.EliminateZerosLeft(part[0]),
+            part.Length == 2 ? AuxOperations.EliminateZerosRight(part[1]) : "0");
+        this.NumberValue = CreateNumberValue(partNumber, partDecimal);
 
         CheckZero(ref positive);
         this.Sign = positive ? '+' : '-';
-        this.Abs = positive ? this : new RealNumbers(this.NumberValue);
+        this.Abs = positive ? this : new RealNumbers(this.NumberValue, true, this.Precision);
     }
 
     private List<long> CreateNumberValue(string partNumber, string partDecimal)
@@ -64,27 +75,21 @@ public class RealNumbers : IComparable<RealNumbers>
 
         for (int i = 1; i < partNumber.Length / this.IndBase10; i++)
         {
-            numberValue.Add(long.Parse(partNumber.Substring(partNumber.Length - (i+1) * this.IndBase10,
+            numberValue.Add(long.Parse(partNumber.Substring(partNumber.Length - (i + 1) * this.IndBase10,
                 this.IndBase10)));
         }
-        
+
         return numberValue;
     }
 
-    internal RealNumbers(List<long> numberValue, bool positive = true)
+    internal RealNumbers(List<long> numberValue, bool positive, int precision)
     {
-        int precision = 6;
-        int base10 = 100;
-        int indBase10 = 2;
-        
-        this.Base10 = base10;
-        this.IndBase10 = indBase10;
         this.Precision = precision;
         this.NumberValue = AuxOperations.EliminateZerosLeftValue(numberValue, precision);
 
         CheckZero(ref positive);
         this.Sign = positive ? '+' : '-';
-        this.Abs = positive ? this : new RealNumbers(numberValue);
+        this.Abs = positive ? this : new RealNumbers(this.NumberValue, true, this.Precision);
     }
 
     public static bool Check(string s)
@@ -137,38 +142,9 @@ public class RealNumbers : IComparable<RealNumbers>
         return -1;
     }
 
-    // private static int CompareNumber(RealNumbers m, RealNumbers n)
-    // {
-    //     if (m.PartNumber.Length > n.PartNumber.Length) return 1;
-    //     if (m.PartNumber.Length < n.PartNumber.Length) return -1;
-    //
-    //     for (int i = 0; i < m.PartNumber.Length; i++)
-    //     {
-    //         int x = m.PartNumber[i] - 48;
-    //         int y = n.PartNumber[i] - 48;
-    //
-    //         if (x > y) return 1;
-    //         if (x < y) return -1;
-    //     }
-    //
-    //     for (int i = 0; i < Math.Min(m.PartDecimal.Length, n.PartDecimal.Length); i++)
-    //     {
-    //         int x = m.PartDecimal[i] - 48;
-    //         int y = n.PartDecimal[i] - 48;
-    //
-    //         if (x > y) return 1;
-    //         if (x < y) return -1;
-    //     }
-    //
-    //     if (m.PartDecimal.Length > n.PartDecimal.Length) return -1;
-    //     if (m.PartDecimal.Length < n.PartDecimal.Length) return 1;
-    //
-    //     return 0;
-    // }
-
     private void CheckZero(ref bool positive)
     {
-        if (AuxOperations.CompareList(new List<long>(){0},this.NumberValue)==0) positive = true;
+        if (AuxOperations.CompareList(new List<long>() { 0 }, this.NumberValue) == 0) positive = true;
     }
 
     public bool Positive() => this.Sign == '+';
@@ -177,14 +153,14 @@ public class RealNumbers : IComparable<RealNumbers>
     {
         string sign = this.Sign == '-' ? "-" : "";
         (string partDecimal, string partNumber) = ("", "");
-        
+
         for (int i = 0; i < this.Precision; i++)
         {
             string aux = this.NumberValue[i].ToString();
             partDecimal = $"{AuxOperations.AddZerosLeft(aux, this.IndBase10 - aux.Length)}{partDecimal}";
         }
 
-        for (int i = this.Precision;i<this.NumberValue.Count; i++)
+        for (int i = this.Precision; i < this.NumberValue.Count; i++)
         {
             string aux = this.NumberValue[i].ToString();
             partNumber = $"{AuxOperations.AddZerosLeft(aux, this.IndBase10 - aux.Length)}{partNumber}";
@@ -192,7 +168,7 @@ public class RealNumbers : IComparable<RealNumbers>
 
         (partNumber, partDecimal) = (AuxOperations.EliminateZerosLeft(partNumber),
             AuxOperations.EliminateZerosRight(partDecimal));
-        
+
         return $"{sign}{partNumber}.{partDecimal}";
     }
 

@@ -29,7 +29,6 @@ internal static class IntegerOperations
     /// Combinaciones sin repeticion
     /// </summary>
     /// <param name="x">Numero entero</param>
-    /// <param name="y">Numero entero</param>
     /// <returns>Resultado entero</returns>
     internal static IntegerNumbers Factorial(IntegerNumbers x)
     {
