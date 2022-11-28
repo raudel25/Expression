@@ -25,18 +25,16 @@ si estas en windows.
 ## Implementación en BigNum
 
 El funcionamiento básico de esta biblioteca es realizar las operaciones matemáticas, mediante números almacenados
-en `string`, esto para buscar mayor precisión a la hora de efectuar las operaciones. Para ello cuenta con un objeto
-de `RealNumbers` que se encarga de modelar un número real, almacenando su parte entera en `PartNumber` su parte decimal
-en `PartDecimal` y su signo en `Sign`. La propiedad estática `_precision` determina la cantidad de lugares después de la
-coma que se almacenaran como máximo. Además también cuenta con el objeto `IntegerNumbers` que hereda de `RealNumbers` y
-modela el comportamiento de un número entero.
+en un formato de artimética de punto fijo en base 10, esto para buscar mayor precisión a la hora de efectuar las operaciones, manteniendo una precisión exacta de los lugares decimales, mientras tanto en la representación de la parte entera si no contamos con ningún límite, por lo que dentro de nuestros límites computacionales podemos representar cualquier número. Además también cuenta con el objeto `IntegerNumbers` que hereda de `RealNumbers` y modela el comportamiento de un número entero.
+
+Para la optimización de las operaciones en `BigNum` y aprovechándonos de que la aritmética de los enteros en la computadora es exacta, variamos la base de la aritmética a potencias de 10, siempre y cuando no no excedan la aritmética entera que suele ser en la mayoría de los casos de 64 bits.
 
 ### Operaciones
 
 En la clase `BigNumMath` se encuentran implementadas las operaciones que se pueden realizar con los objetos del
 tipo `RealNumbers`.
 
-- Suma: Está implementada la suma clásica dígito a dígito entre dos números.
+- Suma: Está implementada la suma clásica bit a bit entre dos números.
 
 ```csharp
 public static RealNumbers Sum(RealNumbers x, RealNumbers y) => SumOperations.Sum(x, y);
@@ -220,4 +218,3 @@ Prioridad 6:
 Para acortar el árbol de expresiones la biblioteca cuenta con la clase `ReduceExpression`, que se encarga de
 reducir las expresiones (ejem: $a\cdot 1=a$ ó $a+0=a$). Para ello cada operación cuenta con una implementación de
 como reducirse bajo ciertas condiciones.
-
