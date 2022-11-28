@@ -10,6 +10,7 @@ internal static class SumOperations
     /// <returns>Resultado real</returns>
     internal static RealNumbers Sum(RealNumbers x, RealNumbers y)
     {
+        if (x.Precision != y.Precision) throw new Exception("Numeros de representacion diferente");
         if (x == RealNumbers.Real0) return y;
         if (y == RealNumbers.Real0) return x;
 

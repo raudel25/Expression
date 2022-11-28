@@ -2,7 +2,7 @@ namespace BigNum;
 
 internal static class Constants
 {
-    private static int _precisionE = 20;
+    private static int _precisionE = 40;
 
     private static int _precisionPI = 2;
 

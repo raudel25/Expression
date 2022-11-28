@@ -4,11 +4,11 @@ internal static class TrigonometryOperations
 {
     internal delegate bool Condition(int x);
 
-    private static int _precisionSinCos = 30;
+    private static int _precisionSinCos = 40;
 
-    private static int _precisionAtan = 500;
+    private static int _precisionAtan = 1000;
 
-    private static int _precisionAsin = 100;
+    private static int _precisionAsin = 200;
 
     /// <summary>
     /// Calcular seno o coseno
@@ -49,7 +49,7 @@ internal static class TrigonometryOperations
         RealNumbers pow = x;
         RealNumbers index = RealNumbers.Real1;
         RealNumbers arctan = RealNumbers.Real0;
-        RealNumbers xx = BigNumMath.Pow(x, new IntegerNumbers("2.0"));
+        RealNumbers xx = BigNumMath.Pow(x, new IntegerNumbers("2"));
 
         for (int i = 1; i < 2 * _precisionAtan; i += 2)
         {

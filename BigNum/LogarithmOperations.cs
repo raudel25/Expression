@@ -2,7 +2,7 @@ namespace BigNum;
 
 public static class LogarithmOperations
 {
-    private static int _precision = 100;
+    private static int _precision = 150;
 
     /// <summary>
     /// Logaritmo en base e

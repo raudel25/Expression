@@ -11,6 +11,8 @@ internal static class DivisionOperations
     /// <returns>Cociente y resto</returns>
     internal static RealNumbers Division(RealNumbers x, RealNumbers y, bool integer = false)
     {
+        if (x.Precision != y.Precision) throw new Exception("Numeros de representacion diferente");
+        
         bool positive = x.Sign == y.Sign;
 
         if (y == RealNumbers.Real0) throw new Exception("Operacion Invalida (division por 0)");

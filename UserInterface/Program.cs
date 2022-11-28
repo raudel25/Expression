@@ -1,7 +1,12 @@
 ﻿using BigNum;
 using Expression;
 
-UserInterface();
+// UserInterface();
+RealNumbers a = new RealNumbers("0.5");
+IntegerNumbers b = new IntegerNumbers("2");
+// Console.WriteLine(BigNumMath.Pow(a,IntegerNumbers.Integer1));
+Console.WriteLine(BigNumMath.Ln(a));
+// Console.WriteLine(RealNumbers.Real1*b);
 
 static void UserInterface()
 {

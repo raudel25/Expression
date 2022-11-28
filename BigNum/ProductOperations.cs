@@ -10,6 +10,8 @@ internal static class ProductOperations
     /// <returns>Resultado real</returns>
     internal static RealNumbers Product(RealNumbers x, RealNumbers y)
     {
+        if (x.Precision != y.Precision) throw new Exception("Numeros de representacion diferente");
+        
         bool positive = x.Sign == y.Sign;
 
         if (x.Abs == RealNumbers.Real1) return new RealNumbers(y.NumberValue, positive, x.Precision);

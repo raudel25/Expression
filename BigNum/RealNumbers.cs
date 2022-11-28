@@ -56,7 +56,7 @@ public class RealNumbers : IComparable<RealNumbers>
 
     private List<long> CreateNumberValue(string partNumber, string partDecimal)
     {
-        List<long> numberValue = (new long[this.Precision + 1]).ToList();
+        List<long> numberValue = new long[this.Precision + 1].ToList();
 
         partNumber = AuxOperations.AddZerosLeft(partNumber, this.IndBase10 - partNumber.Length % this.IndBase10);
         partDecimal = AuxOperations.AddZerosRight(partDecimal, this.IndBase10 - partDecimal.Length % this.IndBase10);
@@ -70,7 +70,7 @@ public class RealNumbers : IComparable<RealNumbers>
         }
 
 
-        numberValue[numberValue.Count - 1] =
+        numberValue[^1] =
             long.Parse(partNumber.Substring(partNumber.Length - this.IndBase10, this.IndBase10));
 
         for (int i = 1; i < partNumber.Length / this.IndBase10; i++)
@@ -106,7 +106,7 @@ public class RealNumbers : IComparable<RealNumbers>
         return true;
     }
 
-    protected static bool CheckNumber(string number)
+    private static bool CheckNumber(string number)
     {
         foreach (var item in number)
             if (!char.IsNumber(item))

@@ -190,6 +190,14 @@ public static class BigNumMath
     /// <param name="n">Numero real</param>
     /// <returns>Resultado entero</returns>
     public static IntegerNumbers RealToInteger(RealNumbers n) => new IntegerNumbers(n.ToString().Split('.')[0], n.Positive());
+    
+    /// <summary>
+    /// Convertir de entero a real
+    /// </summary>
+    /// <param name="n">Numero real</param>
+    /// <returns>Resultado entero</returns>
+    public static RealNumbers IntegerToReal(RealNumbers n) => new RealNumbers($"{n}.0", n.Positive());
+
 
     public static bool IsInteger(RealNumbers n) => n.ToString().Split('.')[0] == "0";
 
