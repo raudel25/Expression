@@ -196,10 +196,10 @@ public static class BigNumMath
     /// </summary>
     /// <param name="n">Numero real</param>
     /// <returns>Resultado entero</returns>
-    public static RealNumbers IntegerToReal(RealNumbers n) => new RealNumbers($"{n}.0", n.Positive());
+    // public static RealNumbers IntegerToReal(RealNumbers n) => new RealNumbers($"{n}.0", n.Positive());
 
 
-    public static bool IsInteger(RealNumbers n) => n.ToString().Split('.')[0] == "0";
+    public static bool IsInteger(RealNumbers n) => n.ToString().Split('.')[1] == "0";
 
     /// <summary>
     /// Maximo comun divisor entre 2 numeros

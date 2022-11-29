@@ -45,16 +45,15 @@ internal static class SqrtOperations
     private static RealNumbers AlgorithmSqrt(RealNumbers x, IntegerNumbers y)
     {
         (RealNumbers value, bool find) = ApproximateInteger(x, y);
-        Console.WriteLine(value);
+        
         if (find) return value;
 
-        RealNumbers aux = BigNumMath.IntegerToReal(y - IntegerNumbers.Integer1);
-        RealNumbers realY = BigNumMath.IntegerToReal(y);
+        IntegerNumbers aux = y - IntegerNumbers.Integer1;
 
         //https://es.frwiki.wiki/wiki/Algorithme_de_calcul_de_la_racine_n-i%C3%A8me
         for (int i = 0; i < _precision; i++)
         {
-            value = RealNumbers.Real1 / realY * (aux * value + x / BigNumMath.Pow(value, aux));
+            value = RealNumbers.Real1 / y * (aux * value + x / BigNumMath.Pow(value, aux));
         }
 
         return value;

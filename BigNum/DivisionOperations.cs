@@ -11,14 +11,14 @@ internal static class DivisionOperations
     /// <returns>Cociente y resto</returns>
     internal static RealNumbers Division(RealNumbers x, RealNumbers y, bool integer = false)
     {
-        if (x.Precision != y.Precision) throw new Exception("Numeros de representacion diferente");
-        
+        (x, y) = AuxOperations.EqualPrecision(x, y);
+
         bool positive = x.Sign == y.Sign;
 
         if (y == RealNumbers.Real0) throw new Exception("Operacion Invalida (division por 0)");
         if (y.Abs == RealNumbers.Real1)
             return new RealNumbers(x.NumberValue, positive, x.Precision);
-        
+
         var result = AlgorithmD(x.NumberValue, y.NumberValue, integer, x.Base10, x.Precision);
 
         return new RealNumbers(result, positive, x.Precision);
@@ -74,8 +74,8 @@ internal static class DivisionOperations
         long result;
         if (div.Count < divisor.Count) return (0, div);
 
-        if (div.Count == divisor.Count) result = div[div.Count - 1] / divisor[div.Count - 1];
-        else result = (div[div.Count - 1] * base10 + div[div.Count - 2]) / divisor[divisor.Count - 1];
+        if (div.Count == divisor.Count) result = div[^1] / divisor[^1];
+        else result = (div[^1] * base10 + div[^1]) / divisor[^1];
 
         List<long> aux;
         while (true)
@@ -99,15 +99,15 @@ internal static class DivisionOperations
     /// <returns>Dividendo y divisor normalizados</returns>
     private static (List<long>, List<long>) Normalize(List<long> x, List<long> y, long base10)
     {
-        if (y[y.Count - 1] < base10 / 2)
+        if (y[^1] < base10 / 2)
         {
             long mult = 1;
-            long aux = y[y.Count - 1] / (base10 / 10);
+            long aux = y[^1] / (base10 / 10);
 
             if (aux == 0)
             {
-                mult = base10 / (int)Math.Pow(10, (int)Math.Log10(y[y.Count - 1])) / 10;
-                aux = y[y.Count - 1] * mult / (base10 / 10);
+                mult = base10 / (int)Math.Pow(10, (int)Math.Log10(y[^1])) / 10;
+                aux = y[^1] * mult / (base10 / 10);
             }
 
             if (aux == 1) mult *= 5;

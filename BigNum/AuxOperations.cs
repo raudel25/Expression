@@ -164,4 +164,14 @@ internal static class AuxOperations
 
         return 0;
     }
+
+    internal static (RealNumbers, RealNumbers) EqualPrecision(RealNumbers a, RealNumbers b)
+    {
+        int cantMax = Math.Max(a.Precision, b.Precision);
+        int cantA = cantMax - a.Precision;
+        int cantB = cantMax - b.Precision;
+
+        return (new RealNumbers(new long[cantA].Concat(a.NumberValue).ToList(), a.Positive(), cantMax),
+            new RealNumbers(new long[cantB].Concat(b.NumberValue).ToList(), b.Positive(), cantMax));
+    }
 }
