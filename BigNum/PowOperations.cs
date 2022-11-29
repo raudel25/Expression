@@ -13,6 +13,10 @@ internal static class PowOperations
         if (y == RealNumbers.Real0) return RealNumbers.Real1;
 
         string[] s = y.ToString().Split('.');
+        
+        if (s.Length == 1) return Pow(x, new IntegerNumbers(y.NumberValue, y.Positive()));
+        if (s[1] == "0") return Pow(x, new IntegerNumbers(y.NumberValue, y.Positive()));
+
         (string partNumber, string partDecimal) = (s[0], s[1]);
 
         int cant = partDecimal.Length;
