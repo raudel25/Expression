@@ -115,8 +115,8 @@ internal static class AuxOperations
 
         for (int i = numberValue.Count - 1; i >= 0; i--)
         {
-            if (numberValue[i] != 0 || i == precision) act = true;
-
+            if (numberValue[i] != 0) act = true;
+            if (precision != -1 && i == precision) act = true;
             if (act) l.Add(numberValue[i]);
         }
 

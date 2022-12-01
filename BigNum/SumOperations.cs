@@ -11,7 +11,7 @@ internal static class SumOperations
     internal static RealNumbers Sum(RealNumbers x, RealNumbers y)
     {
         (x, y) = AuxOperations.EqualPrecision(x, y);
-        
+
         if (x == RealNumbers.Real0) return y;
         if (y == RealNumbers.Real0) return x;
 
@@ -23,7 +23,7 @@ internal static class SumOperations
         if (compare == 1)
             return new RealNumbers(Subtraction(x.NumberValue, y.NumberValue, x.Base10), x.Positive(), x.Precision);
 
-        return new RealNumbers(Subtraction(x.NumberValue, y.NumberValue, x.Base10), y.Positive(), x.Precision);
+        return new RealNumbers(Subtraction(y.NumberValue, x.NumberValue, x.Base10), y.Positive(), x.Precision);
     }
 
     /// <summary>

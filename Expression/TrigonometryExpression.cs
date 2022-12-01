@@ -163,7 +163,9 @@ public class Asin : UnaryExpression
 
     protected override ExpressionType Derivative(ExpressionType value)
         => new NumberExpression(RealNumbers.Real1) /
-           Pow.DeterminatePow(new NumberExpression(RealNumbers.Real1) - value,
+           Pow.DeterminatePow(
+               new NumberExpression(RealNumbers.Real1) -
+               Pow.DeterminatePow(value, new NumberExpression(new IntegerNumbers("2"))),
                new NumberExpression(new RealNumbers("0.5")));
 
     protected override RealNumbers Evaluate(RealNumbers value) => BigNumMath.Asin(value);
@@ -191,7 +193,9 @@ public class Acos : UnaryExpression
 
     protected override ExpressionType Derivative(ExpressionType value)
         => -new NumberExpression(RealNumbers.Real1) /
-           Pow.DeterminatePow(new NumberExpression(RealNumbers.Real1) - value,
+           Pow.DeterminatePow(
+               new NumberExpression(RealNumbers.Real1) -
+               Pow.DeterminatePow(value, new NumberExpression(new IntegerNumbers("2"))),
                new NumberExpression(new RealNumbers("0.5")));
 
     protected override RealNumbers Evaluate(RealNumbers value) => BigNumMath.Acos(value);

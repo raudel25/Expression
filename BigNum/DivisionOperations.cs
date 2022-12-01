@@ -101,6 +101,9 @@ internal static class DivisionOperations
     {
         if (y[^1] < base10 / 2)
         {
+            List<long> yAux = AuxOperations.EliminateZerosLeftValue(y, -1);
+            x = AuxOperations.AddZerosRightValue(x, y.Count - yAux.Count);
+            y = AuxOperations.AddZerosRightValue(yAux, y.Count - yAux.Count);
             long mult = 1;
             long aux = y[^1] / (base10 / 10);
 

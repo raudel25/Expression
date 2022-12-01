@@ -13,7 +13,7 @@ public static class ConvertExpression
     /// <summary>
     /// Lista de operadores
     /// </summary>
-    private static OperatorsArrayDelegate[] OperatorsArray = new OperatorsArrayDelegate[]
+    private static OperatorsArrayDelegate[] _operatorsArray = new OperatorsArrayDelegate[]
     {
         () => new Operators("+", 1, (exp) => new Sum(exp[0], exp[1]), true),
         () => new Operators("-", 1, (exp) => new Subtraction(exp[0], exp[1]), true),
@@ -120,7 +120,7 @@ public static class ConvertExpression
     /// <returns>Operador</returns>
     private static Operators? DeterminateOperator(string s)
     {
-        foreach (var item in OperatorsArray)
+        foreach (var item in _operatorsArray)
         {
             var aux = item();
             if (s == aux.Operator) return aux;
@@ -166,14 +166,12 @@ public static class ConvertExpression
         {
             if (char.IsLetter(aux[0])) return new VariableExpression(aux[0]);
         }
+        
+        if (double.TryParse(aux, out _)) return new NumberExpression(new RealNumbers(aux));
 
-        double number = 0;
-        if (double.TryParse(aux, out number)) return new NumberExpression(new RealNumbers(aux));
-
-        if (aux[aux.Length - 1] == '!')
+        if (aux[^1] == '!')
         {
-            int integer = -1;
-            if (int.TryParse(aux.Substring(0, aux.Length - 1), out integer) && integer >= 0)
+            if (int.TryParse(aux.Substring(0, aux.Length - 1), out int integer) && integer >= 0)
                 return new Factorial(new IntegerNumbers(aux.Substring(0, aux.Length - 1)));
         }
 
