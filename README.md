@@ -8,7 +8,7 @@ genera dicha expresión.
 
 ## Dependencias
 
-El proyecto está implementado en C# 10 y .NET Core 6.0, para ejecutar el proyecto, solo debe escribir en consola:
+El proyecto está implementado en C# 10 y .NET Core 7.0, para ejecutar el proyecto, solo debe escribir en consola:
 
 ```bash
 make
