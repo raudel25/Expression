@@ -16,8 +16,6 @@ public class IntegerNumbers : RealNumbers
     {
     }
 
-    public override string ToString() => base.ToString().Split('.')[0];
-
     #region operadores
 
     public static IntegerNumbers operator +(IntegerNumbers a, IntegerNumbers b) =>

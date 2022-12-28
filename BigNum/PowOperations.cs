@@ -13,9 +13,9 @@ internal static class PowOperations
         if (y == RealNumbers.Real0) return RealNumbers.Real1;
 
         string[] s = y.ToString().Split('.');
-        
+
         if (s.Length == 1) return Pow(x, BigNumMath.RealToInteger(y.Abs));
-        if (s[1] == "0") return Pow(x, BigNumMath.RealToInteger(y.Abs));
+        if (s.Length == 1 || s[1] == "0") return Pow(x, BigNumMath.RealToInteger(y.Abs));
 
         (string partNumber, string partDecimal) = (s[0], s[1]);
 

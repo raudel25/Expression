@@ -161,7 +161,7 @@ public static class BigNumMath
     /// </summary>
     /// <param name="x">Numero entero</param>
     /// <returns>Resultado entero</returns>
-    public static IntegerNumbers Opposite(IntegerNumbers x) => new IntegerNumbers(x.ToString().Split('.')[0], !x.Positive());
+    public static IntegerNumbers Opposite(IntegerNumbers x) => new IntegerNumbers(x.ToString(), !x.Positive());
 
     /// <summary>
     /// Determinar el opuesto de una fraccion real
@@ -199,7 +199,7 @@ public static class BigNumMath
     // public static RealNumbers IntegerToReal(RealNumbers n) => new RealNumbers($"{n}.0", n.Positive());
 
 
-    public static bool IsInteger(RealNumbers n) => n.ToString().Split('.')[1] == "0";
+    public static bool IsInteger(RealNumbers n) => n.ToString().Split('.').Length == 1;
 
     /// <summary>
     /// Maximo comun divisor entre 2 numeros

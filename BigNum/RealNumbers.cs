@@ -38,7 +38,7 @@ public class RealNumbers : IComparable<RealNumbers>
         this.Abs = positive ? this : new RealNumbers(this.NumberValue, true, this.Precision);
     }
 
-    protected RealNumbers(string s, bool positive,int precision)
+    protected RealNumbers(string s, bool positive, int precision)
     {
         this.Precision = precision;
         if (!Check(s)) throw new Exception("El valor introducido no es correcto");
@@ -169,7 +169,7 @@ public class RealNumbers : IComparable<RealNumbers>
         (partNumber, partDecimal) = (AuxOperations.EliminateZerosLeft(partNumber),
             AuxOperations.EliminateZerosRight(partDecimal));
 
-        return $"{sign}{partNumber}.{partDecimal}";
+        return partDecimal == "0" ? $"{sign}{partNumber}" : $"{sign}{partNumber}.{partDecimal}";
     }
 
     #region operadores
