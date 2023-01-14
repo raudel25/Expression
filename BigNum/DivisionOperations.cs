@@ -35,6 +35,7 @@ internal static class DivisionOperations
     /// <returns>Cociente y resto</returns>
     private static List<long> AlgorithmD(List<long> x, List<long> y, bool integer, long base10, int precision)
     {
+        (x, y) = AuxOperations.EqualZerosLeftValue(x, y);
         (x, y) = Normalize(x, y, base10);
 
         List<long> result = new List<long>();
