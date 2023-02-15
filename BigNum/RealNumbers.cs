@@ -20,7 +20,7 @@ public class RealNumbers : IComparable<RealNumbers>
 
     internal readonly RealNumbers Abs;
 
-    public RealNumbers(string s, int precision, long base10, int indBase10, bool positive = true)
+    internal RealNumbers(string s, int precision, long base10, int indBase10, bool positive = true)
     {
         this.IndBase10 = indBase10;
         this.Base10 = base10;

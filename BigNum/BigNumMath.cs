@@ -6,17 +6,31 @@ public class BigNumMath
     public int IndBase10 { get; private set; }
     public int Precision { get; private set; }
 
-    public BigNumMath(int precision, long base10, int indBase10)
+    public BigNumMath(int precision, int indBase10)
     {
-        this.Base10 = base10;
+        if (precision < 0 || indBase10 < 0 || indBase10 > 9) throw new Exception("Invalid Precision");
+        this.Base10 = (long)Math.Pow(10, IndBase10);
         this.Precision = precision;
         this.IndBase10 = indBase10;
     }
 
-    public RealNumbers Num(string s, bool positive)
-    {
-        return new RealNumbers(s, this.Precision, this.Base10, this.IndBase10, positive);
-    }
+    public RealNumbers Real(string s, bool positive) =>
+        new(s, this.Precision, this.Base10, this.IndBase10, positive);
+
+    public IntegerNumbers Int(string s, bool positive) =>
+        new(s, this.Base10, this.IndBase10, positive);
+
+    /// <summary>
+    /// Aproximacion del numero E
+    /// </summary>
+    public RealNumbers E => Constants.ConstantE(new RealNumbers("0", this.Precision, this.Base10, this.IndBase10),
+        new RealNumbers("1", this.Precision, this.Base10, this.IndBase10));
+
+    /// <summary>
+    /// Aproximacion del numero PI
+    /// </summary>
+    public RealNumbers PI => Constants.ConstantPI(this.Precision, this.Base10, this.IndBase10);
+
 
     /// <summary>
     /// Sumar dos numeros reales
@@ -220,17 +234,6 @@ public class BigNumMath
     /// <returns>Resultado entero</returns>
     public static IntegerNumbers Combinations(IntegerNumbers x, IntegerNumbers y) =>
         IntegerOperations.Combinations(x, y);
-
-    /// <summary>
-    /// Aproximacion del numero E
-    /// </summary>
-    public RealNumbers E => Constants.ConstantE(new RealNumbers("0", this.Precision, this.Base10, this.IndBase10),
-        new RealNumbers("1", this.Precision, this.Base10, this.IndBase10));
-
-    /// <summary>
-    /// Aproximacion del numero PI
-    /// </summary>
-    public RealNumbers PI => Constants.ConstantPI(this.Precision, this.Base10, this.IndBase10);
 
     /// <summary>
     /// Logaritmo en base E

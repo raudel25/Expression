@@ -8,7 +8,8 @@ public class IntegerNumbers : RealNumbers
 
     public IntegerNumbers IntegerN1 => BigNumMath.RealToInteger(this.RealN1);
 
-    public IntegerNumbers(string partNumber, long base10, int indBase10, bool positive = true) : base($"{partNumber}.0",
+    internal IntegerNumbers(string partNumber, long base10, int indBase10, bool positive = true) : base(
+        $"{partNumber}.0",
         1, base10, indBase10, positive)
     {
     }
