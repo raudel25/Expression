@@ -11,17 +11,17 @@ internal static class DivisionOperations
     /// <returns>Cociente y resto</returns>
     internal static RealNumbers Division(RealNumbers x, RealNumbers y, bool integer = false)
     {
-        (x, y) = AuxOperations.EqualPrecision(x, y);
+        AuxOperations.EqualPrecision(x, y);
 
         bool positive = x.Sign == y.Sign;
 
-        if (y == RealNumbers.Real0) throw new Exception("Operacion Invalida (division por 0)");
-        if (y.Abs == RealNumbers.Real1)
-            return new RealNumbers(x.NumberValue, positive, x.Precision);
+        if (y == y.Real0) throw new Exception("Operacion Invalida (division por 0)");
+        if (y.Abs == y.Real1)
+            return new RealNumbers(x.NumberValue, x.Precision, x.Base10, x.IndBase10, positive);
 
         var result = AlgorithmD(x.NumberValue, y.NumberValue, integer, x.Base10, x.Precision);
 
-        return new RealNumbers(result, positive, x.Precision);
+        return new RealNumbers(result, x.Precision, x.Base10, x.IndBase10, positive);
     }
 
     /// <summary>
@@ -35,9 +35,9 @@ internal static class DivisionOperations
     /// <returns>Cociente y resto</returns>
     private static List<long> AlgorithmD(List<long> x, List<long> y, bool integer, long base10, int precision)
     {
-        if (x.Count < y.Count)(x, y) = AuxOperations.EqualZerosLeftValue(x, y);
+        if (x.Count < y.Count) (x, y) = AuxOperations.EqualZerosLeftValue(x, y);
         (x, y) = Normalize(x, y, base10);
-        
+
         List<long> result = new List<long>();
         List<long> rest = x.Skip(x.Count - y.Count + 1).ToList();
         long aux;

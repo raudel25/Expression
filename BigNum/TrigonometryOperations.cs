@@ -21,10 +21,10 @@ internal static class TrigonometryOperations
         Condition filter1 = sin ? (a) => (a & 1) == 0 : (a) => (a & 1) != 0;
         Condition filter2 = sin ? (a) => a % 4 == 1 : (a) => a % 4 == 0;
 
-        RealNumbers result = RealNumbers.Real0;
-        RealNumbers pow = RealNumbers.Real1;
-        RealNumbers fact = RealNumbers.Real1;
-        RealNumbers index = RealNumbers.Real0;
+        RealNumbers result = x.Real0;
+        RealNumbers pow = x.Real1;
+        RealNumbers fact = x.Real1;
+        RealNumbers index = x.Real0;
 
         //Serie de taylor sen x cos x
         //https://es.wikipedia.org/wiki/Serie_de_Taylor
@@ -39,23 +39,23 @@ internal static class TrigonometryOperations
 
         return result;
     }
-    
+
     internal static RealNumbers Atan(RealNumbers x)
     {
         //arctan(x)+arctan(1/x)=pi/2
         //arctan(1/x)=arccot(x)
-        if (x.Abs > RealNumbers.Real1) return BigNumMath.Acot(RealNumbers.Real1 / x);
+        if (x.Abs > x.Real1) return BigNumMath.Acot(x.Real1 / x);
 
         RealNumbers pow = x;
-        RealNumbers index = RealNumbers.Real1;
-        RealNumbers arctan = RealNumbers.Real0;
-        RealNumbers xx = BigNumMath.Pow(x, new IntegerNumbers("2"));
+        RealNumbers index = x.Real1;
+        RealNumbers arctan = x.Real0;
+        RealNumbers xx = BigNumMath.Pow(x, new IntegerNumbers("2", x.Base10, x.IndBase10));
 
         for (int i = 1; i < 2 * _precisionAtan; i += 2)
         {
             arctan = i % 4 == 1 ? arctan + pow / index : arctan - pow / index;
             pow *= xx;
-            index += new RealNumbers("2.0");
+            index += new RealNumbers("2.0", x.Precision, x.Base10, x.IndBase10);
         }
 
         return arctan;
@@ -63,13 +63,13 @@ internal static class TrigonometryOperations
 
     internal static RealNumbers Asin(RealNumbers x)
     {
-        if (x.Abs > RealNumbers.Real1) throw new Exception("Operacion Invalida (arcsin recive valores entre 1 y -1)");
-        
-        RealNumbers index = RealNumbers.Real1;
-        RealNumbers even = RealNumbers.Real1;
-        RealNumbers odd = RealNumbers.Real1;
-        RealNumbers pow = RealNumbers.Real1;
-        RealNumbers arcsin = RealNumbers.Real0;
+        if (x.Abs > x.Real1) throw new Exception("Operacion Invalida (arcsin recive valores entre 1 y -1)");
+
+        RealNumbers index = x.Real1;
+        RealNumbers even = x.Real1;
+        RealNumbers odd = x.Real1;
+        RealNumbers pow = x.Real1;
+        RealNumbers arcsin = x.Real0;
 
         for (int i = 1; i <= _precisionAsin; i++)
         {

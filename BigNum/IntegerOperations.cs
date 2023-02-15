@@ -10,13 +10,13 @@ internal static class IntegerOperations
     /// <returns>Resultado entero</returns>
     internal static IntegerNumbers Mcd(IntegerNumbers x, IntegerNumbers y)
     {
-        if (x == IntegerNumbers.Integer0 || y == IntegerNumbers.Integer0)
+        if (x == x.Integer0 || y == y.Integer0)
             throw new Exception("Operacion Invalida (division por 0)");
 
         (IntegerNumbers a, IntegerNumbers b) = (BigNumMath.Max(x, y), BigNumMath.Min(x, y));
-        IntegerNumbers rest = IntegerNumbers.Integer1;
+        IntegerNumbers rest = x.Integer1;
 
-        while (rest != IntegerNumbers.Integer0)
+        while (rest != x.Integer0)
         {
             rest = a % b;
             (a, b) = (b, rest);
@@ -32,9 +32,9 @@ internal static class IntegerOperations
     /// <returns>Resultado entero</returns>
     internal static IntegerNumbers Factorial(IntegerNumbers x)
     {
-        IntegerNumbers fact = IntegerNumbers.Integer1;
+        IntegerNumbers fact = x.Integer1;
         int xx = int.Parse(x.ToString());
-        IntegerNumbers index = IntegerNumbers.Integer1;
+        IntegerNumbers index = x.Integer1;
 
         for (int i = 1; i <= xx; i++) fact *= index++;
 
@@ -46,7 +46,7 @@ internal static class IntegerOperations
         IntegerNumbers min = BigNumMath.Min(x - y, y);
 
         IntegerNumbers index = x;
-        IntegerNumbers fact = IntegerNumbers.Integer1;
+        IntegerNumbers fact = x.Integer1;
         int minInt = int.Parse(min.ToString());
 
         for (int i = 0; i < minInt; i++) fact *= index--;

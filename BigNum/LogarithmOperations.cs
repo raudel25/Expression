@@ -11,16 +11,16 @@ public static class LogarithmOperations
     /// <returns>Resultado real</returns>
     internal static RealNumbers Ln(RealNumbers x)
     {
-        if (x == BigNumMath.E) return RealNumbers.Real1;
+        if (x == Constants.ConstantE(x.Real0, x.Real1)) return x.Real1;
 
         //ln(1/x)=-ln(x)
-        bool positive = x.Abs > RealNumbers.Real1;
-        x = positive ? RealNumbers.Real1 / x : x;
-        x = RealNumbers.Real1 - x;
+        bool positive = x.Abs > x.Real1;
+        x = positive ? x.Real1 / x : x;
+        x = x.Real1 - x;
 
         RealNumbers pow = x;
-        RealNumbers index = RealNumbers.Real1;
-        RealNumbers ln = RealNumbers.Real0;
+        RealNumbers index = x.Real1;
+        RealNumbers ln = x.Real0;
 
         //Serie de Taylor ln(1-x)
         //https://es.wikipedia.org/wiki/Serie_de_Taylor
@@ -42,12 +42,12 @@ public static class LogarithmOperations
     /// <returns>Resultado real</returns>
     internal static RealNumbers Log(RealNumbers x, RealNumbers y)
     {
-        RealNumbers pow = RealNumbers.Real1;
+        RealNumbers pow = x.Real1;
         int index = 0;
 
         while (pow <= y)
         {
-            if (pow == y) return BigNumMath.ConvertToRealNumbers(index);
+            if (pow == y) return new RealNumbers(index.ToString(), x.Precision, x.Base10, x.IndBase10);
             pow *= x;
             index++;
         }

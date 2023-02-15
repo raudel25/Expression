@@ -2,17 +2,19 @@ namespace BigNum;
 
 public class IntegerNumbers : RealNumbers
 {
-    public static readonly IntegerNumbers Integer0 = new IntegerNumbers("0");
+    public IntegerNumbers Integer0 => BigNumMath.RealToInteger(this.Real0);
 
-    public static readonly IntegerNumbers Integer1 = new IntegerNumbers("1");
+    public IntegerNumbers Integer1 => BigNumMath.RealToInteger(this.Real1);
 
-    public static readonly IntegerNumbers IntegerN1 = new IntegerNumbers("1");
+    public IntegerNumbers IntegerN1 => BigNumMath.RealToInteger(this.RealN1);
 
-    public IntegerNumbers(string partNumber, bool positive = true) : base($"{partNumber}.0", positive,1)
+    public IntegerNumbers(string partNumber, long base10, int indBase10, bool positive = true) : base($"{partNumber}.0",
+        1, base10, indBase10, positive)
     {
     }
-    
-    internal IntegerNumbers(List<long> number, bool positive=true) : base(number,positive,1)
+
+    internal IntegerNumbers(List<long> number, long base10, int indBase10, bool positive = true) : base(number, 1,
+        base10, indBase10, positive)
     {
     }
 
@@ -35,9 +37,9 @@ public class IntegerNumbers : RealNumbers
     public static IntegerNumbers operator %(IntegerNumbers a, IntegerNumbers b) =>
         BigNumMath.RealToInteger(BigNumMath.Rest(a, b));
 
-    public static IntegerNumbers operator ++(IntegerNumbers a) => a + Integer1;
+    public static IntegerNumbers operator ++(IntegerNumbers a) => a + a.Integer1;
 
-    public static IntegerNumbers operator --(IntegerNumbers a) => a - Integer1;
+    public static IntegerNumbers operator --(IntegerNumbers a) => a - a.Integer1;
 
     #endregion
 }

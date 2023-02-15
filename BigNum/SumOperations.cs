@@ -10,20 +10,23 @@ internal static class SumOperations
     /// <returns>Resultado real</returns>
     internal static RealNumbers Sum(RealNumbers x, RealNumbers y)
     {
-        (x, y) = AuxOperations.EqualPrecision(x, y);
+        AuxOperations.EqualPrecision(x, y);
 
-        if (x == RealNumbers.Real0) return y;
-        if (y == RealNumbers.Real0) return x;
+        if (x == x.Real0) return y;
+        if (y == y.Real0) return x;
 
         if (x.Sign == y.Sign)
-            return new RealNumbers(Sum(x.NumberValue, y.NumberValue, x.Base10), x.Positive(), x.Precision);
+            return new RealNumbers(Sum(x.NumberValue, y.NumberValue, x.Base10), x.Precision, x.Base10, x.IndBase10,
+                x.Positive());
 
         int compare = x.Abs.CompareTo(y.Abs);
-        if (compare == 0) return RealNumbers.Real0;
+        if (compare == 0) return x.Real0;
         if (compare == 1)
-            return new RealNumbers(Subtraction(x.NumberValue, y.NumberValue, x.Base10), x.Positive(), x.Precision);
+            return new RealNumbers(Subtraction(x.NumberValue, y.NumberValue, x.Base10), x.Precision, x.Base10,
+                x.IndBase10, x.Positive());
 
-        return new RealNumbers(Subtraction(y.NumberValue, x.NumberValue, x.Base10), y.Positive(), x.Precision);
+        return new RealNumbers(Subtraction(y.NumberValue, x.NumberValue, x.Base10), x.Precision, x.Base10, x.IndBase10,
+            y.Positive());
     }
 
     /// <summary>

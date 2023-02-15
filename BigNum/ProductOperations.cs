@@ -10,16 +10,19 @@ internal static class ProductOperations
     /// <returns>Resultado real</returns>
     internal static RealNumbers Product(RealNumbers x, RealNumbers y)
     {
-        (x, y) = AuxOperations.EqualPrecision(x, y);
-        
+        AuxOperations.EqualPrecision(x, y);
+
         bool positive = x.Sign == y.Sign;
 
-        if (x.Abs == RealNumbers.Real1) return new RealNumbers(y.NumberValue, positive, x.Precision);
-        if (y.Abs == RealNumbers.Real1) return new RealNumbers(x.NumberValue, positive, x.Precision);
+        if (x.Abs == x.Real1)
+            return new RealNumbers(y.NumberValue, x.Precision, x.Base10, x.IndBase10, positive);
+        if (y.Abs == y.Real1)
+            return new RealNumbers(x.NumberValue, x.Precision, x.Base10, x.IndBase10, positive);
 
         (List<long> lx, List<long> ly) = AuxOperations.EqualZerosLeftValue(x.NumberValue, y.NumberValue);
 
-        return new RealNumbers(KaratsubaAlgorithm(lx, ly, x.Base10).Skip(x.Precision).ToList(), positive, x.Precision);
+        return new RealNumbers(KaratsubaAlgorithm(lx, ly, x.Base10).Skip(x.Precision).ToList(), x.Precision, x.Base10,
+            x.IndBase10, positive);
     }
 
     /// <summary>

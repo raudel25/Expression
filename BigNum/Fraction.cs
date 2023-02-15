@@ -8,6 +8,8 @@ public class Fraction : IComparable<Fraction>
 
     internal readonly char Sign;
 
+    public Fraction Fraction1 => new(this.Numerator.Real1, this.Denominator.Real1);
+
     public readonly RealNumbers Valor;
 
     public Fraction(RealNumbers numerator, RealNumbers denominator)

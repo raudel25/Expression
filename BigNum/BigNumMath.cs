@@ -1,7 +1,23 @@
 namespace BigNum;
 
-public static class BigNumMath
+public class BigNumMath
 {
+    public long Base10 { get; private set; }
+    public int IndBase10 { get; private set; }
+    public int Precision { get; private set; }
+
+    public BigNumMath(int precision, long base10, int indBase10)
+    {
+        this.Base10 = base10;
+        this.Precision = precision;
+        this.IndBase10 = indBase10;
+    }
+
+    public RealNumbers Num(string s, bool positive)
+    {
+        return new RealNumbers(s, this.Precision, this.Base10, this.IndBase10, positive);
+    }
+
     /// <summary>
     /// Sumar dos numeros reales
     /// </summary>
@@ -61,7 +77,7 @@ public static class BigNumMath
     /// <param name="y">Modulo</param>
     /// <returns>Resultado entero</returns>
     public static IntegerNumbers Rest(IntegerNumbers x, IntegerNumbers y) =>
-        x-RealToInteger(DivisionOperations.Division(x, y, true)*y);
+        x - RealToInteger(DivisionOperations.Division(x, y, true) * y);
 
     /// <summary>
     /// Potencia entre un numero real y un numero entero
@@ -69,7 +85,7 @@ public static class BigNumMath
     /// <param name="x">Base</param>
     /// <param name="y">Exponente</param>
     /// <returns>Resultado real</returns>
-    public static RealNumbers Pow(RealNumbers x, IntegerNumbers y) => PowOperations.Pow(x, y);
+    public static RealNumbers Pow(RealNumbers x, int y) => PowOperations.Pow(x, y);
 
     /// <summary>
     /// Potencia entre 2 numeros reales
@@ -85,7 +101,7 @@ public static class BigNumMath
     /// <param name="x">Base</param>
     /// <param name="y">Exponente</param>
     /// <returns>Resultado entero</returns>
-    public static IntegerNumbers Pow(IntegerNumbers x, IntegerNumbers y) => RealToInteger(PowOperations.Pow(x, y));
+    public static IntegerNumbers Pow(IntegerNumbers x, int y) => RealToInteger(PowOperations.Pow(x, y));
 
     /// <summary>
     /// Raiz n-esima 
@@ -93,7 +109,7 @@ public static class BigNumMath
     /// <param name="x">Radicando</param>
     /// <param name="y">Indice del radical</param>
     /// <returns>Resultado real</returns>
-    public static RealNumbers Sqrt(RealNumbers x, IntegerNumbers y) => SqrtOperations.Sqrt(x, y);
+    public static RealNumbers Sqrt(RealNumbers x, int y) => SqrtOperations.Sqrt(x, y);
 
     /// <summary>
     /// Potencia entre una fraccion real y un numero entero
@@ -101,7 +117,7 @@ public static class BigNumMath
     /// <param name="x">Base</param>
     /// <param name="pow">Exponente</param>
     /// <returns>Resultado fraccion real</returns>
-    public static Fraction Pow(Fraction x, IntegerNumbers pow) => PowOperations.Pow(x, pow);
+    public static Fraction Pow(Fraction x, int pow) => PowOperations.Pow(x, pow);
 
     /// <summary>
     /// Maximo entre dos numero reales
@@ -117,7 +133,7 @@ public static class BigNumMath
     /// <param name="x">Numero entero</param>
     /// <param name="y">Numero entero</param>
     /// <returns>Resultado entero</returns>
-    public static IntegerNumbers Max(IntegerNumbers x, IntegerNumbers y) => RealToInteger(Max((RealNumbers) x, y));
+    public static IntegerNumbers Max(IntegerNumbers x, IntegerNumbers y) => RealToInteger(Max((RealNumbers)x, y));
 
     /// <summary>
     /// Minimo entre dos numero reales
@@ -133,7 +149,7 @@ public static class BigNumMath
     /// <param name="x">Numero entero</param>
     /// <param name="y">Numero entero</param>
     /// <returns>Resultado entero</returns>
-    public static IntegerNumbers Min(IntegerNumbers x, IntegerNumbers y) => RealToInteger(Min((RealNumbers) x, y));
+    public static IntegerNumbers Min(IntegerNumbers x, IntegerNumbers y) => RealToInteger(Min((RealNumbers)x, y));
 
     /// <summary>
     /// Determinar el modulo de un numero real
@@ -143,62 +159,42 @@ public static class BigNumMath
     public static RealNumbers Abs(RealNumbers x) => x.Abs;
 
     /// <summary>
-    /// Determinar el modulo de un numero entero
-    /// </summary>
-    /// <param name="x">Numero entero</param>
-    /// <returns>Resultado entero</returns>
-    public static IntegerNumbers Abs(IntegerNumbers x) => RealToInteger(x.Abs);
-
-    /// <summary>
     /// Determinar el opuesto de un numero real
     /// </summary>
     /// <param name="x">Numero real</param>
     /// <returns>Resultado real</returns>
-    public static RealNumbers Opposite(RealNumbers x) => new RealNumbers(x.NumberValue, !x.Positive(),x.Precision);
-
-    /// <summary>
-    /// Determinar el opuesto de un numero entero
-    /// </summary>
-    /// <param name="x">Numero entero</param>
-    /// <returns>Resultado entero</returns>
-    public static IntegerNumbers Opposite(IntegerNumbers x) => new IntegerNumbers(x.ToString(), !x.Positive());
+    public static RealNumbers Opposite(RealNumbers x) =>
+        new(x.NumberValue, x.Precision, x.Base10, x.IndBase10, !x.Positive());
 
     /// <summary>
     /// Determinar el opuesto de una fraccion real
     /// </summary>
     /// <param name="x">Fraccion real</param>
     /// <returns>Resultado fraccion real</returns>
-    public static Fraction Opposite(Fraction x) => new Fraction(BigNumMath.Opposite(x.Numerator), x.Denominator);
+    public static Fraction Opposite(Fraction x) => new(BigNumMath.Opposite(x.Numerator), x.Denominator);
 
     /// <summary>
     /// Convertir de double(C#) a numero real
     /// </summary>
     /// <param name="n">Numero double(C#)</param>
     /// <returns>Resultado real</returns>
-    public static RealNumbers ConvertToRealNumbers(double n) => new RealNumbers(Math.Abs(n) + "", n >= 0);
-
-    /// <summary>
-    /// Convertir de entero(C#) a numero real
-    /// </summary>
-    /// <param name="n">Numero entero(C#)</param>
-    /// <returns>Resultado entero</returns>
-    public static IntegerNumbers ConvertToIntegerNumbers(int n) => new IntegerNumbers(Math.Abs(n) + "", n >= 0);
+    public RealNumbers ConvertToRealNumbers(double n) =>
+        new(Math.Abs(n) + "", this.Precision, this.Base10, this.IndBase10, n >= 0);
 
     /// <summary>
     /// Convertir de real a entero
     /// </summary>
     /// <param name="n">Numero real</param>
     /// <returns>Resultado entero</returns>
-    public static IntegerNumbers RealToInteger(RealNumbers n) => new IntegerNumbers(n.ToString().Split('.')[0], n.Positive());
-    
+    public static IntegerNumbers RealToInteger(RealNumbers n) =>
+        new IntegerNumbers(n.ToString().Split('.')[0], n.Base10, n.IndBase10, n.Positive());
+
     /// <summary>
     /// Convertir de entero a real
     /// </summary>
     /// <param name="n">Numero real</param>
     /// <returns>Resultado entero</returns>
     // public static RealNumbers IntegerToReal(RealNumbers n) => new RealNumbers($"{n}.0", n.Positive());
-
-
     public static bool IsInteger(RealNumbers n) => n.ToString().Split('.').Length == 1;
 
     /// <summary>
@@ -228,12 +224,13 @@ public static class BigNumMath
     /// <summary>
     /// Aproximacion del numero E
     /// </summary>
-    public static RealNumbers E => Constants.ConstantE();
+    public RealNumbers E => Constants.ConstantE(new RealNumbers("0", this.Precision, this.Base10, this.IndBase10),
+        new RealNumbers("1", this.Precision, this.Base10, this.IndBase10));
 
     /// <summary>
     /// Aproximacion del numero PI
     /// </summary>
-    public static RealNumbers PI => Constants.ConstantPI();
+    public RealNumbers PI => Constants.ConstantPI(this.Precision, this.Base10, this.IndBase10);
 
     /// <summary>
     /// Logaritmo en base E
@@ -266,9 +263,13 @@ public static class BigNumMath
 
     public static RealNumbers Asin(RealNumbers x) => TrigonometryOperations.Asin(x);
 
-    public static RealNumbers Acos(RealNumbers x) => PI / new RealNumbers("2") - Asin(x);
+    public static RealNumbers Acos(RealNumbers x) =>
+        Constants.ConstantPI(x.Precision, x.Base10, x.IndBase10) /
+        new RealNumbers("2", x.Precision, x.Base10, x.IndBase10) - Asin(x);
 
     public static RealNumbers Atan(RealNumbers x) => TrigonometryOperations.Atan(x);
 
-    public static RealNumbers Acot(RealNumbers x) => BigNumMath.PI / new RealNumbers("2") - Atan(x);
+    public static RealNumbers Acot(RealNumbers x) =>
+        Constants.ConstantPI(x.Precision, x.Base10, x.IndBase10) /
+        new RealNumbers("2", x.Precision, x.Base10, x.IndBase10) - Atan(x);
 }

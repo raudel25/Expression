@@ -10,24 +10,23 @@ internal static class PowOperations
     /// <returns>Resultado real</returns>
     internal static RealNumbers Pow(RealNumbers x, RealNumbers y)
     {
-        if (y == RealNumbers.Real0) return RealNumbers.Real1;
+        if (y == x.Real0) return x.Real1;
 
         string[] s = y.ToString().Split('.');
 
-        if (s.Length == 1) return Pow(x, BigNumMath.RealToInteger(y.Abs));
-        if (s.Length == 1 || s[1] == "0") return Pow(x, BigNumMath.RealToInteger(y.Abs));
+        if (s.Length == 1) return Pow(x, int.Parse(y.ToString()));
 
         (string partNumber, string partDecimal) = (s[0], s[1]);
 
         int cant = partDecimal.Length;
-        IntegerNumbers denominator = new IntegerNumbers(AuxOperations.AddZerosRight("1", cant));
-        IntegerNumbers numerator = new IntegerNumbers(partNumber + partDecimal);
+        IntegerNumbers denominator = new IntegerNumbers(AuxOperations.AddZerosRight("1", cant), x.Base10, x.IndBase10);
+        IntegerNumbers numerator = new IntegerNumbers(partNumber + partDecimal, x.Base10, x.IndBase10);
         IntegerNumbers mcd = BigNumMath.Mcd(numerator, denominator);
 
-        RealNumbers pow = SqrtOperations.Sqrt(x, denominator / mcd);
+        RealNumbers pow = SqrtOperations.Sqrt(x, int.Parse((denominator / mcd).ToString()));
         pow = Pow(pow, numerator / mcd);
 
-        return y.Positive() ? pow : RealNumbers.Real1 / pow;
+        return y.Positive() ? pow : y.Real1 / pow;
     }
 
     /// <summary>
@@ -36,14 +35,13 @@ internal static class PowOperations
     /// <param name="x">Base</param>
     /// <param name="y">Exponente</param>
     /// <returns>Resultado real</returns>
-    internal static RealNumbers Pow(RealNumbers x, IntegerNumbers y)
+    internal static RealNumbers Pow(RealNumbers x, int y)
     {
-        RealNumbers result = RealNumbers.Real1;
-        int pow = int.Parse(y.ToString());
+        RealNumbers result = x.Real1;
 
-        for (int i = 0; i < Math.Abs(pow); i++) result *= x;
+        for (int i = 0; i < Math.Abs(y); i++) result *= x;
 
-        if (pow < 0) result = RealNumbers.Real1 / result;
+        if (y < 0) result = x.Real1 / result;
 
         return result;
     }
@@ -54,15 +52,13 @@ internal static class PowOperations
     /// <param name="x">Fraccion real</param>
     /// <param name="pow">Numero entero(C#)</param>
     /// <returns>Resultado fraccion real</returns>
-    internal static Fraction Pow(Fraction x, IntegerNumbers pow)
+    internal static Fraction Pow(Fraction x, int pow)
     {
-        int powInt = int.Parse(pow.ToString());
+        Fraction result = x.Fraction1;
 
-        Fraction result = new Fraction(RealNumbers.Real1, RealNumbers.Real1);
+        for (int i = 0; i < Math.Abs(pow); i++) result *= x;
 
-        for (int i = 0; i < Math.Abs(powInt); i++) result *= x;
-
-        if (powInt < 0) result = new Fraction(result.Denominator, result.Numerator);
+        if (pow < 0) result = new Fraction(result.Denominator, result.Numerator);
 
         return result;
     }
