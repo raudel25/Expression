@@ -20,11 +20,16 @@ public class BigNumMath
     public IntegerNumbers Int(string s, bool positive) =>
         new(s, this.Base10, this.IndBase10, positive);
 
+    public RealNumbers Real1 => new("1", this.Precision, this.Base10, this.IndBase10);
+
+    public RealNumbers RealN1 => new("1", this.Precision, this.Base10, this.IndBase10, false);
+
+    public RealNumbers Real0 => new("0", this.Precision, this.Base10, this.IndBase10);
+
     /// <summary>
     /// Aproximacion del numero E
     /// </summary>
-    public RealNumbers E => Constants.ConstantE(new RealNumbers("0", this.Precision, this.Base10, this.IndBase10),
-        new RealNumbers("1", this.Precision, this.Base10, this.IndBase10));
+    public RealNumbers E => Constants.ConstantE(Real0, Real1);
 
     /// <summary>
     /// Aproximacion del numero PI
