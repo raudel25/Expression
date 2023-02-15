@@ -2,50 +2,61 @@ using BigNum;
 
 namespace Expression;
 
-public class NumberExpression : ExpressionType
+public class NumberExpression<T> : ExpressionType<T>
 {
-    public readonly RealNumbers Value;
+    public readonly T Value;
 
-    public NumberExpression(RealNumbers value)
+    public NumberExpression(T value, IArithmetic<T> arithmetic) : base(arithmetic)
     {
         this.Value = value;
     }
 
-    public override ExpressionType Derivative(char variable) => new NumberExpression(RealNumbers.Real0);
+    public override ExpressionType<T> Derivative(char variable) =>
+        new NumberExpression<T>(Arithmetic.Real0, Arithmetic);
 
-    public override RealNumbers Evaluate(List<(char, RealNumbers)> variables) => this.Value;
+    public override T Evaluate(List<(char, T)> variables) => this.Value;
 
-    public override ExpressionType EvaluateExpression(List<(char, ExpressionType)> variables) => this;
+    public override ExpressionType<T> EvaluateExpression(List<(char, ExpressionType<T>)> variables) => this;
 
-    public override string ToString() => this.Value.ToString();
+    public override string ToString()
+    {
+        if (this.Value is null) return "";
+        if (this.Value.ToString() is null) return "";
+        return this.Value.ToString()!;
+    }
 
     public override int Priority => 6;
 
     public override bool Equals(object? obj)
     {
-        NumberExpression? exp = obj as NumberExpression;
+        NumberExpression<T>? exp = obj as NumberExpression<T>;
         if (exp is null) return false;
+        if (exp.Value is null) return false;
 
-        return exp.Value == this.Value;
+        return exp.Value.Equals(this.Value);
     }
 
-    public override int GetHashCode() => this.Value.GetHashCode();
+    public override int GetHashCode()
+    {
+        if (this.Value is null) return 0;
+        return this.Value.GetHashCode();
+    }
 }
 
-public class VariableExpression : ExpressionType
+public class VariableExpression<T> : ExpressionType<T>
 {
     public readonly char Variable;
 
-    public VariableExpression(char variable)
+    public VariableExpression(char variable, IArithmetic<T> arithmetic) : base(arithmetic)
     {
         this.Variable = variable;
     }
 
-    public override ExpressionType Derivative(char variable) => variable == this.Variable
-        ? new NumberExpression(RealNumbers.Real1)
-        : new NumberExpression(RealNumbers.Real0);
+    public override ExpressionType<T> Derivative(char variable) => variable == this.Variable
+        ? new NumberExpression<T>(Arithmetic.Real1, Arithmetic)
+        : new NumberExpression<T>(Arithmetic.Real0, Arithmetic);
 
-    public override RealNumbers Evaluate(List<(char, RealNumbers)> variables)
+    public override T Evaluate(List<(char, T)> variables)
     {
         foreach (var item in variables)
         {
@@ -55,7 +66,7 @@ public class VariableExpression : ExpressionType
         throw new Exception("No se ha introducido un valor para cada variable");
     }
 
-    public override ExpressionType EvaluateExpression(List<(char, ExpressionType)> variables)
+    public override ExpressionType<T> EvaluateExpression(List<(char, ExpressionType<T>)> variables)
     {
         foreach (var item in variables)
         {
@@ -69,7 +80,7 @@ public class VariableExpression : ExpressionType
 
     public override bool Equals(object? obj)
     {
-        VariableExpression? exp = obj as VariableExpression;
+        VariableExpression<T>? exp = obj as VariableExpression<T>;
         if (exp is null) return false;
 
         return exp.Variable == this.Variable;
@@ -80,71 +91,82 @@ public class VariableExpression : ExpressionType
     public override string ToString() => this.Variable.ToString();
 }
 
-public class ConstantE : ExpressionType
+public class ConstantE<T> : ExpressionType<T>
 {
-    public override ExpressionType Derivative(char variable) => new NumberExpression(RealNumbers.Real0);
+    public ConstantE(IArithmetic<T> arithmetic) : base(arithmetic)
+    {
+    }
 
-    public override RealNumbers Evaluate(List<(char, RealNumbers)> variables) => BigNumMath.E;
+    public override ExpressionType<T> Derivative(char variable) =>
+        new NumberExpression<T>(Arithmetic.Real0, Arithmetic);
 
-    public override ExpressionType EvaluateExpression(List<(char, ExpressionType)> variables) => this;
+    public override T Evaluate(List<(char, T)> variables) => Arithmetic.E;
+
+    public override ExpressionType<T> EvaluateExpression(List<(char, ExpressionType<T>)> variables) => this;
 
     public override int Priority => 6;
 
     public override string ToString() => "e";
 
-    public override bool Equals(object? obj) => obj is ConstantE;
+    public override bool Equals(object? obj) => obj is ConstantE<T>;
 
-    public override int GetHashCode() => (int) Math.E;
+    public override int GetHashCode() => (int)Math.E;
 }
 
-public class ConstantPI : ExpressionType
+public class ConstantPI<T> : ExpressionType<T>
 {
-    public override ExpressionType Derivative(char variable) => new NumberExpression(RealNumbers.Real0);
+    public ConstantPI(IArithmetic<T> arithmetic) : base(arithmetic)
+    {
+    }
 
-    public override RealNumbers Evaluate(List<(char, RealNumbers)> variables) => BigNumMath.PI;
+    public override ExpressionType<T> Derivative(char variable) =>
+        new NumberExpression<T>(Arithmetic.Real0, Arithmetic);
 
-    public override ExpressionType EvaluateExpression(List<(char, ExpressionType)> variables) => this;
+    public override T Evaluate(List<(char, T)> variables) => Arithmetic.PI;
+
+    public override ExpressionType<T> EvaluateExpression(List<(char, ExpressionType<T>)> variables) => this;
 
     public override int Priority => 6;
 
     public override string ToString() => "pi";
 
-    public override bool Equals(object? obj) => obj is ConstantPI;
+    public override bool Equals(object? obj) => obj is ConstantE<T>;
 
-    public override int GetHashCode() => (int) Math.PI;
+    public override int GetHashCode() => (int)Math.PI;
 }
 
-public class Factorial : ExpressionType
+public class Factorial<T> : ExpressionType<T>
 {
-    private readonly IntegerNumbers _integer;
+    private readonly T _integer;
 
-    private IntegerNumbers _value;
+    private T? _value;
 
-    public IntegerNumbers Value
+    public T Value
     {
         get
         {
-            if (_value == IntegerNumbers.IntegerN1) _value = BigNumMath.Factorial(_integer);
+            if (_value is null || _value.Equals(default(T))) _value = Arithmetic.Factorial(_integer);
 
             return _value;
         }
         set
         {
-            if (_value == IntegerNumbers.IntegerN1) _value = value;
+            if (_value is null || _value.Equals(default(T))) _value = value;
         }
     }
 
-    public Factorial(IntegerNumbers value)
+    public Factorial(T value, IArithmetic<T> arithmetic) : base(arithmetic)
     {
         this._integer = value;
-        this._value = IntegerNumbers.IntegerN1;
+        this._value = default(T);
     }
 
-    public override ExpressionType Derivative(char variable) => new NumberExpression(RealNumbers.Real0);
+    public override ExpressionType<T> Derivative(char variable) =>
+        new NumberExpression<T>(Arithmetic.Real0, Arithmetic);
 
-    public override RealNumbers Evaluate(List<(char, RealNumbers)> variables) => this.Value;
+    public override T Evaluate(List<(char, T)> variables) => this.Value;
 
-    public override ExpressionType EvaluateExpression(List<(char, ExpressionType)> variables) => this;
+    public override ExpressionType<T> EvaluateExpression(List<(char, ExpressionType<T>)> variables) => this;
 
     public override string ToString() => $"{this._integer}!";
 
@@ -155,11 +177,16 @@ public class Factorial : ExpressionType
 
     public override bool Equals(object? obj)
     {
-        NumberExpression? exp = obj as NumberExpression;
+        NumberExpression<T>? exp = obj as NumberExpression<T>;
         if (exp is null) return false;
+        if (exp.Value is null) return false;
 
-        return exp.Value == this.Value;
+        return exp.Value.Equals(this.Value);
     }
 
-    public override int GetHashCode() => this.Value.GetHashCode();
+    public override int GetHashCode()
+    {
+        if (this.Value is null) return 0;
+        return this.Value.GetHashCode();
+    }
 }

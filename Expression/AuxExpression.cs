@@ -1,8 +1,6 @@
-using BigNum;
-
 namespace Expression;
 
-public static class Aux
+public static class Aux<T>
 {
     /// <summary>
     /// Colocar parentesis
@@ -16,7 +14,7 @@ public static class Aux
     /// </summary>
     /// <param name="exp">Cadena de texto</param>
     /// <returns>Cadena modificada</returns>
-    public static string Opposite(ExpressionType exp)
+    public static string Opposite(ExpressionType<T> exp)
     {
         string s = exp.ToString()!;
         if (s[0] == '-')
@@ -30,7 +28,7 @@ public static class Aux
     /// </summary>
     /// <param name="exp">Expresion</param>
     /// <returns>Lista de variables de la expresion</returns>
-    public static List<char> VariablesToExpression(ExpressionType exp)
+    public static List<char> VariablesToExpression(ExpressionType<T> exp)
     {
         HashSet<char> variables = new HashSet<char>();
         VariablesToExpression(exp, variables);
@@ -38,39 +36,33 @@ public static class Aux
         return variables.ToList();
     }
 
-    public static void VariablesToExpression(ExpressionType exp, HashSet<char> variables)
+    public static void VariablesToExpression(ExpressionType<T> exp, HashSet<char> variables)
     {
-        VariableExpression? variable = exp as VariableExpression;
-
-        if (variable != null)
+        if (exp is VariableExpression<T> variable)
         {
             if (!variables.Contains(variable.Variable)) variables.Add(variable.Variable);
             return;
         }
 
-        BinaryExpression? binary = exp as BinaryExpression;
-
-        if (binary != null)
+        if (exp is BinaryExpression<T> binary)
         {
             VariablesToExpression(binary.Left, variables);
             VariablesToExpression(binary.Right, variables);
             return;
         }
 
-        UnaryExpression? unary = exp as UnaryExpression;
-
-        if (unary != null) VariablesToExpression(unary.Value, variables);
+        if (exp is UnaryExpression<T> unary) VariablesToExpression(unary.Value, variables);
     }
-    
+
     /// <summary>
     /// Determinar si la expresion es completamente numerica
     /// </summary>
     /// <param name="binary">Expresion binaria</param>
     /// <returns>Expresion resultante(si es null es que no se pudo reducir)</returns>
-    internal static NumberExpression? Numbers(BinaryExpression binary)
+    internal static NumberExpression<T>? Numbers(BinaryExpression<T> binary)
     {
-        if (binary.Left is NumberExpression && binary.Right is NumberExpression)
-            return new NumberExpression(binary.Evaluate(new List<(char, RealNumbers)>()));
+        if (binary.Left is NumberExpression<T> && binary.Right is NumberExpression<T>)
+            return new NumberExpression<T>(binary.Evaluate(new List<(char, T)>()), binary.Arithmetic);
 
         return null;
     }

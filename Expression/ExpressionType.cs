@@ -2,28 +2,35 @@
 
 namespace Expression;
 
-public abstract class ExpressionType
+public abstract class ExpressionType<T>
 {
+    internal IArithmetic<T> Arithmetic;
+
+    internal ExpressionType(IArithmetic<T> arithmetic)
+    {
+        this.Arithmetic = arithmetic;
+    }
+
     /// <summary>
     /// Derivada de la expresion
     /// </summary>
     /// <param name="variable">Variable sobre la cual se esta derivando</param>
     /// <returns>Derivada</returns>
-    public abstract ExpressionType Derivative(char variable);
+    public abstract ExpressionType<T> Derivative(char variable);
 
     /// <summary>
     /// Evaluar la expresion 
     /// </summary>
     /// <param name="variables">Lista de variables con sus respectivos valores</param>
     /// <returns>Valor de la expresion</returns>
-    public abstract RealNumbers Evaluate(List<(char, RealNumbers)> variables);
+    public abstract T Evaluate(List<(char, T)> variables);
 
     /// <summary>
     /// Evaluar la expresion mediante otra expresion
     /// </summary>
     /// <param name="variables">Lista de variables con sus respectivas expresiones</param>
     /// <returns>Nueva expresion</returns>
-    public abstract ExpressionType EvaluateExpression(List<(char, ExpressionType)> variables);
+    public abstract ExpressionType<T> EvaluateExpression(List<(char, ExpressionType<T>)> variables);
 
     /// <summary>
     /// Prioridad de la operacion
@@ -34,7 +41,7 @@ public abstract class ExpressionType
     /// Determinar si la expresion es binaria
     /// </summary>
     /// <returns></returns>
-    public virtual bool IsBinary() => this is BinaryExpression;
+    public virtual bool IsBinary() => this is BinaryExpression<T>;
 
     /// <summary>
     /// Hallar la n-esima derivada
@@ -42,9 +49,9 @@ public abstract class ExpressionType
     /// <param name="variable">Variable sobre la cual se esta derivando</param>
     /// <param name="n">indice de la derivada</param>
     /// <returns>Derivada n-esima</returns>
-    public ExpressionType Derivative(char variable, int n)
+    public ExpressionType<T> Derivative(char variable, int n)
     {
-        ExpressionType expression = this.Derivative(variable);
+        ExpressionType<T> expression = this.Derivative(variable);
 
         for (int i = 1; i < n; i++) expression = expression.Derivative(variable);
 
@@ -53,50 +60,56 @@ public abstract class ExpressionType
 
     #region Operadores
 
-    public static Sum operator +(ExpressionType left, ExpressionType right) => new Sum(left, right);
+    public static Sum<T> operator +(ExpressionType<T> left, ExpressionType<T> right) =>
+        new(left, right, left.Arithmetic);
 
-    public static Subtraction operator -(ExpressionType left, ExpressionType right) =>
-        new Subtraction(left, right);
+    public static Subtraction<T> operator -(ExpressionType<T> left, ExpressionType<T> right) =>
+        new(left, right, left.Arithmetic);
 
-    public static Subtraction operator -(ExpressionType value) =>
-        new Subtraction(new NumberExpression(new RealNumbers("0")), value);
+    public static Subtraction<T> operator -(ExpressionType<T> value) =>
+        new(new NumberExpression<T>(value.Arithmetic.Real0, value.Arithmetic), value, value.Arithmetic);
 
-    public static Multiply operator *(ExpressionType left, ExpressionType right) => new Multiply(left, right);
+    public static Multiply<T> operator *(ExpressionType<T> left, ExpressionType<T> right) =>
+        new(left, right, left.Arithmetic);
 
-    public static Division operator /(ExpressionType left, ExpressionType right) => new Division(left, right);
+    public static Division<T> operator /(ExpressionType<T> left, ExpressionType<T> right) =>
+        new(left, right, left.Arithmetic);
 
-    public static ExpressionType operator ++(ExpressionType value) => value + new NumberExpression(RealNumbers.Real1);
+    public static ExpressionType<T> operator ++(ExpressionType<T> value) =>
+        value + new NumberExpression<T>(value.Arithmetic.Real1, value.Arithmetic);
 
-    public static ExpressionType operator --(ExpressionType value) => value - new NumberExpression(RealNumbers.Real1);
+    public static ExpressionType<T> operator --(ExpressionType<T> value) =>
+        value - new NumberExpression<T>(value.Arithmetic.Real1, value.Arithmetic);
 
     #endregion
 }
 
-public abstract class BinaryExpression : ExpressionType
+public abstract class BinaryExpression<T> : ExpressionType<T>
 {
-    public readonly ExpressionType Left;
+    public readonly ExpressionType<T> Left;
 
-    public readonly ExpressionType Right;
+    public readonly ExpressionType<T> Right;
 
-    public BinaryExpression(ExpressionType left, ExpressionType right)
+    public BinaryExpression(ExpressionType<T> left, ExpressionType<T> right, IArithmetic<T> arithmetic) :
+        base(arithmetic)
     {
         this.Left = ReduceExpression.Reduce(left);
         this.Right = ReduceExpression.Reduce(right);
     }
 
-    public override ExpressionType Derivative(char variable) => this.Derivative(variable, this.Left, this.Right);
+    public override ExpressionType<T> Derivative(char variable) => this.Derivative(variable, this.Left, this.Right);
 
-    public override RealNumbers Evaluate(List<(char, RealNumbers)> variables) =>
+    public override T Evaluate(List<(char, T)> variables) =>
         this.Evaluate(this.Left.Evaluate(variables), this.Right.Evaluate(variables));
 
-    public override ExpressionType EvaluateExpression(List<(char, ExpressionType)> variables) =>
+    public override ExpressionType<T> EvaluateExpression(List<(char, ExpressionType<T>)> variables) =>
         this.EvaluateExpression(this.Left.EvaluateExpression(variables), this.Right.EvaluateExpression(variables));
 
-    protected abstract ExpressionType Derivative(char variable, ExpressionType left, ExpressionType right);
+    protected abstract ExpressionType<T> Derivative(char variable, ExpressionType<T> left, ExpressionType<T> right);
 
-    protected abstract RealNumbers Evaluate(RealNumbers left, RealNumbers right);
+    protected abstract T Evaluate(T left, T right);
 
-    protected abstract ExpressionType EvaluateExpression(ExpressionType left, ExpressionType right);
+    protected abstract ExpressionType<T> EvaluateExpression(ExpressionType<T> left, ExpressionType<T> right);
 
     protected abstract bool IsBinaryImplement();
 
@@ -113,37 +126,37 @@ public abstract class BinaryExpression : ExpressionType
     /// <returns>Cadenas modificadas</returns>
     protected (string, string) DeterminatePriority() => (
         this.Left.Priority < this.Priority && this.Left.IsBinary()
-            ? Aux.Colocated(this.Left.ToString()!)
+            ? Aux<T>.Colocated(this.Left.ToString()!)
             : this.Left.ToString()!,
         this.Right.Priority < this.Priority && this.Right.IsBinary()
-            ? Aux.Colocated(this.Right.ToString()!)
+            ? Aux<T>.Colocated(this.Right.ToString()!)
             : this.Right.ToString()!);
 }
 
-public abstract class UnaryExpression : ExpressionType
+public abstract class UnaryExpression<T> : ExpressionType<T>
 {
-    public readonly ExpressionType Value;
+    public readonly ExpressionType<T> Value;
 
-    public UnaryExpression(ExpressionType value)
+    public UnaryExpression(ExpressionType<T> value, IArithmetic<T> arithmetic) : base(arithmetic)
     {
         this.Value = ReduceExpression.Reduce(value);
     }
 
-    public override ExpressionType Derivative(char variable) =>
+    public override ExpressionType<T> Derivative(char variable) =>
         this.Derivative(this.Value) * this.Value.Derivative(variable);
 
-    public override RealNumbers Evaluate(List<(char, RealNumbers)> variables) =>
+    public override T Evaluate(List<(char, T)> variables) =>
         this.Evaluate(this.Value.Evaluate(variables));
 
-    public override ExpressionType EvaluateExpression(List<(char, ExpressionType)> variables) =>
+    public override ExpressionType<T> EvaluateExpression(List<(char, ExpressionType<T>)> variables) =>
         this.EvaluateExpression(this.Value.EvaluateExpression(variables));
 
 
-    protected abstract ExpressionType Derivative(ExpressionType value);
+    protected abstract ExpressionType<T> Derivative(ExpressionType<T> value);
 
-    protected abstract RealNumbers Evaluate(RealNumbers x);
+    protected abstract T Evaluate(T x);
 
-    protected abstract ExpressionType EvaluateExpression(ExpressionType value);
+    protected abstract ExpressionType<T> EvaluateExpression(ExpressionType<T> value);
 
     public override int Priority => 5;
 }
