@@ -1,12 +1,10 @@
-using BigNum;
-
 namespace Expression;
 
 public class NumberExpression<T> : ExpressionType<T>
 {
     public readonly T Value;
 
-    public NumberExpression(T value, IArithmetic<T> arithmetic) : base(arithmetic)
+    internal NumberExpression(T value, IArithmetic<T> arithmetic) : base(arithmetic)
     {
         this.Value = value;
     }
@@ -47,7 +45,7 @@ public class VariableExpression<T> : ExpressionType<T>
 {
     public readonly char Variable;
 
-    public VariableExpression(char variable, IArithmetic<T> arithmetic) : base(arithmetic)
+    internal VariableExpression(char variable, IArithmetic<T> arithmetic) : base(arithmetic)
     {
         this.Variable = variable;
     }
@@ -93,7 +91,7 @@ public class VariableExpression<T> : ExpressionType<T>
 
 public class ConstantE<T> : ExpressionType<T>
 {
-    public ConstantE(IArithmetic<T> arithmetic) : base(arithmetic)
+    internal ConstantE(IArithmetic<T> arithmetic) : base(arithmetic)
     {
     }
 
@@ -115,7 +113,7 @@ public class ConstantE<T> : ExpressionType<T>
 
 public class ConstantPI<T> : ExpressionType<T>
 {
-    public ConstantPI(IArithmetic<T> arithmetic) : base(arithmetic)
+    internal ConstantPI(IArithmetic<T> arithmetic) : base(arithmetic)
     {
     }
 
@@ -155,7 +153,7 @@ public class Factorial<T> : ExpressionType<T>
         }
     }
 
-    public Factorial(T value, IArithmetic<T> arithmetic) : base(arithmetic)
+    internal Factorial(T value, IArithmetic<T> arithmetic) : base(arithmetic)
     {
         this._integer = value;
         this._value = default(T);
