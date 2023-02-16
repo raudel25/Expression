@@ -1,13 +1,13 @@
 namespace Expression;
 
-public static class Aux<T>
+internal static class Aux<T>
 {
     /// <summary>
     ///     Colocar parentesis
     /// </summary>
     /// <param name="s">Cadena de texto</param>
     /// <returns>Cadena modificada</returns>
-    public static string Colocated(string s)
+    internal static string Colocated(string s)
     {
         return s[0] == '(' && s[^1] == ')' ? s : $"({s})";
     }
@@ -17,7 +17,7 @@ public static class Aux<T>
     /// </summary>
     /// <param name="exp">Cadena de texto</param>
     /// <returns>Cadena modificada</returns>
-    public static string Opposite(ExpressionType<T> exp)
+    internal static string Opposite(ExpressionType<T> exp)
     {
         var s = exp.ToString()!;
         if (s[0] == '-')
@@ -31,7 +31,7 @@ public static class Aux<T>
     /// </summary>
     /// <param name="exp">Expresion</param>
     /// <returns>Lista de variables de la expresion</returns>
-    public static List<char> VariablesToExpression(ExpressionType<T> exp)
+    internal static List<char> VariablesToExpression(ExpressionType<T> exp)
     {
         var variables = new HashSet<char>();
         VariablesToExpression(exp, variables);

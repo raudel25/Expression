@@ -1,6 +1,6 @@
-namespace Expression;
+namespace Expression.Reduce;
 
-public static class ReduceMultiplyDivision<T>
+internal static class ReduceMultiplyDivision<T>
 {
     /// <summary>
     ///     Reducir una multiplicacion

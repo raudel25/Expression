@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace BigNum;
+namespace BigNum.Operations;
 
 internal static class AuxOperations
 {

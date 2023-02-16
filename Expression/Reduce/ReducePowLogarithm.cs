@@ -1,4 +1,4 @@
-namespace Expression;
+namespace Expression.Reduce;
 
 internal static class ReducePowLogarithm<T>
 {

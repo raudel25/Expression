@@ -1,4 +1,4 @@
-namespace Expression;
+namespace Expression.Reduce;
 
 public static class ReduceExpression<T>
 {

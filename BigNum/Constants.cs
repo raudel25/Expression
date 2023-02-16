@@ -2,7 +2,7 @@ namespace BigNum;
 
 internal static class Constants
 {
-    private static readonly int _precisionE = 40;
+    private const int PrecisionE = 40;
 
     /// <summary>
     ///     Aproximacion de E
@@ -16,7 +16,7 @@ internal static class Constants
 
         //Formula de taylor e^x
         //https://es.wikipedia.org/wiki/Serie_de_Taylor
-        for (var i = 0; i < _precisionE; i++)
+        for (var i = 0; i < PrecisionE; i++)
         {
             if (i != 0) fact *= index;
             e += real1 / fact;

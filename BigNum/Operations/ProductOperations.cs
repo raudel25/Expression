@@ -1,4 +1,4 @@
-namespace BigNum;
+namespace BigNum.Operations;
 
 internal static class ProductOperations
 {

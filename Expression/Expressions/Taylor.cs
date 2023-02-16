@@ -1,3 +1,5 @@
+using Expression.Reduce;
+
 namespace Expression;
 
 public class Taylor<T>

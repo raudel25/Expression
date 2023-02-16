@@ -1,6 +1,7 @@
 ﻿using BigNum;
 using Expression;
 using Expression.Arithmetics;
+using Expression.Reduce;
 
 UserInterface();
 
@@ -142,7 +143,7 @@ static void ExpressionResult<T>(ExpressionType<T> exp, ArithmeticExp<T> arithmet
 static List<(char, T)> DeterminateVariables<T>(ExpressionType<T> exp, IArithmetic<T> arithmetic, string message = "")
 {
     if (message == "") message = "Ingrese los valores de las variables";
-    var variables = Aux<T>.VariablesToExpression(exp);
+    var variables = ExpressionType<T>.VariablesToExpression(exp);
     var evaluate = new List<(char, T)>();
 
     foreach (var item in variables)
@@ -192,7 +193,7 @@ static List<(char, ExpressionType<T>)> DeterminateVariablesFunc<T>(ExpressionTyp
     ArithmeticExp<T> arithmeticExp)
 {
     var message = "Ingrese los valores de las variables";
-    var variables = Aux<T>.VariablesToExpression(exp);
+    var variables = ExpressionType<T>.VariablesToExpression(exp);
     var evaluate = new List<(char, ExpressionType<T>)>();
 
     foreach (var item in variables)

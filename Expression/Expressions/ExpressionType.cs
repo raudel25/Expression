@@ -1,4 +1,6 @@
-﻿namespace Expression;
+﻿using Expression.Reduce;
+
+namespace Expression;
 
 public abstract class ExpressionType<T>
 {
@@ -7,6 +9,11 @@ public abstract class ExpressionType<T>
     internal ExpressionType(IArithmetic<T> arithmetic)
     {
         Arithmetic = arithmetic;
+    }
+
+    public static List<char> VariablesToExpression(ExpressionType<T> exp)
+    {
+        return Aux<T>.VariablesToExpression(exp);
     }
 
     /// <summary>

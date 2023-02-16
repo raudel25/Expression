@@ -1,6 +1,6 @@
-namespace BigNum;
+namespace BigNum.Operations;
 
-public static class LogarithmOperations
+internal static class LogarithmOperations
 {
     private const int Precision = 150;
 

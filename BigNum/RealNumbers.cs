@@ -1,3 +1,5 @@
+using BigNum.Operations;
+
 namespace BigNum;
 
 public class RealNumbers : IComparable<RealNumbers>
