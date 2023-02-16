@@ -3,7 +3,7 @@ namespace BigNum;
 internal static class SumOperations
 {
     /// <summary>
-    /// Sumar dos numeros reales
+    ///     Sumar dos numeros reales
     /// </summary>
     /// <param name="x">Numero real</param>
     /// <param name="y">Numero real</param>
@@ -19,7 +19,7 @@ internal static class SumOperations
             return new RealNumbers(Sum(x.NumberValue, y.NumberValue, x.Base10), x.Precision, x.Base10, x.IndBase10,
                 x.Positive());
 
-        int compare = x.Abs.CompareTo(y.Abs);
+        var compare = x.Abs.CompareTo(y.Abs);
         if (compare == 0) return x.Real0;
         if (compare == 1)
             return new RealNumbers(Subtraction(x.NumberValue, y.NumberValue, x.Base10), x.Precision, x.Base10,
@@ -30,7 +30,7 @@ internal static class SumOperations
     }
 
     /// <summary>
-    /// Sumar dos cadenas
+    ///     Sumar dos cadenas
     /// </summary>
     /// <param name="x">Cadena</param>
     /// <param name="y">Cadena</param>
@@ -39,13 +39,13 @@ internal static class SumOperations
     internal static List<long> Sum(List<long> x, List<long> y, long base10)
     {
         (x, y) = AuxOperations.EqualZerosLeftValue(x, y);
-        bool drag = false;
-        int len = x.Count;
-        List<long> sum = new List<long>(len);
+        var drag = false;
+        var len = x.Count;
+        var sum = new List<long>(len);
 
-        for (int i = 0; i < len; i++)
+        for (var i = 0; i < len; i++)
         {
-            long n = x[i] + y[i];
+            var n = x[i] + y[i];
 
             n = drag ? n + 1 : n;
             drag = n >= base10;
@@ -58,7 +58,7 @@ internal static class SumOperations
     }
 
     /// <summary>
-    /// Restar dos cadenas
+    ///     Restar dos cadenas
     /// </summary>
     /// <param name="x">Cadena</param>
     /// <param name="y">Cadena</param>
@@ -67,13 +67,13 @@ internal static class SumOperations
     internal static List<long> Subtraction(List<long> x, List<long> y, long base10)
     {
         (x, y) = AuxOperations.EqualZerosLeftValue(x, y);
-        bool drag = false;
-        int len = x.Count;
-        List<long> sub = new List<long>(len);
+        var drag = false;
+        var len = x.Count;
+        var sub = new List<long>(len);
 
-        for (int i = 0; i < len; i++)
+        for (var i = 0; i < len; i++)
         {
-            long n = x[i] - y[i];
+            var n = x[i] - y[i];
 
             n = drag ? n - 1 : n;
             drag = n < 0;

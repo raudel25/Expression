@@ -2,105 +2,125 @@ namespace BigNum;
 
 public class Fraction : IComparable<Fraction>
 {
+    internal readonly RealNumbers Denominator;
     internal readonly RealNumbers Numerator;
 
-    internal readonly RealNumbers Denominator;
-
     internal readonly char Sign;
-
-    public Fraction Fraction1 => new(this.Numerator.Real1, this.Denominator.Real1);
 
     public readonly RealNumbers Valor;
 
     public Fraction(RealNumbers numerator, RealNumbers denominator)
     {
-        this.Numerator = numerator;
-        this.Denominator = denominator;
-        this.Sign = numerator.Positive() && denominator.Positive() ? '+' : '-';
-        this.Valor = numerator / denominator;
+        Numerator = numerator;
+        Denominator = denominator;
+        Sign = numerator.Positive() && denominator.Positive() ? '+' : '-';
+        Valor = numerator / denominator;
     }
 
-    public override bool Equals(object? obj)
-    {
-        Fraction? frac = obj as Fraction;
-
-        if (frac is null) return false;
-
-        return this.Numerator * frac.Denominator == this.Denominator * frac.Numerator;
-    }
-
-    public override int GetHashCode()
-    {
-        return this.Numerator.GetHashCode() * this.Denominator.GetHashCode();
-    }
+    public Fraction Fraction1 => new(Numerator.Real1, Denominator.Real1);
 
     public int CompareTo(Fraction? frac)
     {
         if (frac is null) throw new Exception("El valor introducido no es correcto");
 
-        if (this.Sign == frac.Sign)
+        if (Sign == frac.Sign)
         {
-            if (this.Positive())
-                return (this.Numerator * frac.Denominator).Abs.CompareTo((this.Denominator * frac.Numerator).Abs);
+            if (Positive())
+                return (Numerator * frac.Denominator).Abs.CompareTo((Denominator * frac.Numerator).Abs);
 
-            return (this.Denominator * frac.Numerator).Abs.CompareTo((this.Numerator * frac.Denominator).Abs);
+            return (Denominator * frac.Numerator).Abs.CompareTo((Numerator * frac.Denominator).Abs);
         }
 
-        if (this.Positive()) return 1;
+        if (Positive()) return 1;
         return -1;
+    }
+
+    public override bool Equals(object? obj)
+    {
+        var frac = obj as Fraction;
+
+        if (frac is null) return false;
+
+        return Numerator * frac.Denominator == Denominator * frac.Numerator;
+    }
+
+    public override int GetHashCode()
+    {
+        return Numerator.GetHashCode() * Denominator.GetHashCode();
     }
 
     public bool Positive()
     {
-        return this.Sign == '+';
+        return Sign == '+';
     }
 
     public override string ToString()
     {
-        string sign = this.Sign == '-' ? "-" : "";
+        var sign = Sign == '-' ? "-" : "";
 
-        return $"{sign}{this.Numerator.Abs}/{this.Denominator.Abs}";
+        return $"{sign}{Numerator.Abs}/{Denominator.Abs}";
     }
 
     #region Operadores
 
-    public static Fraction operator +(Fraction a, Fraction b) => BigNumMath.Sum(a, b);
+    public static Fraction operator +(Fraction a, Fraction b)
+    {
+        return BigNumMath.Sum(a, b);
+    }
 
-    public static Fraction operator -(Fraction a) => BigNumMath.Opposite(a);
+    public static Fraction operator -(Fraction a)
+    {
+        return BigNumMath.Opposite(a);
+    }
 
-    public static Fraction operator -(Fraction a, Fraction b) => BigNumMath.Sum(a, BigNumMath.Opposite(b));
+    public static Fraction operator -(Fraction a, Fraction b)
+    {
+        return BigNumMath.Sum(a, BigNumMath.Opposite(b));
+    }
 
-    public static Fraction operator *(Fraction a, Fraction b) => BigNumMath.Product(a, b);
+    public static Fraction operator *(Fraction a, Fraction b)
+    {
+        return BigNumMath.Product(a, b);
+    }
 
-    public static Fraction operator /(Fraction a, Fraction b) => BigNumMath.Division(a, b);
+    public static Fraction operator /(Fraction a, Fraction b)
+    {
+        return BigNumMath.Division(a, b);
+    }
 
     public static bool operator ==(Fraction? a, Fraction? b)
     {
-        if (a is null || b is null)
-        {
-            return a is null && b is null;
-        }
+        if (a is null || b is null) return a is null && b is null;
 
         return a.Equals(b);
     }
 
     public static bool operator !=(Fraction? a, Fraction? b)
     {
-        if (a is null || b is null)
-        {
-            return a is null && b is null;
-        }
+        if (a is null || b is null) return a is null && b is null;
 
         return !a.Equals(b);
     }
 
-    public static bool operator >(Fraction a, Fraction b) => a.CompareTo(b) == 1;
+    public static bool operator >(Fraction a, Fraction b)
+    {
+        return a.CompareTo(b) == 1;
+    }
 
-    public static bool operator <(Fraction a, Fraction b) => a.CompareTo(b) == -1;
+    public static bool operator <(Fraction a, Fraction b)
+    {
+        return a.CompareTo(b) == -1;
+    }
 
-    public static bool operator >=(Fraction a, Fraction b) => a.CompareTo(b) != -1;
+    public static bool operator >=(Fraction a, Fraction b)
+    {
+        return a.CompareTo(b) != -1;
+    }
 
-    public static bool operator <=(Fraction a, Fraction b) => a.CompareTo(b) != 1;
+    public static bool operator <=(Fraction a, Fraction b)
+    {
+        return a.CompareTo(b) != 1;
+    }
 
     #endregion
 }

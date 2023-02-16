@@ -3,7 +3,7 @@ namespace BigNum;
 internal static class IntegerOperations
 {
     /// <summary>
-    /// MCD entre dos numeros
+    ///     MCD entre dos numeros
     /// </summary>
     /// <param name="x">Numero entero</param>
     /// <param name="y">Numero entero</param>
@@ -13,8 +13,8 @@ internal static class IntegerOperations
         if (x == x.Integer0 || y == y.Integer0)
             throw new Exception("Operacion Invalida (division por 0)");
 
-        (IntegerNumbers a, IntegerNumbers b) = (BigNumMath.Max(x, y), BigNumMath.Min(x, y));
-        IntegerNumbers rest = x.Integer1;
+        (var a, var b) = (BigNumMath.Max(x, y), BigNumMath.Min(x, y));
+        var rest = x.Integer1;
 
         while (rest != x.Integer0)
         {
@@ -26,30 +26,30 @@ internal static class IntegerOperations
     }
 
     /// <summary>
-    /// Combinaciones sin repeticion
+    ///     Combinaciones sin repeticion
     /// </summary>
     /// <param name="x">Numero entero</param>
     /// <returns>Resultado entero</returns>
     internal static IntegerNumbers Factorial(IntegerNumbers x)
     {
-        IntegerNumbers fact = x.Integer1;
-        int xx = int.Parse(x.ToString());
-        IntegerNumbers index = x.Integer1;
+        var fact = x.Integer1;
+        var xx = int.Parse(x.ToString());
+        var index = x.Integer1;
 
-        for (int i = 1; i <= xx; i++) fact *= index++;
+        for (var i = 1; i <= xx; i++) fact *= index++;
 
         return fact;
     }
 
     internal static IntegerNumbers Combinations(IntegerNumbers x, IntegerNumbers y)
     {
-        IntegerNumbers min = BigNumMath.Min(x - y, y);
+        var min = BigNumMath.Min(x - y, y);
 
-        IntegerNumbers index = x;
-        IntegerNumbers fact = x.Integer1;
-        int minInt = int.Parse(min.ToString());
+        var index = x;
+        var fact = x.Integer1;
+        var minInt = int.Parse(min.ToString());
 
-        for (int i = 0; i < minInt; i++) fact *= index--;
+        for (var i = 0; i < minInt; i++) fact *= index--;
 
         return fact / Factorial(min);
     }

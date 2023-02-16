@@ -2,33 +2,31 @@ namespace BigNum;
 
 internal static class TrigonometryOperations
 {
-    internal delegate bool Condition(int x);
+    private static readonly int _precisionSinCos = 40;
 
-    private static int _precisionSinCos = 40;
+    private static readonly int _precisionAtan = 1000;
 
-    private static int _precisionAtan = 1000;
-
-    private static int _precisionAsin = 200;
+    private static readonly int _precisionAsin = 200;
 
     /// <summary>
-    /// Calcular seno o coseno
+    ///     Calcular seno o coseno
     /// </summary>
     /// <param name="x">Numero real</param>
     /// <param name="sin">Calculo del seno</param>
     /// <returns>Resultado real</returns>
     internal static RealNumbers SinCos(RealNumbers x, bool sin)
     {
-        Condition filter1 = sin ? (a) => (a & 1) == 0 : (a) => (a & 1) != 0;
-        Condition filter2 = sin ? (a) => a % 4 == 1 : (a) => a % 4 == 0;
+        Condition filter1 = sin ? a => (a & 1) == 0 : a => (a & 1) != 0;
+        Condition filter2 = sin ? a => a % 4 == 1 : a => a % 4 == 0;
 
-        RealNumbers result = x.Real0;
-        RealNumbers pow = x.Real1;
-        RealNumbers fact = x.Real1;
-        RealNumbers index = x.Real0;
+        var result = x.Real0;
+        var pow = x.Real1;
+        var fact = x.Real1;
+        var index = x.Real0;
 
         //Serie de taylor sen x cos x
         //https://es.wikipedia.org/wiki/Serie_de_Taylor
-        for (int i = 0; i < _precisionSinCos; i++)
+        for (var i = 0; i < _precisionSinCos; i++)
         {
             if (i != 0) fact *= index;
             if (i != 0) pow *= x;
@@ -46,12 +44,12 @@ internal static class TrigonometryOperations
         //arctan(1/x)=arccot(x)
         if (x.Abs > x.Real1) return BigNumMath.Acot(x.Real1 / x);
 
-        RealNumbers pow = x;
-        RealNumbers index = x.Real1;
-        RealNumbers arctan = x.Real0;
-        RealNumbers xx = BigNumMath.Pow(x, new IntegerNumbers("2", x.Base10, x.IndBase10));
+        var pow = x;
+        var index = x.Real1;
+        var arctan = x.Real0;
+        var xx = BigNumMath.Pow(x, new IntegerNumbers("2", x.Base10, x.IndBase10));
 
-        for (int i = 1; i < 2 * _precisionAtan; i += 2)
+        for (var i = 1; i < 2 * _precisionAtan; i += 2)
         {
             arctan = i % 4 == 1 ? arctan + pow / index : arctan - pow / index;
             pow *= xx;
@@ -65,20 +63,20 @@ internal static class TrigonometryOperations
     {
         if (x.Abs > x.Real1) throw new Exception("Operacion Invalida (arcsin recive valores entre 1 y -1)");
 
-        RealNumbers index = x.Real1;
-        RealNumbers even = x.Real1;
-        RealNumbers odd = x.Real1;
-        RealNumbers pow = x.Real1;
-        RealNumbers arcsin = x.Real0;
+        var index = x.Real1;
+        var even = x.Real1;
+        var odd = x.Real1;
+        var pow = x.Real1;
+        var arcsin = x.Real0;
 
-        for (int i = 1; i <= _precisionAsin; i++)
+        for (var i = 1; i <= _precisionAsin; i++)
         {
             pow *= x;
             if ((i & 1) == 0) even *= index;
 
             if ((i & 1) == 1)
             {
-                arcsin += (odd * pow) / (even * index);
+                arcsin += odd * pow / (even * index);
                 odd *= index;
             }
 
@@ -87,4 +85,6 @@ internal static class TrigonometryOperations
 
         return arcsin;
     }
+
+    internal delegate bool Condition(int x);
 }

@@ -3,7 +3,7 @@ namespace BigNum;
 internal static class DivisionOperations
 {
     /// <summary>
-    /// Dividir dos numeros reales
+    ///     Dividir dos numeros reales
     /// </summary>
     /// <param name="x">Numero real</param>
     /// <param name="y">Numero real</param>
@@ -13,7 +13,7 @@ internal static class DivisionOperations
     {
         AuxOperations.EqualPrecision(x, y);
 
-        bool positive = x.Sign == y.Sign;
+        var positive = x.Sign == y.Sign;
 
         if (y == y.Real0) throw new Exception("Operacion Invalida (division por 0)");
         if (y.Abs == y.Real1)
@@ -25,7 +25,7 @@ internal static class DivisionOperations
     }
 
     /// <summary>
-    /// Algortimo para la division
+    ///     Algortimo para la division
     /// </summary>
     /// <param name="x">Numero entero</param>
     /// <param name="y">Numero entero</param>
@@ -38,17 +38,17 @@ internal static class DivisionOperations
         if (x.Count < y.Count) (x, y) = AuxOperations.EqualZerosLeftValue(x, y);
         (x, y) = Normalize(x, y, base10);
 
-        List<long> result = new List<long>();
-        List<long> rest = x.Skip(x.Count - y.Count + 1).ToList();
+        var result = new List<long>();
+        var rest = x.Skip(x.Count - y.Count + 1).ToList();
         long aux;
 
-        for (int t = x.Count - y.Count; t >= 0; t--)
+        for (var t = x.Count - y.Count; t >= 0; t--)
         {
             (aux, rest) = DivisionImmediate(new[] { x[t] }.Concat(rest).ToList(), y, base10, precision);
             result.Add(aux);
         }
 
-        for (int i = 0; i < precision; i++)
+        for (var i = 0; i < precision; i++)
         {
             if (!integer)
                 (aux, rest) = DivisionImmediate(new long[] { 0 }.Concat(rest).ToList(), y, base10, precision);
@@ -63,7 +63,7 @@ internal static class DivisionOperations
     }
 
     /// <summary>
-    /// Dividir un numero por un digito
+    ///     Dividir un numero por un digito
     /// </summary>
     /// <param name="div">Numero a dividir</param>
     /// <param name="divisor">Divisor</param>
@@ -92,7 +92,7 @@ internal static class DivisionOperations
     }
 
     /// <summary>
-    /// Normalizar el divisor
+    ///     Normalizar el divisor
     /// </summary>
     /// <param name="x">Dividendo</param>
     /// <param name="y">Divisor</param>
@@ -102,11 +102,11 @@ internal static class DivisionOperations
     {
         if (y[^1] < base10 / 2)
         {
-            List<long> yAux = AuxOperations.EliminateZerosLeftValue(y, -1);
+            var yAux = AuxOperations.EliminateZerosLeftValue(y, -1);
             x = AuxOperations.AddZerosRightValue(x, y.Count - yAux.Count);
             y = AuxOperations.AddZerosRightValue(yAux, y.Count - yAux.Count);
             long mult = 1;
-            long aux = y[^1] / (base10 / 10);
+            var aux = y[^1] / (base10 / 10);
 
             if (aux == 0)
             {
