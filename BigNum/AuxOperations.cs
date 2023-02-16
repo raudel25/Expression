@@ -120,7 +120,7 @@ internal static class AuxOperations
         return l;
     }
 
-    internal static List<long> AddZerosLeftValue(List<long> numberValue, int cant)
+    private static List<long> AddZerosLeftValue(List<long> numberValue, int cant)
     {
         var aux = new long[cant];
 

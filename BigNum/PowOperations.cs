@@ -16,7 +16,7 @@ internal static class PowOperations
 
         if (s.Length == 1) return Pow(x, int.Parse(y.ToString()));
 
-        (var partNumber, var partDecimal) = (s[0], s[1]);
+        var (partNumber, partDecimal) = (s[0], s[1]);
 
         var cant = partDecimal.Length;
         var denominator = new IntegerNumbers(AuxOperations.AddZerosRight("1", cant), x.Base10, x.IndBase10);

@@ -19,7 +19,7 @@ internal static class ProductOperations
         if (y.Abs == y.Real1)
             return new RealNumbers(x.NumberValue, x.Precision, x.Base10, x.IndBase10, positive);
 
-        (var lx, var ly) = AuxOperations.EqualZerosLeftValue(x.NumberValue, y.NumberValue);
+        var (lx, ly) = AuxOperations.EqualZerosLeftValue(x.NumberValue, y.NumberValue);
 
         return new RealNumbers(KaratsubaAlgorithm(lx, ly, x.Base10).Skip(x.Precision).ToList(), x.Precision, x.Base10,
             x.IndBase10, positive);
@@ -62,9 +62,9 @@ internal static class ProductOperations
         long drag = 0;
         var result = new List<long>(x.Count);
 
-        for (var i = 0; i < x.Count; i++)
+        foreach (var t in x)
         {
-            var n = x[i] * y + drag;
+            var n = t * y + drag;
             drag = n / base10;
             result.Add(n % base10);
         }

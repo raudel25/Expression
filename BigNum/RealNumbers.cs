@@ -17,7 +17,7 @@ public class RealNumbers : IComparable<RealNumbers>
 
         var part = s.Split('.');
 
-        (var partNumber, var partDecimal) = (AuxOperations.EliminateZerosLeft(part[0]),
+        var (partNumber, partDecimal) = (AuxOperations.EliminateZerosLeft(part[0]),
             part.Length == 2 ? AuxOperations.EliminateZerosRight(part[1]) : "0");
         NumberValue = CreateNumberValue(partNumber, partDecimal);
 
@@ -139,7 +139,7 @@ public class RealNumbers : IComparable<RealNumbers>
     public override string ToString()
     {
         var sign = Sign == '-' ? "-" : "";
-        (var partDecimal, var partNumber) = ("", "");
+        var (partDecimal, partNumber) = ("", "");
 
         for (var i = 0; i < Precision; i++)
         {

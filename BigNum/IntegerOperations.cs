@@ -13,7 +13,7 @@ internal static class IntegerOperations
         if (x == x.Integer0 || y == y.Integer0)
             throw new Exception("Operacion Invalida (division por 0)");
 
-        (var a, var b) = (BigNumMath.Max(x, y), BigNumMath.Min(x, y));
+        var (a, b) = (BigNumMath.Max(x, y), BigNumMath.Min(x, y));
         var rest = x.Integer1;
 
         while (rest != x.Integer0)

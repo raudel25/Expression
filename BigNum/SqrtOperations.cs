@@ -2,7 +2,7 @@ namespace BigNum;
 
 internal static class SqrtOperations
 {
-    private static readonly int _precision = 50;
+    private const int Precision = 50;
 
     /// <summary>
     ///     Raiz n-esima
@@ -16,7 +16,7 @@ internal static class SqrtOperations
         if (yInt == 1) return x;
         if (x == x.Real0) return x.Real0;
 
-        (var aux, var ind) = ScalateOne(x.Abs);
+        var (aux, ind) = ScalateOne(x.Abs);
         if (ind != 0)
             aux *= new RealNumbers($"{AuxOperations.AddZerosRight("1", yInt - ind % yInt)}.0", x.Precision, x.Base10,
                 x.IndBase10);
@@ -46,14 +46,14 @@ internal static class SqrtOperations
     /// <returns>Resultado real</returns>
     private static RealNumbers AlgorithmSqrt(RealNumbers x, RealNumbers y, int yInt)
     {
-        (var value, var find) = ApproximateInteger(x, yInt);
+        var (value, find) = ApproximateInteger(x, yInt);
 
         if (find) return value;
 
         var aux = y - y.Real1;
 
         //https://es.frwiki.wiki/wiki/Algorithme_de_calcul_de_la_racine_n-i%C3%A8me
-        for (var i = 0; i < _precision; i++) value = y.Real1 / y * (aux * value + x / BigNumMath.Pow(value, yInt - 1));
+        for (var i = 0; i < Precision; i++) value = y.Real1 / y * (aux * value + x / BigNumMath.Pow(value, yInt - 1));
 
         return value;
     }

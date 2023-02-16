@@ -2,11 +2,11 @@ namespace BigNum;
 
 internal static class TrigonometryOperations
 {
-    private static readonly int _precisionSinCos = 40;
+    private const int PrecisionSinCos = 40;
 
-    private static readonly int _precisionAtan = 1000;
+    private const int PrecisionAtan = 1000;
 
-    private static readonly int _precisionAsin = 200;
+    private const int PrecisionAsin = 200;
 
     /// <summary>
     ///     Calcular seno o coseno
@@ -26,7 +26,7 @@ internal static class TrigonometryOperations
 
         //Serie de taylor sen x cos x
         //https://es.wikipedia.org/wiki/Serie_de_Taylor
-        for (var i = 0; i < _precisionSinCos; i++)
+        for (var i = 0; i < PrecisionSinCos; i++)
         {
             if (i != 0) fact *= index;
             if (i != 0) pow *= x;
@@ -49,7 +49,7 @@ internal static class TrigonometryOperations
         var arctan = x.Real0;
         var xx = BigNumMath.Pow(x, new IntegerNumbers("2", x.Base10, x.IndBase10));
 
-        for (var i = 1; i < 2 * _precisionAtan; i += 2)
+        for (var i = 1; i < 2 * PrecisionAtan; i += 2)
         {
             arctan = i % 4 == 1 ? arctan + pow / index : arctan - pow / index;
             pow *= xx;
@@ -69,7 +69,7 @@ internal static class TrigonometryOperations
         var pow = x.Real1;
         var arcsin = x.Real0;
 
-        for (var i = 1; i <= _precisionAsin; i++)
+        for (var i = 1; i <= PrecisionAsin; i++)
         {
             pow *= x;
             if ((i & 1) == 0) even *= index;
@@ -86,5 +86,5 @@ internal static class TrigonometryOperations
         return arcsin;
     }
 
-    internal delegate bool Condition(int x);
+    private delegate bool Condition(int x);
 }

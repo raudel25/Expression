@@ -2,7 +2,7 @@ namespace BigNum;
 
 public static class LogarithmOperations
 {
-    private static readonly int _precision = 150;
+    private const int Precision = 150;
 
     /// <summary>
     ///     Logaritmo en base e
@@ -24,7 +24,7 @@ public static class LogarithmOperations
 
         //Serie de Taylor ln(1-x)
         //https://es.wikipedia.org/wiki/Serie_de_Taylor
-        for (var i = 1; i <= _precision; i++)
+        for (var i = 1; i <= Precision; i++)
         {
             ln += pow / index;
             pow *= x;
