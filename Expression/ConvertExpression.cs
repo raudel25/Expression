@@ -38,7 +38,7 @@ public static class ConvertExpression<T>
     /// <param name="s">Cadena de texto</param>
     /// <param name="arithmetic">Aritmetica</param>
     /// <returns>Expresion resultante(si devuelve null la expresion no es correcta)</returns>
-    public static ExpressionType<T>? Parsing(string s, IArithmetic<T> arithmetic)
+    internal static ExpressionType<T>? Parsing(string s, IArithmetic<T> arithmetic)
     {
         s = s.Trim();
         List<Operators<T>> operators = new List<Operators<T>>();

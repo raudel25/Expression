@@ -2,25 +2,25 @@ using BigNum;
 
 namespace Expression.Arithmetics;
 
-public class BigNum : IArithmetic<RealNumbers>
+public class BigNumExp : IArithmetic<RealNumbers>
 {
-    public readonly BigNumMath Big;
+    private readonly BigNumMath _big;
 
-    public BigNum(BigNumMath big)
+    public BigNumExp(BigNumMath big)
     {
-        this.Big = big;
-        E = Big.E;
-        PI = Big.PI;
-        this.RealN1 = Big.RealN1;
-        this.Real0 = Big.Real0;
-        this.Real1 = Big.Real1;
+        this._big = big;
+        E = _big.E;
+        PI = _big.PI;
+        this.RealN1 = _big.RealN1;
+        this.Real0 = _big.Real0;
+        this.Real1 = _big.Real1;
     }
 
     public RealNumbers Real1 { get; }
     public RealNumbers Real0 { get; }
     public RealNumbers RealN1 { get; }
 
-    public RealNumbers StringToNumber(string s, bool positive = true) => Big.Real(s, positive);
+    public RealNumbers StringToNumber(string s, bool positive = true) => _big.Real(s, positive);
 
     public bool IsInteger(RealNumbers n) => BigNumMath.IsInteger(n);
 
