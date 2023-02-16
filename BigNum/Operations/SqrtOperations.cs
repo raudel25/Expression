@@ -86,7 +86,8 @@ internal static class SqrtOperations
     private static (RealNumbers, int) ScalateOne(RealNumbers x)
     {
         var cant = 0;
-        var real10 = new RealNumbers("10.0", x.Precision, x.Base10, x.IndBase10);
+        var real10 = new RealNumbers(new long[x.Precision].Concat(new long[] { 10 }).ToList(), x.Precision, x.Base10,
+            x.IndBase10);
 
         while (x < x.Real1)
         {

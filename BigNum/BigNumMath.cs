@@ -16,11 +16,13 @@ public class BigNumMath
     public int IndBase10 { get; }
     public int Precision { get; }
 
-    public RealNumbers Real1 => new("1", Precision, Base10, IndBase10);
+    public RealNumbers Real1 =>
+        new(new long[this.Precision].Concat(new long[] { 1 }).ToList(), Precision, Base10, IndBase10);
 
-    public RealNumbers RealN1 => new("1", Precision, Base10, IndBase10, false);
+    public RealNumbers RealN1 => new(new long[this.Precision].Concat(new long[] { 1 }).ToList(), Precision, Base10,
+        IndBase10, false);
 
-    public RealNumbers Real0 => new("0", Precision, Base10, IndBase10);
+    public RealNumbers Real0 => new(new long[this.Precision + 1].ToList(), Precision, Base10, IndBase10);
 
     /// <summary>
     ///     Aproximacion del numero E
@@ -267,7 +269,7 @@ public class BigNumMath
     /// <returns>Resultado entero</returns>
     public static IntegerNumbers RealToInteger(RealNumbers n)
     {
-        return new(n.ToString().Split('.')[0], n.Base10, n.IndBase10, n.Positive());
+        return new(new long[1].Concat(n.NumberValue.Skip(n.Precision)).ToList(), n.Base10, n.IndBase10, n.Positive());
     }
 
     /// <summary>
@@ -354,6 +356,26 @@ public class BigNumMath
         return TrigonometryOperations.SinCos(x, false);
     }
 
+    /// <summary>
+    ///     Tangente de un numero real
+    /// </summary>
+    /// <param name="x">Numero real</param>
+    /// <returns>Resultado real</returns>
+    public static RealNumbers Tan(RealNumbers x)
+    {
+        return Sin(x) / Cos(x);
+    }
+
+    /// <summary>
+    ///     Cotangente de un numero real
+    /// </summary>
+    /// <param name="x">Numero real</param>
+    /// <returns>Resultado real</returns>
+    public static RealNumbers Cot(RealNumbers x)
+    {
+        return Cos(x) / Sin(x);
+    }
+
     public static RealNumbers Asin(RealNumbers x)
     {
         return TrigonometryOperations.Asin(x);
@@ -362,7 +384,8 @@ public class BigNumMath
     public static RealNumbers Acos(RealNumbers x)
     {
         return Constants.ConstantPI(x.Precision, x.Base10, x.IndBase10) /
-            new RealNumbers("2", x.Precision, x.Base10, x.IndBase10) - Asin(x);
+            new RealNumbers(new long[x.Precision].Concat(new long[] { 2 }).ToList(), x.Precision, x.Base10,
+                x.IndBase10) - Asin(x);
     }
 
     public static RealNumbers Atan(RealNumbers x)
@@ -373,6 +396,7 @@ public class BigNumMath
     public static RealNumbers Acot(RealNumbers x)
     {
         return Constants.ConstantPI(x.Precision, x.Base10, x.IndBase10) /
-            new RealNumbers("2", x.Precision, x.Base10, x.IndBase10) - Atan(x);
+            new RealNumbers(new long[x.Precision].Concat(new long[] { 2 }).ToList(), x.Precision, x.Base10,
+                x.IndBase10) - Atan(x);
     }
 }

@@ -47,7 +47,7 @@ internal static class TrigonometryOperations
         var pow = x;
         var index = x.Real1;
         var arctan = x.Real0;
-        var xx = BigNumMath.Pow(x, new IntegerNumbers("2", x.Base10, x.IndBase10));
+        var xx = BigNumMath.Pow(x, 2);
 
         for (var i = 1; i < 2 * PrecisionAtan; i += 2)
         {

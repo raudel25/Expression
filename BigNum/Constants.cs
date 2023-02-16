@@ -32,7 +32,9 @@ internal static class Constants
     /// <returns>Resultado Real</returns>
     internal static RealNumbers ConstantPI(int precision, long base10, int indBase10)
     {
-        return BigNumMath.Asin(new RealNumbers("0.5", precision, base10, indBase10)) *
-               new RealNumbers("6.0", precision, base10, indBase10);
+        return BigNumMath.Asin(new RealNumbers(
+                   new long[precision - 1].Concat(new long[] { 5 * base10 / 10, 0 }).ToList(), precision,
+                   base10, indBase10)) *
+               new RealNumbers(new long[precision].Concat(new long[] { 6 }).ToList(), precision, base10, indBase10);
     }
 }

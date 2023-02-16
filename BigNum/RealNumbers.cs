@@ -47,11 +47,13 @@ public class RealNumbers : IComparable<RealNumbers>
 
     public int IndBase10 { get; }
 
-    public RealNumbers Real1 => new("1", Precision, Base10, IndBase10);
+    public RealNumbers Real1 =>
+        new(new long[this.Precision].Concat(new long[] { 1 }).ToList(), Precision, Base10, IndBase10);
 
-    public RealNumbers RealN1 => new("1", Precision, Base10, IndBase10, false);
+    public RealNumbers RealN1 => new(new long[this.Precision].Concat(new long[] { 1 }).ToList(), Precision, Base10,
+        IndBase10, false);
 
-    public RealNumbers Real0 => new("0", Precision, Base10, IndBase10);
+    public RealNumbers Real0 => new(new long[this.Precision + 1].ToList(), Precision, Base10, IndBase10);
 
     public int CompareTo(RealNumbers? n)
     {
