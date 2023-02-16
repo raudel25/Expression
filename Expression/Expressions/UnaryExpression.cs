@@ -1,4 +1,4 @@
-namespace Expression;
+namespace Expression.Expressions;
 
 public class NumberExpression<T> : ExpressionType<T>
 {

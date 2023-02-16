@@ -1,3 +1,5 @@
+using Expression.Expressions;
+
 namespace Expression.Reduce;
 
 public static class ReduceExpression<T>

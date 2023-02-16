@@ -1,4 +1,4 @@
-namespace Expression;
+namespace Expression.Expressions;
 
 public class Pow<T> : BinaryExpression<T>
 {

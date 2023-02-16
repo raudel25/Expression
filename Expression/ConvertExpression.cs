@@ -1,8 +1,10 @@
+using System.Text;
 using Expression.Reduce;
+using Expression.Expressions;
 
 namespace Expression;
 
-public static class ConvertExpression<T>
+internal static class ConvertExpression<T>
 {
     private const int MaxPriority = 8;
 
@@ -40,14 +42,15 @@ public static class ConvertExpression<T>
     /// <returns>Expresion resultante(si devuelve null la expresion no es correcta)</returns>
     internal static ExpressionType<T>? Parsing(string s, IArithmetic<T> arithmetic)
     {
-        s = s.Trim();
+        s = FormatStringExp(s);
+        Console.WriteLine(s);
         var operators = new List<Operators<T>>();
 
         var cantParent = 0;
         for (var i = 0; i < s.Length; i++)
         {
-            if (s[i] == '(') cantParent++;
-            if (s[i] == ')') cantParent--;
+            if (s[i] == '(' || s[i] == '[') cantParent++;
+            if (s[i] == ')' || s[i] == ']') cantParent--;
             if (cantParent < 0) return null;
 
             //Determinar el operador
@@ -57,15 +60,13 @@ public static class ConvertExpression<T>
 
                 var op = DeterminateOperator(s.Substring(i, j));
 
-                if (op != null)
-                {
-                    //Asignar el operador
-                    op.AssignPriority = op.DefaultPriority + MaxPriority * cantParent;
-                    op.Position = i;
-                    operators.Add(op);
-                    i += j - 1;
-                    break;
-                }
+                if (op == null) continue;
+                //Asignar el operador
+                op.AssignPriority = op.DefaultPriority + MaxPriority * cantParent;
+                op.Position = i;
+                operators.Add(op);
+                i += j - 1;
+                break;
             }
         }
 
@@ -77,6 +78,48 @@ public static class ConvertExpression<T>
         var exp =
             DeterminateExpression(s, 0, s.Length - 1, new bool[operators.Count], operators, arithmetic);
         return exp is null ? null : ReduceExpression<T>.Reduce(exp);
+    }
+
+    private static string FormatStringExp(string s)
+    {
+        s = s.Trim();
+        var exp = new StringBuilder();
+
+        for (var i = 0; i < s.Length - 1; i++)
+        {
+            var findOp = false;
+            for (var j = MaxLenOperator; j >= 1; j--)
+            {
+                if (j > s.Length - i) continue;
+
+                var op = DeterminateOperator(s.Substring(i, j));
+
+                if (op == null) continue;
+                findOp = true;
+                exp.Append(s.AsSpan(i, j));
+                i += j - 1;
+                break;
+            }
+
+            if (findOp) continue;
+            exp.Append(s[i]);
+            if (AddMult(s, i))
+                exp.Append('*');
+        }
+
+        exp.Append(s[^1]);
+        return exp.ToString();
+    }
+
+    private static bool AddMult(string s, int ind)
+    {
+        var noLog = s[ind] != '[' && s[ind] != ']' && s[ind + 1] != ']';
+        var noPoint = s[ind] != '.';
+        var noParents = s[ind + 1] != ')' && s[ind] != '(';
+        var noBinary = s[ind + 1] != '+' && s[ind + 1] != '-' && s[ind + 1] != '*' && s[ind + 1] != '/' &&
+                       s[ind + 1] != '^';
+        var noNumber = !(char.IsDigit(s[ind]) && (char.IsDigit(s[ind + 1]) || s[ind + 1] == '.'));
+        return noPoint && noNumber && noParents && noBinary && noLog;
     }
 
     /// <summary>
@@ -246,8 +289,8 @@ public static class ConvertExpression<T>
         var cantParent = 0;
         for (var i = ind; i < s.Length; i++)
         {
-            if (s[i] == '(') cantParent++;
-            if (s[i] == ')') cantParent--;
+            if (s[i] == '[') cantParent++;
+            if (s[i] == ']') cantParent--;
             if (cantParent == 0) return i;
         }
 

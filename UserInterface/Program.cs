@@ -1,5 +1,6 @@
 ﻿using BigNum;
 using Expression;
+using Expression.Expressions;
 using Expression.Arithmetics;
 using Expression.Reduce;
 

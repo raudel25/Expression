@@ -1,6 +1,6 @@
 using Expression.Reduce;
 
-namespace Expression;
+namespace Expression.Expressions;
 
 public class Taylor<T>
 {

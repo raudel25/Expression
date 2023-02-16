@@ -1,3 +1,5 @@
+using Expression.Expressions;
+
 namespace Expression.Reduce;
 
 internal static class ReduceMultiplyDivision<T>

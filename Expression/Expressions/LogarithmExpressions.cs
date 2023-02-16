@@ -1,4 +1,4 @@
-namespace Expression;
+namespace Expression.Expressions;
 
 public class Log<T> : BinaryExpression<T>
 {
@@ -47,7 +47,7 @@ public class Log<T> : BinaryExpression<T>
 
         if (right == "1") return "0";
 
-        return $"log({left})({right})";
+        return $"log[{left}]({right})";
     }
 
     public override bool Equals(object? obj)

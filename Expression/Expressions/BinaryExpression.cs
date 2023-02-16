@@ -1,4 +1,4 @@
-namespace Expression;
+namespace Expression.Expressions;
 
 public class Sum<T> : BinaryExpression<T>
 {
@@ -174,7 +174,9 @@ public class Multiply<T> : BinaryExpression<T>
             return $"{left.Substring(1, left.Length - 1)} * {right.Substring(1, right.Length - 1)}";
         if (rightOpposite) return $"{left} * {Aux<T>.Colocated(right)}";
 
-        return $"{left} * {right}";
+        return this.Left is not NumberExpression<T> || this.Right is not NumberExpression<T>
+            ? this.Right is NumberExpression<T> ? $"{right}{left}" : $"{left}{right}"
+            : $"{left} * {right}";
     }
 }
 

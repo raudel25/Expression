@@ -1,4 +1,6 @@
-namespace Expression;
+using Expression.Expressions;
+
+namespace Expression.Reduce;
 
 internal static class ReduceTrigonometry<T>
 {

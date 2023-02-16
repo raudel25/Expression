@@ -1,4 +1,4 @@
-namespace Expression;
+namespace Expression.Expressions;
 
 public class Sin<T> : UnaryExpression<T>
 {
