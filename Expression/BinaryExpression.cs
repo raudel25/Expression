@@ -6,37 +6,50 @@ public class Sum<T> : BinaryExpression<T>
     {
     }
 
-    protected override ExpressionType<T> Derivative(char variable, ExpressionType<T> left, ExpressionType<T> right) =>
-        left.Derivative(variable) + right.Derivative(variable);
-
-    protected override T Evaluate(T left, T right) => Arithmetic.Sum(left, right);
-
-    protected override ExpressionType<T> EvaluateExpression(ExpressionType<T> left, ExpressionType<T> right) =>
-        left + right;
-
-    protected override bool IsBinaryImplement() => !(this.Left.ToString() == "0" || this.Right.ToString() == "0");
-
     public override int Priority => 1;
+
+    protected override ExpressionType<T> Derivative(char variable, ExpressionType<T> left, ExpressionType<T> right)
+    {
+        return left.Derivative(variable) + right.Derivative(variable);
+    }
+
+    protected override T Evaluate(T left, T right)
+    {
+        return Arithmetic.Sum(left, right);
+    }
+
+    protected override ExpressionType<T> EvaluateExpression(ExpressionType<T> left, ExpressionType<T> right)
+    {
+        return left + right;
+    }
+
+    protected override bool IsBinaryImplement()
+    {
+        return !(Left.ToString() == "0" || Right.ToString() == "0");
+    }
 
     public override bool Equals(object? obj)
     {
-        Sum<T>? binary = obj as Sum<T>;
+        var binary = obj as Sum<T>;
         if (binary is null) return false;
 
-        return (this.Left.Equals(binary.Left) && this.Right.Equals(binary.Right)) ||
-               (this.Left.Equals(binary.Right) && this.Right.Equals(binary.Left));
+        return (Left.Equals(binary.Left) && Right.Equals(binary.Right)) ||
+               (Left.Equals(binary.Right) && Right.Equals(binary.Left));
     }
 
-    public override int GetHashCode() => this.Left.GetHashCode() * this.Right.GetHashCode();
+    public override int GetHashCode()
+    {
+        return Left.GetHashCode() * Right.GetHashCode();
+    }
 
     public override string ToString()
     {
-        if (this.Left.ToString() == "0") return this.Right.ToString()!;
-        if (this.Right.ToString() == "0") return this.Left.ToString()!;
+        if (Left.ToString() == "0") return Right.ToString()!;
+        if (Right.ToString() == "0") return Left.ToString()!;
 
-        (string left, string right) = this.DeterminatePriority();
+        var (left, right) = DeterminatePriority();
 
-        bool rightOpposite = right[0] == '-';
+        var rightOpposite = right[0] == '-';
         if (rightOpposite) return $"{left} - {right.Substring(1, right.Length - 1)}";
 
         return $"{left} + {right}";
@@ -49,26 +62,36 @@ public class Subtraction<T> : BinaryExpression<T>
     {
     }
 
-    protected override ExpressionType<T> Derivative(char variable, ExpressionType<T> left, ExpressionType<T> right) =>
-        left.Derivative(variable) - right.Derivative(variable);
-
-    protected override T Evaluate(T left, T right) => Arithmetic.Subtraction(left, right);
-
-    protected override ExpressionType<T> EvaluateExpression(ExpressionType<T> left, ExpressionType<T> right) =>
-        left - right;
-
-    protected override bool IsBinaryImplement() => !(this.Left.ToString() == "0" || this.Right.ToString() == "0");
-
     public override int Priority => 1;
+
+    protected override ExpressionType<T> Derivative(char variable, ExpressionType<T> left, ExpressionType<T> right)
+    {
+        return left.Derivative(variable) - right.Derivative(variable);
+    }
+
+    protected override T Evaluate(T left, T right)
+    {
+        return Arithmetic.Subtraction(left, right);
+    }
+
+    protected override ExpressionType<T> EvaluateExpression(ExpressionType<T> left, ExpressionType<T> right)
+    {
+        return left - right;
+    }
+
+    protected override bool IsBinaryImplement()
+    {
+        return !(Left.ToString() == "0" || Right.ToString() == "0");
+    }
 
     public override string ToString()
     {
-        if (this.Left.ToString() == "0") return Aux<T>.Opposite(this.Right);
-        if (this.Right.ToString() == "0") return this.Left.ToString()!;
+        if (Left.ToString() == "0") return Aux<T>.Opposite(Right);
+        if (Right.ToString() == "0") return Left.ToString()!;
 
-        (string left, string right) = this.DeterminatePriority();
+        var (left, right) = DeterminatePriority();
 
-        bool rightOpposite = right[0] == '-';
+        var rightOpposite = right[0] == '-';
         if (rightOpposite) return $"{left} + {right.Substring(1, right.Length - 1)}";
 
         return $"{left} - {right}";
@@ -76,13 +99,16 @@ public class Subtraction<T> : BinaryExpression<T>
 
     public override bool Equals(object? obj)
     {
-        Subtraction<T>? binary = obj as Subtraction<T>;
+        var binary = obj as Subtraction<T>;
         if (binary is null) return false;
 
-        return this.Left.Equals(binary.Left) && this.Right.Equals(binary.Right);
+        return Left.Equals(binary.Left) && Right.Equals(binary.Right);
     }
 
-    public override int GetHashCode() => 2 * this.Left.GetHashCode() * this.Right.GetHashCode();
+    public override int GetHashCode()
+    {
+        return 2 * Left.GetHashCode() * Right.GetHashCode();
+    }
 }
 
 public class Multiply<T> : BinaryExpression<T>
@@ -91,48 +117,58 @@ public class Multiply<T> : BinaryExpression<T>
     {
     }
 
-    protected override ExpressionType<T> Derivative(char variable, ExpressionType<T> left, ExpressionType<T> right) =>
-        left.Derivative(variable) * right + left * right.Derivative(variable);
+    public override int Priority => 2;
 
-    protected override T Evaluate(T left, T right) => Arithmetic.Multiply(left, right);
+    protected override ExpressionType<T> Derivative(char variable, ExpressionType<T> left, ExpressionType<T> right)
+    {
+        return left.Derivative(variable) * right + left * right.Derivative(variable);
+    }
 
-    protected override ExpressionType<T> EvaluateExpression(ExpressionType<T> left, ExpressionType<T> right) =>
-        left * right;
+    protected override T Evaluate(T left, T right)
+    {
+        return Arithmetic.Multiply(left, right);
+    }
+
+    protected override ExpressionType<T> EvaluateExpression(ExpressionType<T> left, ExpressionType<T> right)
+    {
+        return left * right;
+    }
 
     protected override bool IsBinaryImplement()
     {
-        if (this.Left.ToString() == "0" || this.Right.ToString() == "0") return false;
-        if (this.Left.ToString() == "1" || this.Right.ToString() == "1") return false;
-        if (this.Left.ToString() == "-1" || this.Right.ToString() == "-1") return false;
+        if (Left.ToString() == "0" || Right.ToString() == "0") return false;
+        if (Left.ToString() == "1" || Right.ToString() == "1") return false;
+        if (Left.ToString() == "-1" || Right.ToString() == "-1") return false;
 
         return true;
     }
 
-    public override int Priority => 2;
-
     public override bool Equals(object? obj)
     {
-        Multiply<T>? binary = obj as Multiply<T>;
+        var binary = obj as Multiply<T>;
         if (binary is null) return false;
 
-        return (this.Left.Equals(binary.Left) && this.Right.Equals(binary.Right)) ||
-               (this.Left.Equals(binary.Right) && this.Right.Equals(binary.Left));
+        return (Left.Equals(binary.Left) && Right.Equals(binary.Right)) ||
+               (Left.Equals(binary.Right) && Right.Equals(binary.Left));
     }
 
-    public override int GetHashCode() => 3 * this.Left.GetHashCode() * this.Right.GetHashCode();
+    public override int GetHashCode()
+    {
+        return 3 * Left.GetHashCode() * Right.GetHashCode();
+    }
 
     public override string ToString()
     {
-        if (this.Left.ToString() == "0" || this.Right.ToString() == "0") return "0";
-        if (this.Left.ToString() == "1") return this.Right.ToString()!;
-        if (this.Right.ToString() == "1") return this.Left.ToString()!;
-        if (this.Left.ToString() == "-1" && this.Right.ToString() == "-1") return "1";
-        if (this.Left.ToString() == "-1") return Aux<T>.Opposite(this.Right);
-        if (this.Right.ToString() == "-1") return Aux<T>.Opposite(this.Left);
+        if (Left.ToString() == "0" || Right.ToString() == "0") return "0";
+        if (Left.ToString() == "1") return Right.ToString()!;
+        if (Right.ToString() == "1") return Left.ToString()!;
+        if (Left.ToString() == "-1" && Right.ToString() == "-1") return "1";
+        if (Left.ToString() == "-1") return Aux<T>.Opposite(Right);
+        if (Right.ToString() == "-1") return Aux<T>.Opposite(Left);
 
-        (string left, string right) = this.DeterminatePriority();
+        var (left, right) = DeterminatePriority();
 
-        (bool leftOpposite, bool rightOpposite) = (left[0] == '-', right[0] == '-');
+        var (leftOpposite, rightOpposite) = (left[0] == '-', right[0] == '-');
 
         if (leftOpposite && rightOpposite)
             return $"{left.Substring(1, left.Length - 1)} * {right.Substring(1, right.Length - 1)}";
@@ -148,28 +184,38 @@ public class Division<T> : BinaryExpression<T>
     {
     }
 
-    protected override ExpressionType<T> Derivative(char variable, ExpressionType<T> left, ExpressionType<T> right) =>
-        (left.Derivative(variable) * right - left * right.Derivative(variable)) / (right * right);
-
-    protected override T Evaluate(T left, T right) => Arithmetic.Division(left, right);
-
-    protected override ExpressionType<T> EvaluateExpression(ExpressionType<T> left, ExpressionType<T> right) =>
-        left / right;
-
-    protected override bool IsBinaryImplement() => !(this.Left.ToString() == "0" || this.Right.ToString() == "1");
-
     public override int Priority => 2;
+
+    protected override ExpressionType<T> Derivative(char variable, ExpressionType<T> left, ExpressionType<T> right)
+    {
+        return (left.Derivative(variable) * right - left * right.Derivative(variable)) / (right * right);
+    }
+
+    protected override T Evaluate(T left, T right)
+    {
+        return Arithmetic.Division(left, right);
+    }
+
+    protected override ExpressionType<T> EvaluateExpression(ExpressionType<T> left, ExpressionType<T> right)
+    {
+        return left / right;
+    }
+
+    protected override bool IsBinaryImplement()
+    {
+        return !(Left.ToString() == "0" || Right.ToString() == "1");
+    }
 
     public override string ToString()
     {
-        if (this.Left.ToString() == "0") return "0";
-        if (this.Right.ToString() == "1") return this.Left.ToString()!;
+        if (Left.ToString() == "0") return "0";
+        if (Right.ToString() == "1") return Left.ToString()!;
 
-        (string left, string right) = this.DeterminatePriority();
+        var (left, right) = DeterminatePriority();
 
-        if (this.Right is Division<T>) right = Aux<T>.Colocated(right);
+        if (Right is Division<T>) right = Aux<T>.Colocated(right);
 
-        (bool leftOpposite, bool rightOpposite) = (left[0] == '-', right[0] == '-');
+        var (leftOpposite, rightOpposite) = (left[0] == '-', right[0] == '-');
 
         if (leftOpposite && rightOpposite)
             return $"{left.Substring(1, left.Length - 1)} / {right.Substring(1, right.Length - 1)}";
@@ -180,11 +226,14 @@ public class Division<T> : BinaryExpression<T>
 
     public override bool Equals(object? obj)
     {
-        Division<T>? binary = obj as Division<T>;
+        var binary = obj as Division<T>;
         if (binary is null) return false;
 
-        return this.Left.Equals(binary.Left) && this.Right.Equals(binary.Right);
+        return Left.Equals(binary.Left) && Right.Equals(binary.Right);
     }
 
-    public override int GetHashCode() => 4 * this.Left.GetHashCode() * this.Right.GetHashCode();
+    public override int GetHashCode()
+    {
+        return 4 * Left.GetHashCode() * Right.GetHashCode();
+    }
 }

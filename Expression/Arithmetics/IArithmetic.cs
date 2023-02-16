@@ -7,6 +7,10 @@ public interface IArithmetic<T>
 
     public T RealN1 { get; }
 
+    public T E { get; }
+
+    public T PI { get; }
+
     public T StringToNumber(string s, bool positive = true);
 
     public bool IsInteger(T n);
@@ -21,10 +25,6 @@ public interface IArithmetic<T>
     public T Multiply(T x, T y);
 
     public T Division(T x, T y);
-
-    public T E { get; }
-
-    public T PI { get; }
 
     public T Factorial(T x);
 

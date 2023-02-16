@@ -3,13 +3,13 @@ namespace Expression;
 public static class ReduceMultiplyDivision<T>
 {
     /// <summary>
-    /// Reducir una multiplicacion
+    ///     Reducir una multiplicacion
     /// </summary>
     /// <param name="binary">Expresion binaria</param>
     /// <returns>Expresion resultante</returns>
     internal static ExpressionType<T> ReduceMultiply(BinaryExpression<T> binary)
     {
-        ExpressionType<T>? aux = ReduceMultiplySimple(binary);
+        var aux = ReduceMultiplySimple(binary);
         if (aux is not null) return aux;
 
         aux = ReduceMultiply(binary.Left, binary.Right, binary.Arithmetic.Real1, binary.Arithmetic.Real1);
@@ -19,7 +19,7 @@ public static class ReduceMultiplyDivision<T>
     }
 
     /// <summary>
-    /// Determinar si una multiplicacion se puede reducir dadas caracteristicas simples
+    ///     Determinar si una multiplicacion se puede reducir dadas caracteristicas simples
     /// </summary>
     /// <param name="binary">Expresion binaria</param>
     /// <returns>Expresion resultante(si es null es que no se pudo reducir)</returns>
@@ -37,7 +37,7 @@ public static class ReduceMultiplyDivision<T>
     }
 
     /// <summary>
-    /// Comprobar si es posible reducir nuevamente la multiplicacion
+    ///     Comprobar si es posible reducir nuevamente la multiplicacion
     /// </summary>
     /// <param name="left">Expresion izquierda</param>
     /// <param name="right">Expresion derecha</param>
@@ -47,7 +47,7 @@ public static class ReduceMultiplyDivision<T>
     private static ExpressionType<T> ReduceMultiplyCheck(ExpressionType<T> left, ExpressionType<T> right, T indLeft,
         T indRight)
     {
-        ExpressionType<T>? aux = ReduceMultiply(left, right, indLeft, indRight);
+        var aux = ReduceMultiply(left, right, indLeft, indRight);
         if (aux is not null) return aux;
 
         BinaryExpression<T> binary = Pow<T>.DeterminatePow(left, new NumberExpression<T>(indLeft, left.Arithmetic)) *
@@ -60,7 +60,7 @@ public static class ReduceMultiplyDivision<T>
     }
 
     /// <summary>
-    /// Determinar si es posible reducir una multiplicacion dadas su expresion izquierda y derecha
+    ///     Determinar si es posible reducir una multiplicacion dadas su expresion izquierda y derecha
     /// </summary>
     /// <param name="left">Expresion izquierda</param>
     /// <param name="right">Expresion derecha</param>
@@ -75,7 +75,7 @@ public static class ReduceMultiplyDivision<T>
         auxExp = PowInd(right);
         (right, indRight) = (auxExp.Item1, left.Arithmetic.Multiply(auxExp.Item2, indRight));
 
-        (BinaryExpression<T>? leftBinary, BinaryExpression<T>? rightBinary) =
+        var (leftBinary, rightBinary) =
             (left as BinaryExpression<T>, right as BinaryExpression<T>);
 
         ExpressionType<T>? aux;
@@ -131,13 +131,13 @@ public static class ReduceMultiplyDivision<T>
     }
 
     /// <summary>
-    /// Reducir una division
+    ///     Reducir una division
     /// </summary>
     /// <param name="binary">Expresion binaria</param>
     /// <returns>Expresion resultante</returns>
     internal static ExpressionType<T> ReduceDivision(BinaryExpression<T> binary)
     {
-        ExpressionType<T>? aux = ReduceDivisionSimple(binary);
+        var aux = ReduceDivisionSimple(binary);
         if (aux is not null) return aux;
 
         aux = ReduceDivision(binary.Left, binary.Right, binary.Arithmetic.Real1, binary.Arithmetic.Real1);
@@ -147,11 +147,11 @@ public static class ReduceMultiplyDivision<T>
     }
 
     /// <summary>
-    /// Determinar si una division se puede reducir dadas caracteristicas simples
+    ///     Determinar si una division se puede reducir dadas caracteristicas simples
     /// </summary>
     /// <param name="binary">Expresion binaria</param>
     /// <returns>Expresion resultante(si es null es que no se pudo reducir)</returns>
-    internal static ExpressionType<T>? ReduceDivisionSimple(BinaryExpression<T> binary)
+    private static ExpressionType<T>? ReduceDivisionSimple(BinaryExpression<T> binary)
 
     {
         if (binary.Left.Equals(new NumberExpression<T>(binary.Arithmetic.Real0, binary.Arithmetic)))
@@ -163,7 +163,7 @@ public static class ReduceMultiplyDivision<T>
     }
 
     /// <summary>
-    /// Comprobar si es posible reducir nuevamente la division
+    ///     Comprobar si es posible reducir nuevamente la division
     /// </summary>
     /// <param name="left">Expresion izquierda</param>
     /// <param name="right">Expresion derecha</param>
@@ -173,7 +173,7 @@ public static class ReduceMultiplyDivision<T>
     private static ExpressionType<T> ReduceDivisionCheck(ExpressionType<T> left, ExpressionType<T> right, T indLeft,
         T indRight)
     {
-        ExpressionType<T>? aux = ReduceDivision(left, right, indLeft, indRight);
+        var aux = ReduceDivision(left, right, indLeft, indRight);
         if (aux is not null) return aux;
 
         BinaryExpression<T> binary = Pow<T>.DeterminatePow(left, new NumberExpression<T>(indLeft, left.Arithmetic)) /
@@ -186,7 +186,7 @@ public static class ReduceMultiplyDivision<T>
     }
 
     /// <summary>
-    /// Determinar si es posible reducir una division dadas su expresion izquierda y derecha
+    ///     Determinar si es posible reducir una division dadas su expresion izquierda y derecha
     /// </summary>
     /// <param name="left">Expresion izquierda</param>
     /// <param name="right">Expresion derecha</param>
@@ -201,7 +201,7 @@ public static class ReduceMultiplyDivision<T>
         auxExp = PowInd(right);
         (right, indRight) = (auxExp.Item1, left.Arithmetic.Multiply(auxExp.Item2, indRight));
 
-        (BinaryExpression<T>? leftBinary, BinaryExpression<T>? rightBinary) =
+        var (leftBinary, rightBinary) =
             (left as BinaryExpression<T>, right as BinaryExpression<T>);
 
         ExpressionType<T>? aux;
@@ -258,10 +258,10 @@ public static class ReduceMultiplyDivision<T>
 
     private static (ExpressionType<T>, T) PowInd(ExpressionType<T> exp)
     {
-        Pow<T>? binary = exp as Pow<T>;
+        var binary = exp as Pow<T>;
         if (binary is null) return (exp, exp.Arithmetic.Real1);
 
-        if (binary.Right is NumberExpression<T>) return (binary.Left, ((NumberExpression<T>)binary.Right).Value);
+        if (binary.Right is NumberExpression<T> expression) return (binary.Left, expression.Value);
 
         return (binary, exp.Arithmetic.Real1);
     }

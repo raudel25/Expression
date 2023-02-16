@@ -3,19 +3,19 @@ namespace Expression;
 public static class ReduceExpression<T>
 {
     /// <summary>
-    /// Reducir una expresion
+    ///     Reducir una expresion
     /// </summary>
     /// <param name="exp">Expresion para reducir</param>
     /// <returns>Expresion reducida</returns>
     public static ExpressionType<T> Reduce(ExpressionType<T> exp)
     {
-        UnaryExpression<T>? unary = exp as UnaryExpression<T>;
+        var unary = exp as UnaryExpression<T>;
 
         if (unary is Sin<T>) return ReduceTrigonometry<T>.ReduceSin(unary);
-        
+
         if (unary is Cos<T>) return ReduceTrigonometry<T>.ReduceCos(unary);
-        
-        BinaryExpression<T>? binary = exp as BinaryExpression<T>;
+
+        var binary = exp as BinaryExpression<T>;
 
         if (binary is null) return exp;
 

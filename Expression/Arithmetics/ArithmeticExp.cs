@@ -2,22 +2,34 @@ namespace Expression.Arithmetics;
 
 public class ArithmeticExp<T>
 {
-    public IArithmetic<T> Arithmetic { get; private set; }
-
     public ArithmeticExp(IArithmetic<T> arithmetic)
     {
-        this.Arithmetic = arithmetic;
+        Arithmetic = arithmetic;
     }
 
-    public NumberExpression<T> NumberExpression(T value) => new(value, Arithmetic);
-
-    public VariableExpression<T> VariableExpression(char variable) => new(variable, Arithmetic);
-
-    public Factorial<T> Factorial(T value) => new(value, Arithmetic);
+    public IArithmetic<T> Arithmetic { get; }
 
     public ConstantE<T> ConstantE => new(Arithmetic);
 
     public ConstantPI<T> ConstantPI => new(Arithmetic);
 
-    public ExpressionType<T>? Parsing(string s) => ConvertExpression<T>.Parsing(s, Arithmetic);
+    public NumberExpression<T> NumberExpression(T value)
+    {
+        return new(value, Arithmetic);
+    }
+
+    public VariableExpression<T> VariableExpression(char variable)
+    {
+        return new(variable, Arithmetic);
+    }
+
+    public Factorial<T> Factorial(T value)
+    {
+        return new(value, Arithmetic);
+    }
+
+    public ExpressionType<T>? Parsing(string s)
+    {
+        return ConvertExpression<T>.Parsing(s, Arithmetic);
+    }
 }

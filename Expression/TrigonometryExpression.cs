@@ -6,23 +6,38 @@ public class Sin<T> : UnaryExpression<T>
     {
     }
 
-    protected override ExpressionType<T> Derivative(ExpressionType<T> value) => new Cos<T>(value);
+    protected override ExpressionType<T> Derivative(ExpressionType<T> value)
+    {
+        return new Cos<T>(value);
+    }
 
-    protected override T Evaluate(T value) => Arithmetic.Sin(value);
+    protected override T Evaluate(T value)
+    {
+        return Arithmetic.Sin(value);
+    }
 
-    protected override ExpressionType<T> EvaluateExpression(ExpressionType<T> value) => new Sin<T>(value);
+    protected override ExpressionType<T> EvaluateExpression(ExpressionType<T> value)
+    {
+        return new Sin<T>(value);
+    }
 
-    public override string ToString() => $"sin({this.Value})";
+    public override string ToString()
+    {
+        return $"sin({Value})";
+    }
 
     public override bool Equals(object? obj)
     {
-        Sin<T>? unary = obj as Sin<T>;
+        var unary = obj as Sin<T>;
         if (unary is null) return false;
 
-        return this.Value.Equals(unary.Value);
+        return Value.Equals(unary.Value);
     }
 
-    public override int GetHashCode() => this.Value.GetHashCode();
+    public override int GetHashCode()
+    {
+        return Value.GetHashCode();
+    }
 }
 
 public class Cos<T> : UnaryExpression<T>
@@ -31,24 +46,38 @@ public class Cos<T> : UnaryExpression<T>
     {
     }
 
-    protected override ExpressionType<T> Derivative(ExpressionType<T> value) =>
-        new NumberExpression<T>(Arithmetic.RealN1, Arithmetic) * new Sin<T>(value);
+    protected override ExpressionType<T> Derivative(ExpressionType<T> value)
+    {
+        return new NumberExpression<T>(Arithmetic.RealN1, Arithmetic) * new Sin<T>(value);
+    }
 
-    protected override T Evaluate(T value) => Arithmetic.Cos(value);
+    protected override T Evaluate(T value)
+    {
+        return Arithmetic.Cos(value);
+    }
 
-    protected override ExpressionType<T> EvaluateExpression(ExpressionType<T> value) => new Cos<T>(value);
+    protected override ExpressionType<T> EvaluateExpression(ExpressionType<T> value)
+    {
+        return new Cos<T>(value);
+    }
 
-    public override string ToString() => $"cos({this.Value})";
+    public override string ToString()
+    {
+        return $"cos({Value})";
+    }
 
     public override bool Equals(object? obj)
     {
-        Cos<T>? unary = obj as Cos<T>;
+        var unary = obj as Cos<T>;
         if (unary is null) return false;
 
-        return this.Value.Equals(unary.Value);
+        return Value.Equals(unary.Value);
     }
 
-    public override int GetHashCode() => 2 * this.Value.GetHashCode();
+    public override int GetHashCode()
+    {
+        return 2 * Value.GetHashCode();
+    }
 }
 
 public class Tan<T> : UnaryExpression<T>
@@ -57,24 +86,39 @@ public class Tan<T> : UnaryExpression<T>
     {
     }
 
-    protected override ExpressionType<T> Derivative(ExpressionType<T> value) =>
-        Pow<T>.DeterminatePow(new Sec<T>(value), new NumberExpression<T>(Arithmetic.StringToNumber("2"), Arithmetic));
+    protected override ExpressionType<T> Derivative(ExpressionType<T> value)
+    {
+        return Pow<T>.DeterminatePow(new Sec<T>(value),
+            new NumberExpression<T>(Arithmetic.StringToNumber("2"), Arithmetic));
+    }
 
-    protected override T Evaluate(T value) => Arithmetic.Division(Arithmetic.Sin(value), Arithmetic.Cos(value));
+    protected override T Evaluate(T value)
+    {
+        return Arithmetic.Division(Arithmetic.Sin(value), Arithmetic.Cos(value));
+    }
 
-    protected override ExpressionType<T> EvaluateExpression(ExpressionType<T> value) => new Tan<T>(value);
+    protected override ExpressionType<T> EvaluateExpression(ExpressionType<T> value)
+    {
+        return new Tan<T>(value);
+    }
 
-    public override string ToString() => $"tan({this.Value})";
+    public override string ToString()
+    {
+        return $"tan({Value})";
+    }
 
     public override bool Equals(object? obj)
     {
-        Tan<T>? unary = obj as Tan<T>;
+        var unary = obj as Tan<T>;
         if (unary is null) return false;
 
-        return this.Value.Equals(unary.Value);
+        return Value.Equals(unary.Value);
     }
 
-    public override int GetHashCode() => 3 * this.Value.GetHashCode();
+    public override int GetHashCode()
+    {
+        return 3 * Value.GetHashCode();
+    }
 }
 
 public class Cot<T> : UnaryExpression<T>
@@ -83,24 +127,39 @@ public class Cot<T> : UnaryExpression<T>
     {
     }
 
-    protected override ExpressionType<T> Derivative(ExpressionType<T> value) =>
-        Pow<T>.DeterminatePow(new Csc<T>(value), new NumberExpression<T>(Arithmetic.StringToNumber("2"), Arithmetic));
+    protected override ExpressionType<T> Derivative(ExpressionType<T> value)
+    {
+        return Pow<T>.DeterminatePow(new Csc<T>(value),
+            new NumberExpression<T>(Arithmetic.StringToNumber("2"), Arithmetic));
+    }
 
-    protected override T Evaluate(T value) => Arithmetic.Division(Arithmetic.Cos(value), Arithmetic.Sin(value));
+    protected override T Evaluate(T value)
+    {
+        return Arithmetic.Division(Arithmetic.Cos(value), Arithmetic.Sin(value));
+    }
 
-    protected override ExpressionType<T> EvaluateExpression(ExpressionType<T> value) => new Cot<T>(value);
+    protected override ExpressionType<T> EvaluateExpression(ExpressionType<T> value)
+    {
+        return new Cot<T>(value);
+    }
 
-    public override string ToString() => $"cot({this.Value})";
+    public override string ToString()
+    {
+        return $"cot({Value})";
+    }
 
     public override bool Equals(object? obj)
     {
-        Cot<T>? unary = obj as Cot<T>;
+        var unary = obj as Cot<T>;
         if (unary is null) return false;
 
-        return this.Value.Equals(unary.Value);
+        return Value.Equals(unary.Value);
     }
 
-    public override int GetHashCode() => 4 * this.Value.GetHashCode();
+    public override int GetHashCode()
+    {
+        return 4 * Value.GetHashCode();
+    }
 }
 
 public class Sec<T> : UnaryExpression<T>
@@ -109,23 +168,38 @@ public class Sec<T> : UnaryExpression<T>
     {
     }
 
-    protected override ExpressionType<T> Derivative(ExpressionType<T> value) => new Sec<T>(value) * new Tan<T>(value);
+    protected override ExpressionType<T> Derivative(ExpressionType<T> value)
+    {
+        return new Sec<T>(value) * new Tan<T>(value);
+    }
 
-    protected override T Evaluate(T value) => Arithmetic.Division(Arithmetic.Real1, Arithmetic.Cos(value));
+    protected override T Evaluate(T value)
+    {
+        return Arithmetic.Division(Arithmetic.Real1, Arithmetic.Cos(value));
+    }
 
-    protected override ExpressionType<T> EvaluateExpression(ExpressionType<T> value) => new Sec<T>(value);
+    protected override ExpressionType<T> EvaluateExpression(ExpressionType<T> value)
+    {
+        return new Sec<T>(value);
+    }
 
-    public override string ToString() => $"sec({this.Value})";
+    public override string ToString()
+    {
+        return $"sec({Value})";
+    }
 
     public override bool Equals(object? obj)
     {
-        Sec<T>? unary = obj as Sec<T>;
+        var unary = obj as Sec<T>;
         if (unary is null) return false;
 
-        return this.Value.Equals(unary.Value);
+        return Value.Equals(unary.Value);
     }
 
-    public override int GetHashCode() => 5 * this.Value.GetHashCode();
+    public override int GetHashCode()
+    {
+        return 5 * Value.GetHashCode();
+    }
 }
 
 public class Csc<T> : UnaryExpression<T>
@@ -134,23 +208,38 @@ public class Csc<T> : UnaryExpression<T>
     {
     }
 
-    protected override ExpressionType<T> Derivative(ExpressionType<T> value) => -new Csc<T>(value) * new Cot<T>(value);
+    protected override ExpressionType<T> Derivative(ExpressionType<T> value)
+    {
+        return -new Csc<T>(value) * new Cot<T>(value);
+    }
 
-    protected override T Evaluate(T value) => Arithmetic.Division(Arithmetic.Real1, Arithmetic.Sin(value));
+    protected override T Evaluate(T value)
+    {
+        return Arithmetic.Division(Arithmetic.Real1, Arithmetic.Sin(value));
+    }
 
-    protected override ExpressionType<T> EvaluateExpression(ExpressionType<T> value) => new Csc<T>(value);
+    protected override ExpressionType<T> EvaluateExpression(ExpressionType<T> value)
+    {
+        return new Csc<T>(value);
+    }
 
-    public override string ToString() => $"csc({this.Value})";
+    public override string ToString()
+    {
+        return $"csc({Value})";
+    }
 
     public override bool Equals(object? obj)
     {
-        Csc<T>? unary = obj as Csc<T>;
+        var unary = obj as Csc<T>;
         if (unary is null) return false;
 
-        return this.Value.Equals(unary.Value);
+        return Value.Equals(unary.Value);
     }
 
-    public override int GetHashCode() => 6 * this.Value.GetHashCode();
+    public override int GetHashCode()
+    {
+        return 6 * Value.GetHashCode();
+    }
 }
 
 public class Asin<T> : UnaryExpression<T>
@@ -160,27 +249,41 @@ public class Asin<T> : UnaryExpression<T>
     }
 
     protected override ExpressionType<T> Derivative(ExpressionType<T> value)
-        => new NumberExpression<T>(Arithmetic.Real1, Arithmetic) /
-           Pow<T>.DeterminatePow(
-               new NumberExpression<T>(Arithmetic.Real1, Arithmetic) -
-               Pow<T>.DeterminatePow(value, new NumberExpression<T>(Arithmetic.StringToNumber("2"), Arithmetic)),
-               new NumberExpression<T>(Arithmetic.StringToNumber("2"), Arithmetic));
+    {
+        return new NumberExpression<T>(Arithmetic.Real1, Arithmetic) /
+               Pow<T>.DeterminatePow(
+                   new NumberExpression<T>(Arithmetic.Real1, Arithmetic) -
+                   Pow<T>.DeterminatePow(value, new NumberExpression<T>(Arithmetic.StringToNumber("2"), Arithmetic)),
+                   new NumberExpression<T>(Arithmetic.StringToNumber("2"), Arithmetic));
+    }
 
-    protected override T Evaluate(T value) => Arithmetic.Asin(value);
+    protected override T Evaluate(T value)
+    {
+        return Arithmetic.Asin(value);
+    }
 
-    protected override ExpressionType<T> EvaluateExpression(ExpressionType<T> value) => new Asin<T>(value);
+    protected override ExpressionType<T> EvaluateExpression(ExpressionType<T> value)
+    {
+        return new Asin<T>(value);
+    }
 
-    public override string ToString() => $"arcsin({this.Value})";
+    public override string ToString()
+    {
+        return $"arcsin({Value})";
+    }
 
     public override bool Equals(object? obj)
     {
-        Asin<T>? unary = obj as Asin<T>;
+        var unary = obj as Asin<T>;
         if (unary is null) return false;
 
-        return this.Value.Equals(unary.Value);
+        return Value.Equals(unary.Value);
     }
 
-    public override int GetHashCode() => 7 * this.Value.GetHashCode();
+    public override int GetHashCode()
+    {
+        return 7 * Value.GetHashCode();
+    }
 }
 
 public class Acos<T> : UnaryExpression<T>
@@ -190,27 +293,41 @@ public class Acos<T> : UnaryExpression<T>
     }
 
     protected override ExpressionType<T> Derivative(ExpressionType<T> value)
-        => -new NumberExpression<T>(Arithmetic.Real1, Arithmetic) /
-           Pow<T>.DeterminatePow(
-               new NumberExpression<T>(Arithmetic.Real1, Arithmetic) -
-               Pow<T>.DeterminatePow(value, new NumberExpression<T>(Arithmetic.StringToNumber("2"), Arithmetic)),
-               new NumberExpression<T>(Arithmetic.StringToNumber("0.5"), Arithmetic));
+    {
+        return -new NumberExpression<T>(Arithmetic.Real1, Arithmetic) /
+               Pow<T>.DeterminatePow(
+                   new NumberExpression<T>(Arithmetic.Real1, Arithmetic) -
+                   Pow<T>.DeterminatePow(value, new NumberExpression<T>(Arithmetic.StringToNumber("2"), Arithmetic)),
+                   new NumberExpression<T>(Arithmetic.StringToNumber("0.5"), Arithmetic));
+    }
 
-    protected override T Evaluate(T value) => Arithmetic.Acos(value);
+    protected override T Evaluate(T value)
+    {
+        return Arithmetic.Acos(value);
+    }
 
-    protected override ExpressionType<T> EvaluateExpression(ExpressionType<T> value) => new Acos<T>(value);
+    protected override ExpressionType<T> EvaluateExpression(ExpressionType<T> value)
+    {
+        return new Acos<T>(value);
+    }
 
-    public override string ToString() => $"arccos({this.Value})";
+    public override string ToString()
+    {
+        return $"arccos({Value})";
+    }
 
     public override bool Equals(object? obj)
     {
-        Acos<T>? unary = obj as Acos<T>;
+        var unary = obj as Acos<T>;
         if (unary is null) return false;
 
-        return this.Value.Equals(unary.Value);
+        return Value.Equals(unary.Value);
     }
 
-    public override int GetHashCode() => 8 * this.Value.GetHashCode();
+    public override int GetHashCode()
+    {
+        return 8 * Value.GetHashCode();
+    }
 }
 
 public class Atan<T> : UnaryExpression<T>
@@ -220,25 +337,39 @@ public class Atan<T> : UnaryExpression<T>
     }
 
     protected override ExpressionType<T> Derivative(ExpressionType<T> value)
-        => new NumberExpression<T>(Arithmetic.Real1, Arithmetic) /
-           (new NumberExpression<T>(Arithmetic.Real1, Arithmetic) + Pow<T>.DeterminatePow(value,
-               new NumberExpression<T>(Arithmetic.StringToNumber("2"), Arithmetic)));
+    {
+        return new NumberExpression<T>(Arithmetic.Real1, Arithmetic) /
+               (new NumberExpression<T>(Arithmetic.Real1, Arithmetic) + Pow<T>.DeterminatePow(value,
+                   new NumberExpression<T>(Arithmetic.StringToNumber("2"), Arithmetic)));
+    }
 
-    protected override T Evaluate(T value) => Arithmetic.Atan(value);
+    protected override T Evaluate(T value)
+    {
+        return Arithmetic.Atan(value);
+    }
 
-    protected override ExpressionType<T> EvaluateExpression(ExpressionType<T> value) => new Atan<T>(value);
+    protected override ExpressionType<T> EvaluateExpression(ExpressionType<T> value)
+    {
+        return new Atan<T>(value);
+    }
 
-    public override string ToString() => $"arctan({this.Value})";
+    public override string ToString()
+    {
+        return $"arctan({Value})";
+    }
 
     public override bool Equals(object? obj)
     {
-        Atan<T>? unary = obj as Atan<T>;
+        var unary = obj as Atan<T>;
         if (unary is null) return false;
 
-        return this.Value.Equals(unary.Value);
+        return Value.Equals(unary.Value);
     }
 
-    public override int GetHashCode() => 9 * this.Value.GetHashCode();
+    public override int GetHashCode()
+    {
+        return 9 * Value.GetHashCode();
+    }
 }
 
 public class Acot<T> : UnaryExpression<T>
@@ -248,23 +379,37 @@ public class Acot<T> : UnaryExpression<T>
     }
 
     protected override ExpressionType<T> Derivative(ExpressionType<T> value)
-        => -new NumberExpression<T>(Arithmetic.Real1, Arithmetic) /
-           (new NumberExpression<T>(Arithmetic.Real1, Arithmetic) + Pow<T>.DeterminatePow(value,
-               new NumberExpression<T>(Arithmetic.StringToNumber("2"), Arithmetic)));
+    {
+        return -new NumberExpression<T>(Arithmetic.Real1, Arithmetic) /
+               (new NumberExpression<T>(Arithmetic.Real1, Arithmetic) + Pow<T>.DeterminatePow(value,
+                   new NumberExpression<T>(Arithmetic.StringToNumber("2"), Arithmetic)));
+    }
 
-    protected override T Evaluate(T value) => Arithmetic.Acot(value);
+    protected override T Evaluate(T value)
+    {
+        return Arithmetic.Acot(value);
+    }
 
-    protected override ExpressionType<T> EvaluateExpression(ExpressionType<T> value) => new Acot<T>(value);
+    protected override ExpressionType<T> EvaluateExpression(ExpressionType<T> value)
+    {
+        return new Acot<T>(value);
+    }
 
-    public override string ToString() => $"arccot({this.Value})";
+    public override string ToString()
+    {
+        return $"arccot({Value})";
+    }
 
     public override bool Equals(object? obj)
     {
-        Acot<T>? unary = obj as Acot<T>;
+        var unary = obj as Acot<T>;
         if (unary is null) return false;
 
-        return this.Value.Equals(unary.Value);
+        return Value.Equals(unary.Value);
     }
 
-    public override int GetHashCode() => 10 * this.Value.GetHashCode();
+    public override int GetHashCode()
+    {
+        return 10 * Value.GetHashCode();
+    }
 }

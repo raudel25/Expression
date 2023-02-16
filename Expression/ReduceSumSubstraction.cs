@@ -3,13 +3,13 @@ namespace Expression;
 internal static class ReduceSumSubtraction<T>
 {
     /// <summary>
-    /// Reducir una suma
+    ///     Reducir una suma
     /// </summary>
     /// <param name="binary">Expresion binaria</param>
     /// <returns>Expresion resultante</returns>
     internal static ExpressionType<T> ReduceSum(BinaryExpression<T> binary)
     {
-        ExpressionType<T>? aux = ReduceSumSimple(binary);
+        var aux = ReduceSumSimple(binary);
         if (aux is not null) return aux;
 
         aux = ReduceSum(binary.Left, binary.Right, binary.Arithmetic.Real1, binary.Arithmetic.Real1);
@@ -19,11 +19,11 @@ internal static class ReduceSumSubtraction<T>
     }
 
     /// <summary>
-    /// Determinar si una suma se puede reducir dadas caracteristicas simples
+    ///     Determinar si una suma se puede reducir dadas caracteristicas simples
     /// </summary>
     /// <param name="binary">Expresion binaria</param>
     /// <returns>Expresion resultante(si es null es que no se pudo reducir)</returns>
-    internal static ExpressionType<T>? ReduceSumSimple(BinaryExpression<T> binary)
+    private static ExpressionType<T>? ReduceSumSimple(BinaryExpression<T> binary)
     {
         if (binary.Left.Equals(new NumberExpression<T>(binary.Arithmetic.Real0, binary.Arithmetic)))
             return binary.Right;
@@ -34,7 +34,7 @@ internal static class ReduceSumSubtraction<T>
     }
 
     /// <summary>
-    /// Comprobar si es posible reducir nuevamente la suma
+    ///     Comprobar si es posible reducir nuevamente la suma
     /// </summary>
     /// <param name="left">Expresion izquierda</param>
     /// <param name="right">Expresion derecha</param>
@@ -44,7 +44,7 @@ internal static class ReduceSumSubtraction<T>
     private static ExpressionType<T> ReduceSumCheck(ExpressionType<T> left, ExpressionType<T> right, T indLeft,
         T indRight)
     {
-        ExpressionType<T>? aux = ReduceSum(left, right, indLeft, indRight);
+        var aux = ReduceSum(left, right, indLeft, indRight);
         if (aux is not null) return aux;
 
         BinaryExpression<T> binary = new NumberExpression<T>(indLeft, left.Arithmetic) * left +
@@ -57,7 +57,7 @@ internal static class ReduceSumSubtraction<T>
     }
 
     /// <summary>
-    /// Determinar si es posible reducir una suma dadas su expresion izquierda y derecha
+    ///     Determinar si es posible reducir una suma dadas su expresion izquierda y derecha
     /// </summary>
     /// <param name="left">Expresion izquierda</param>
     /// <param name="right">Expresion derecha</param>
@@ -71,7 +71,7 @@ internal static class ReduceSumSubtraction<T>
         auxExp = MultiplyInd(right);
         (right, indRight) = (auxExp.Item1, left.Arithmetic.Multiply(auxExp.Item2, indRight));
 
-        (BinaryExpression<T>? leftBinary, BinaryExpression<T>? rightBinary) =
+        var (leftBinary, rightBinary) =
             (left as BinaryExpression<T>, right as BinaryExpression<T>);
 
         ExpressionType<T>? aux;
@@ -127,13 +127,13 @@ internal static class ReduceSumSubtraction<T>
     }
 
     /// <summary>
-    /// Determinar si una resta se puede reducir dadas caracteristicas simples
+    ///     Determinar si una resta se puede reducir dadas caracteristicas simples
     /// </summary>
     /// <param name="binary">Expresion binaria</param>
     /// <returns>Expresion resultante(si es null es que no se pudo reducir)</returns>
     internal static ExpressionType<T> ReduceSubtraction(BinaryExpression<T> binary)
     {
-        ExpressionType<T>? aux = ReduceSubtractionSimple(binary);
+        var aux = ReduceSubtractionSimple(binary);
         if (aux is not null) return aux;
 
         aux = ReduceSubtraction(binary.Left, binary.Right, binary.Arithmetic.Real1, binary.Arithmetic.Real1);
@@ -143,11 +143,11 @@ internal static class ReduceSumSubtraction<T>
     }
 
     /// <summary>
-    /// Reducir una resta
+    ///     Reducir una resta
     /// </summary>
     /// <param name="binary">Expresion binaria</param>
     /// <returns>Expresion resultante</returns>
-    internal static ExpressionType<T>? ReduceSubtractionSimple(BinaryExpression<T> binary)
+    private static ExpressionType<T>? ReduceSubtractionSimple(BinaryExpression<T> binary)
     {
         if (binary.Left.Equals(new NumberExpression<T>(binary.Arithmetic.Real0, binary.Arithmetic)))
             return ReduceMultiplyDivision<T>.ReduceMultiply(
@@ -158,7 +158,7 @@ internal static class ReduceSumSubtraction<T>
     }
 
     /// <summary>
-    /// Comprobar si es posible reducir nuevamente la resta
+    ///     Comprobar si es posible reducir nuevamente la resta
     /// </summary>
     /// <param name="left">Expresion izquierda</param>
     /// <param name="right">Expresion derecha</param>
@@ -168,7 +168,7 @@ internal static class ReduceSumSubtraction<T>
     private static ExpressionType<T> ReduceSubtractionCheck(ExpressionType<T> left, ExpressionType<T> right, T indLeft,
         T indRight)
     {
-        ExpressionType<T>? aux = ReduceSubtraction(left, right, indLeft, indRight);
+        var aux = ReduceSubtraction(left, right, indLeft, indRight);
         if (aux is not null) return aux;
 
         BinaryExpression<T> binary = new NumberExpression<T>(indLeft, left.Arithmetic) * left -
@@ -181,7 +181,7 @@ internal static class ReduceSumSubtraction<T>
     }
 
     /// <summary>
-    /// Determinar si es posible reducir una resta dadas su expresion izquierda y derecha
+    ///     Determinar si es posible reducir una resta dadas su expresion izquierda y derecha
     /// </summary>
     /// <param name="left">Expresion izquierda</param>
     /// <param name="right">Expresion derecha</param>
@@ -196,7 +196,7 @@ internal static class ReduceSumSubtraction<T>
         auxExp = MultiplyInd(right);
         (right, indRight) = (auxExp.Item1, left.Arithmetic.Multiply(auxExp.Item2, indRight));
 
-        (BinaryExpression<T>? leftBinary, BinaryExpression<T>? rightBinary) =
+        var (leftBinary, rightBinary) =
             (left as BinaryExpression<T>, right as BinaryExpression<T>);
 
         ExpressionType<T>? aux;
@@ -252,12 +252,11 @@ internal static class ReduceSumSubtraction<T>
 
     private static (ExpressionType<T>, T) MultiplyInd(ExpressionType<T> exp)
     {
-        Multiply<T>? binary = exp as Multiply<T>;
-        if (binary is null) return (exp, exp.Arithmetic.Real1);
+        if (exp is not Multiply<T> binary) return (exp, exp.Arithmetic.Real1);
 
-        if (binary.Right is NumberExpression<T>) return (binary.Left, ((NumberExpression<T>)binary.Right).Value);
-        if (binary.Left is NumberExpression<T>) return (binary.Right, ((NumberExpression<T>)binary.Left).Value);
-
-        return (binary, exp.Arithmetic.Real1);
+        if (binary.Right is NumberExpression<T> expression) return (binary.Left, expression.Value);
+        return binary.Left is NumberExpression<T> numberExpression
+            ? (binary.Right, numberExpression.Value)
+            : (binary, exp.Arithmetic.Real1);
     }
 }

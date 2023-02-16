@@ -2,38 +2,36 @@ namespace Expression;
 
 public static class ConvertExpression<T>
 {
-    private delegate Operators<T> OperatorsArrayDelegate();
-
     private const int MaxPriority = 8;
 
     private const int MaxLenOperator = 6;
 
     /// <summary>
-    /// Lista de operadores
+    ///     Lista de operadores
     /// </summary>
     private static readonly OperatorsArrayDelegate[] OperatorsArray =
     {
-        () => new Operators<T>("+", 1, (exp) => new Sum<T>(exp[0], exp[1]), true),
-        () => new Operators<T>("-", 1, (exp) => new Subtraction<T>(exp[0], exp[1]), true),
-        () => new Operators<T>("*", 2, (exp) => new Multiply<T>(exp[0], exp[1]), true),
-        () => new Operators<T>("/", 2, (exp) => new Division<T>(exp[0], exp[1]), true),
-        () => new Operators<T>("^", 3, (exp) => Pow<T>.DeterminatePow(exp[0], exp[1]), true),
-        () => new Operators<T>("log", 4, (exp) => Log<T>.DeterminateLog(exp[0], exp[1]), true),
-        () => new Operators<T>("ln", 4, (exp) => new Ln<T>(exp[0])),
-        () => new Operators<T>("sin", 5, (exp) => new Sin<T>(exp[0])),
-        () => new Operators<T>("cos", 5, (exp) => new Cos<T>(exp[0])),
-        () => new Operators<T>("tan", 5, (exp) => new Tan<T>(exp[0])),
-        () => new Operators<T>("cot", 5, (exp) => new Cot<T>(exp[0])),
-        () => new Operators<T>("sec", 5, (exp) => new Sec<T>(exp[0])),
-        () => new Operators<T>("csc", 5, (exp) => new Csc<T>(exp[0])),
-        () => new Operators<T>("arcsin", 5, (exp) => new Asin<T>(exp[0])),
-        () => new Operators<T>("arccos", 5, (exp) => new Acos<T>(exp[0])),
-        () => new Operators<T>("arctan", 5, (exp) => new Atan<T>(exp[0])),
-        () => new Operators<T>("arccot", 5, (exp) => new Acot<T>(exp[0]))
+        () => new Operators<T>("+", 1, exp => new Sum<T>(exp[0], exp[1]), true),
+        () => new Operators<T>("-", 1, exp => new Subtraction<T>(exp[0], exp[1]), true),
+        () => new Operators<T>("*", 2, exp => new Multiply<T>(exp[0], exp[1]), true),
+        () => new Operators<T>("/", 2, exp => new Division<T>(exp[0], exp[1]), true),
+        () => new Operators<T>("^", 3, exp => Pow<T>.DeterminatePow(exp[0], exp[1]), true),
+        () => new Operators<T>("log", 4, exp => Log<T>.DeterminateLog(exp[0], exp[1]), true),
+        () => new Operators<T>("ln", 4, exp => new Ln<T>(exp[0])),
+        () => new Operators<T>("sin", 5, exp => new Sin<T>(exp[0])),
+        () => new Operators<T>("cos", 5, exp => new Cos<T>(exp[0])),
+        () => new Operators<T>("tan", 5, exp => new Tan<T>(exp[0])),
+        () => new Operators<T>("cot", 5, exp => new Cot<T>(exp[0])),
+        () => new Operators<T>("sec", 5, exp => new Sec<T>(exp[0])),
+        () => new Operators<T>("csc", 5, exp => new Csc<T>(exp[0])),
+        () => new Operators<T>("arcsin", 5, exp => new Asin<T>(exp[0])),
+        () => new Operators<T>("arccos", 5, exp => new Acos<T>(exp[0])),
+        () => new Operators<T>("arctan", 5, exp => new Atan<T>(exp[0])),
+        () => new Operators<T>("arccot", 5, exp => new Acot<T>(exp[0]))
     };
 
     /// <summary>
-    /// Convertir una cadena de texto en una expresion
+    ///     Convertir una cadena de texto en una expresion
     /// </summary>
     /// <param name="s">Cadena de texto</param>
     /// <param name="arithmetic">Aritmetica</param>
@@ -41,21 +39,21 @@ public static class ConvertExpression<T>
     internal static ExpressionType<T>? Parsing(string s, IArithmetic<T> arithmetic)
     {
         s = s.Trim();
-        List<Operators<T>> operators = new List<Operators<T>>();
+        var operators = new List<Operators<T>>();
 
-        int cantParent = 0;
-        for (int i = 0; i < s.Length; i++)
+        var cantParent = 0;
+        for (var i = 0; i < s.Length; i++)
         {
             if (s[i] == '(') cantParent++;
             if (s[i] == ')') cantParent--;
             if (cantParent < 0) return null;
 
             //Determinar el operador
-            for (int j = MaxLenOperator; j >= 1; j--)
+            for (var j = MaxLenOperator; j >= 1; j--)
             {
                 if (j > s.Length - i) continue;
 
-                Operators<T>? op = DeterminateOperator(s.Substring(i, j));
+                var op = DeterminateOperator(s.Substring(i, j));
 
                 if (op != null)
                 {
@@ -74,13 +72,13 @@ public static class ConvertExpression<T>
         operators.Reverse();
         operators.Sort((o1, o2) => o1.AssignPriority.CompareTo(o2.AssignPriority));
 
-        ExpressionType<T>? exp =
+        var exp =
             DeterminateExpression(s, 0, s.Length - 1, new bool[operators.Count], operators, arithmetic);
         return exp is null ? null : ReduceExpression<T>.Reduce(exp);
     }
 
     /// <summary>
-    /// Determinar la expresion dado el operador
+    ///     Determinar la expresion dado el operador
     /// </summary>
     /// <param name="s">Cadena</param>
     /// <param name="start">Puntero inicial</param>
@@ -95,16 +93,14 @@ public static class ConvertExpression<T>
         if (start > end) return null;
 
         //Determinar el operador a usar
-        int index = -1;
-        for (int i = 0; i < visited.Length; i++)
-        {
+        var index = -1;
+        for (var i = 0; i < visited.Length; i++)
             if (!visited[i] && operators[i].Position >= start && operators[i].Position <= end)
             {
                 index = i;
                 visited[i] = true;
                 break;
             }
-        }
 
         //Si no quedan operadores procedemos verificamos si la expresion es una variable o un numero
         if (index == -1) return VariableOrNumberOrFact(s.Substring(start, end - start + 1), arithmetic);
@@ -115,7 +111,7 @@ public static class ConvertExpression<T>
     }
 
     /// <summary>
-    /// Determinar el operador dado el simbolo
+    ///     Determinar el operador dado el simbolo
     /// </summary>
     /// <param name="s">Simbolo del operador</param>
     /// <returns>Operador</returns>
@@ -132,39 +128,36 @@ public static class ConvertExpression<T>
 
 
     /// <summary>
-    /// Determinar si la expresion es una variable o un numero
+    ///     Determinar si la expresion es una variable o un numero
     /// </summary>
     /// <param name="s">Cadena</param>
     /// <param name="arithmetic">Aritmetica</param>
     /// <returns>Expresion resultante</returns>
     private static ExpressionType<T>? VariableOrNumberOrFact(string s, IArithmetic<T> arithmetic)
     {
-        (int start, int end) = (EliminateParentLeft(s, 0, s.Length - 1), EliminateParentRight(s, 0, s.Length - 1));
+        var (start, end) = (EliminateParentLeft(s, 0, s.Length - 1), EliminateParentRight(s, 0, s.Length - 1));
         if (start == -1 || end == -1) return null;
 
-        string aux = s.Substring(start, end - start + 1);
+        var aux = s.Substring(start, end - start + 1);
 
         if (aux == "e") return new ConstantE<T>(arithmetic);
         if (aux == "pi") return new ConstantPI<T>(arithmetic);
 
         if (aux.Length == 1)
-        {
-            if (char.IsLetter(aux[0])) return new VariableExpression<T>(aux[0], arithmetic);
-        }
+            if (char.IsLetter(aux[0]))
+                return new VariableExpression<T>(aux[0], arithmetic);
 
         if (double.TryParse(aux, out _)) return new NumberExpression<T>(arithmetic.StringToNumber(aux), arithmetic);
 
         if (aux[^1] == '!')
-        {
-            if (int.TryParse(aux.Substring(0, aux.Length - 1), out int integer) && integer >= 0)
+            if (int.TryParse(aux.Substring(0, aux.Length - 1), out var integer) && integer >= 0)
                 return new Factorial<T>(arithmetic.StringToNumber(aux.Substring(0, aux.Length - 1)), arithmetic);
-        }
 
         return null;
     }
 
     /// <summary>
-    /// Determinar la expresion dado un operador binario
+    ///     Determinar la expresion dado un operador binario
     /// </summary>
     /// <param name="s">Cadena</param>
     /// <param name="start">Puntero inicial</param>
@@ -202,7 +195,7 @@ public static class ConvertExpression<T>
         if (operators[index].Operator == "log")
         {
             start = EliminateParentLeft(s, start, end);
-            int ind = DeterminateEndParent(s, start + operators[index].Operator.Length);
+            var ind = DeterminateEndParent(s, start + operators[index].Operator.Length);
 
             left = DeterminateExpression(s, start + operators[index].Operator.Length + 1, ind - 1, visited, operators,
                 arithmetic);
@@ -218,7 +211,7 @@ public static class ConvertExpression<T>
     }
 
     /// <summary>
-    /// Determinar la expresion dado un operador unario
+    ///     Determinar la expresion dado un operador unario
     /// </summary>
     /// <param name="s">Cadena</param>
     /// <param name="start">Puntero inicial</param>
@@ -234,22 +227,22 @@ public static class ConvertExpression<T>
         start = EliminateParentLeft(s, start, end);
         if (start == -1) return null;
 
-        ExpressionType<T>? value = DeterminateExpression(s, start + 1 + operators[index].Operator.Length, end - 1,
+        var value = DeterminateExpression(s, start + 1 + operators[index].Operator.Length, end - 1,
             visited, operators, arithmetic);
 
         return value is null ? null : operators[index].ExpressionOperator(new[] { value });
     }
 
     /// <summary>
-    /// Dado un parentesis abierto, determinar el parentesis cerraddo correspondiente
+    ///     Dado un parentesis abierto, determinar el parentesis cerraddo correspondiente
     /// </summary>
     /// <param name="s">Cadena</param>
     /// <param name="ind">Indice del parentesis abierto</param>
     /// <returns>Indice del parentesis resultante</returns>
     private static int DeterminateEndParent(string s, int ind)
     {
-        int cantParent = 0;
-        for (int i = ind; i < s.Length; i++)
+        var cantParent = 0;
+        for (var i = ind; i < s.Length; i++)
         {
             if (s[i] == '(') cantParent++;
             if (s[i] == ')') cantParent--;
@@ -260,7 +253,7 @@ public static class ConvertExpression<T>
     }
 
     /// <summary>
-    /// Eliminar parentesis de la izqierda
+    ///     Eliminar parentesis de la izqierda
     /// </summary>
     /// <param name="s">Cadena</param>
     /// <param name="start">Puntero inicial</param>
@@ -268,7 +261,7 @@ public static class ConvertExpression<T>
     /// <returns>Indice del puntero inicial resultante</returns>
     private static int EliminateParentLeft(string s, int start, int end)
     {
-        int i = start;
+        var i = start;
         while (s[i] == '(')
         {
             i++;
@@ -279,7 +272,7 @@ public static class ConvertExpression<T>
     }
 
     /// <summary>
-    /// Eliminar parentesis de la derecha
+    ///     Eliminar parentesis de la derecha
     /// </summary>
     /// <param name="s">Cadena</param>
     /// <param name="start">Puntero inicial</param>
@@ -287,7 +280,7 @@ public static class ConvertExpression<T>
     /// <returns>Indice del puntero inicial resultante</returns>
     private static int EliminateParentRight(string s, int start, int end)
     {
-        int j = end;
+        var j = end;
 
         while (s[j] == ')')
         {
@@ -297,4 +290,6 @@ public static class ConvertExpression<T>
 
         return j;
     }
+
+    private delegate Operators<T> OperatorsArrayDelegate();
 }
