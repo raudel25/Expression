@@ -1,11 +1,8 @@
-using BigNum;
-
 namespace Expression;
 
 public class Sum<T> : BinaryExpression<T>
 {
-    public Sum(ExpressionType<T> left, ExpressionType<T> right, IArithmetic<T> arithmetic) : base(left, right,
-        arithmetic)
+    public Sum(ExpressionType<T> left, ExpressionType<T> right) : base(left, right)
     {
     }
 
@@ -48,8 +45,7 @@ public class Sum<T> : BinaryExpression<T>
 
 public class Subtraction<T> : BinaryExpression<T>
 {
-    public Subtraction(ExpressionType<T> left, ExpressionType<T> right, IArithmetic<T> arithmetic) : base(left, right,
-        arithmetic)
+    public Subtraction(ExpressionType<T> left, ExpressionType<T> right) : base(left, right)
     {
     }
 
@@ -91,8 +87,7 @@ public class Subtraction<T> : BinaryExpression<T>
 
 public class Multiply<T> : BinaryExpression<T>
 {
-    public Multiply(ExpressionType<T> left, ExpressionType<T> right, IArithmetic<T> arithmetic) : base(left, right,
-        arithmetic)
+    public Multiply(ExpressionType<T> left, ExpressionType<T> right) : base(left, right)
     {
     }
 
@@ -149,8 +144,7 @@ public class Multiply<T> : BinaryExpression<T>
 
 public class Division<T> : BinaryExpression<T>
 {
-    public Division(ExpressionType<T> left, ExpressionType<T> right, IArithmetic<T> arithmetic) : base(left, right,
-        arithmetic)
+    public Division(ExpressionType<T> left, ExpressionType<T> right) : base(left, right)
     {
     }
 

@@ -1,8 +1,8 @@
 namespace Expression;
 
-public class Operators
+public class Operators<T>
 {
-    public delegate ExpressionType Expression(ExpressionType[] exp);
+    public delegate ExpressionType<T> Expression(ExpressionType<T>[] exp);
 
     /// <summary>
     /// Simbolo del operador

@@ -1,22 +1,20 @@
-using BigNum;
-
 namespace Expression;
 
-internal static class ReduceTrigonometry
+internal static class ReduceTrigonometry<T>
 {
     /// <summary>
     /// Reducir la expresion Seno
     /// </summary>
     /// <param name="exp">Expresion para reducir</param>
     /// <returns>Expresion reducida</returns>
-    internal static ExpressionType ReduceSin(UnaryExpression exp) => ReduceSinCos(exp, true);
+    internal static ExpressionType<T> ReduceSin(UnaryExpression<T> exp) => ReduceSinCos(exp, true);
 
     /// <summary>
     /// Reducir la expresion Coseno
     /// </summary>
     /// <param name="exp">Expresion para reducir</param>
     /// <returns>Expresion reducida</returns>
-    internal static ExpressionType ReduceCos(UnaryExpression exp) => ReduceSinCos(exp, false);
+    internal static ExpressionType<T> ReduceCos(UnaryExpression<T> exp) => ReduceSinCos(exp, false);
 
     /// <summary>
     /// Reducir la expresion Seno o Coseno
@@ -24,36 +22,41 @@ internal static class ReduceTrigonometry
     /// <param name="exp">Expresion para reducir</param>
     /// <param name="sin">Seno</param>
     /// <returns>Expresion reducida</returns>
-    private static ExpressionType ReduceSinCos(UnaryExpression exp, bool sin)
+    private static ExpressionType<T> ReduceSinCos(UnaryExpression<T> exp, bool sin)
     {
-        NumberExpression? number = exp.Value as NumberExpression;
+        NumberExpression<T>? number = exp.Value as NumberExpression<T>;
 
-        if (number is not null)
+        if (number is not null && number.Value is not null)
         {
-            if (number.Value == RealNumbers.Real0)
-                return sin ? new NumberExpression(RealNumbers.Real0) : new NumberExpression(RealNumbers.Real1);
+            if (number.Value.Equals(exp.Arithmetic.Real0))
+                return sin
+                    ? new NumberExpression<T>(exp.Arithmetic.Real0, exp.Arithmetic)
+                    : new NumberExpression<T>
+                        (exp.Arithmetic.Real1, exp.Arithmetic);
         }
 
-        if (exp.Value is ConstantPI)
-            return sin ? new NumberExpression(RealNumbers.Real0) : new NumberExpression(RealNumbers.RealN1);
+        if (exp.Value is ConstantPI<T>)
+            return sin
+                ? new NumberExpression<T>(exp.Arithmetic.Real0, exp.Arithmetic)
+                : new NumberExpression<T>(exp.Arithmetic.RealN1, exp.Arithmetic);
 
-        Multiply? multiply = exp.Value as Multiply;
+        Multiply<T>? multiply = exp.Value as Multiply<T>;
 
-        ExpressionType? index = null;
-        ExpressionType? reduce = null;
+        ExpressionType<T>? index = null;
+        ExpressionType<T>? reduce = null;
         if (multiply is not null)
         {
-            if (multiply.Left.Equals(new ConstantPI())) index = multiply.Right;
-            if (multiply.Right.Equals(new ConstantPI())) index = multiply.Left;
+            if (multiply.Left.Equals(new ConstantPI<T>(exp.Arithmetic))) index = multiply.Right;
+            if (multiply.Right.Equals(new ConstantPI<T>(exp.Arithmetic))) index = multiply.Left;
 
-            number = index as NumberExpression;
-            if (number is not null) reduce = Determinate(number.Value, sin);
+            number = index as NumberExpression<T>;
+            if (number is not null) reduce = Determinate(number.Value, sin, exp.Arithmetic);
 
-            BinaryExpression? binary = index as BinaryExpression;
+            BinaryExpression<T>? binary = index as BinaryExpression<T>;
             if (binary is not null)
             {
-                number = Aux.Numbers(binary);
-                if (number is not null) reduce = Determinate(number.Value, sin);
+                number = Aux<T>.Numbers(binary);
+                if (number is not null) reduce = Determinate(number.Value, sin, exp.Arithmetic);
             }
         }
 
@@ -65,28 +68,33 @@ internal static class ReduceTrigonometry
     /// </summary>
     /// <param name="number">Coeficiente de pi</param>
     /// <param name="sin">Seno</param>
+    /// <param name="arithmetic">Aritmetica</param>
     /// <returns>Expresion reducida(si es null no se puede reducir)</returns>
-    private static ExpressionType? Determinate(RealNumbers number, bool sin)
+    private static ExpressionType<T>? Determinate(T number, bool sin, IArithmetic<T> arithmetic)
     {
-        if (BigNumMath.IsInteger(number))
+        if (arithmetic.IsInteger(number))
         {
-            if (sin) return new NumberExpression(RealNumbers.Real0);
+            if (sin) return new NumberExpression<T>(arithmetic.Real0, arithmetic);
 
-            return BigNumMath.RealToInteger(number) % new IntegerNumbers("2") == RealNumbers.Real0
-                ? new NumberExpression(RealNumbers.Real1)
-                : new NumberExpression(RealNumbers.RealN1);
+            T aux = arithmetic.Rest(number, arithmetic.StringToNumber("2"));
+
+            return aux is not null && aux.Equals(arithmetic.Real0)
+                ? new NumberExpression<T>(arithmetic.Real1, arithmetic)
+                : new NumberExpression<T>(arithmetic.RealN1, arithmetic);
         }
 
-        RealNumbers integer = number >= RealNumbers.Real0
-            ? number - new RealNumbers("0.5")
-            : number + new RealNumbers("0.5");
+        T integer = arithmetic.Positive(number)
+            ? arithmetic.Subtraction(number, arithmetic.StringToNumber("0.5"))
+            : arithmetic.Sum(number, arithmetic.StringToNumber("0.5"));
 
-        if (BigNumMath.IsInteger(integer))
+        if (arithmetic.IsInteger(integer))
         {
-            ExpressionType? result = Determinate(integer, !sin);
+            ExpressionType<T>? result = Determinate(integer, !sin, arithmetic);
 
             if (result is null) return null;
-            return number >= RealNumbers.Real0 ? result : new NumberExpression(RealNumbers.RealN1) * result;
+            return arithmetic.Positive(number)
+                ? result
+                : new NumberExpression<T>(arithmetic.RealN1, arithmetic) * result;
         }
 
         return null;

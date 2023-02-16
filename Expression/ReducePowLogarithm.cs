@@ -1,17 +1,15 @@
-using BigNum;
-
 namespace Expression;
 
-internal static class ReducePowLogarithm
+internal static class ReducePowLogarithm<T>
 {
     /// <summary>
     /// Reducir una potencia
     /// </summary>
     /// <param name="binary">Expresion binaria</param>
     /// <returns>Expresion resultante</returns>
-    internal static ExpressionType ReducePow(BinaryExpression binary)
+    internal static ExpressionType<T> ReducePow(BinaryExpression<T> binary)
     {
-        ExpressionType? aux = ReducePowPossible(binary);
+        ExpressionType<T>? aux = ReducePowPossible(binary);
         if (aux is not null) return aux;
 
         return binary;
@@ -22,52 +20,55 @@ internal static class ReducePowLogarithm
     /// </summary>
     /// <param name="binary">Expresion binaria</param>
     /// <returns>Expresion resultante(si es null no es posible)</returns>
-    private static ExpressionType? ReducePowPossible(BinaryExpression binary)
+    private static ExpressionType<T>? ReducePowPossible(BinaryExpression<T> binary)
     {
-        ExpressionType? aux = ReducePowSimple(binary);
+        ExpressionType<T>? aux = ReducePowSimple(binary);
         if (aux is not null) return aux;
 
-        Pow? pow = binary.Left as Pow;
-        if (pow is not null) return ReducePow(Pow.DeterminatePow(pow.Left, pow.Right * binary.Right));
+        Pow<T>? pow = binary.Left as Pow<T>;
+        if (pow is not null) return ReducePow(Pow<T>.DeterminatePow(pow.Left, pow.Right * binary.Right));
 
-        Log? log = binary.Right as Log;
+        Log<T>? log = binary.Right as Log<T>;
         if (log is not null)
         {
             if (log.Left.Equals(binary.Left)) return log.Right;
         }
 
-        Multiply? mult = binary.Left as Multiply;
+        Multiply<T>? mult = binary.Left as Multiply<T>;
         if (mult is not null)
         {
-            if (binary.Right is NumberExpression && (mult.Left is NumberExpression || mult.Right is NumberExpression))
-                return ReduceMultiplyDivision.ReduceMultiply(Pow.DeterminatePow(mult.Left, binary.Right) *
-                                                             Pow.DeterminatePow(mult.Right, binary.Right));
+            if (binary.Right is NumberExpression<T> &&
+                (mult.Left is NumberExpression<T> || mult.Right is NumberExpression<T>))
+                return ReduceMultiplyDivision<T>.ReduceMultiply(Pow<T>.DeterminatePow(mult.Left, binary.Right) *
+                                                                Pow<T>.DeterminatePow(mult.Right, binary.Right));
         }
 
-        Division? div = binary.Left as Division;
+        Division<T>? div = binary.Left as Division<T>;
         if (div is not null)
         {
-            if (binary.Right is NumberExpression && (div.Left is NumberExpression || div.Right is NumberExpression))
-                return ReduceMultiplyDivision.ReduceDivision(Pow.DeterminatePow(div.Left, binary.Right) /
-                                                             Pow.DeterminatePow(div.Right, binary.Right));
+            if (binary.Right is NumberExpression<T> &&
+                (div.Left is NumberExpression<T> || div.Right is NumberExpression<T>))
+                return ReduceMultiplyDivision<T>.ReduceDivision(Pow<T>.DeterminatePow(div.Left, binary.Right) /
+                                                                Pow<T>.DeterminatePow(div.Right, binary.Right));
         }
 
-        mult = binary.Right as Multiply;
+        mult = binary.Right as Multiply<T>;
         if (mult is not null)
         {
-            aux = ReducePowPossible(Pow.DeterminatePow(binary.Left, mult.Right));
-            if (aux is not null) return ReducePow(Pow.DeterminatePow(aux,mult.Left));
-            
-            aux = ReducePowPossible(Pow.DeterminatePow(binary.Left, mult.Left));
-            if (aux is not null) return ReducePow(Pow.DeterminatePow(aux,mult.Right));
+            aux = ReducePowPossible(Pow<T>.DeterminatePow(binary.Left, mult.Right));
+            if (aux is not null) return ReducePow(Pow<T>.DeterminatePow(aux, mult.Left));
+
+            aux = ReducePowPossible(Pow<T>.DeterminatePow(binary.Left, mult.Left));
+            if (aux is not null) return ReducePow(Pow<T>.DeterminatePow(aux, mult.Right));
         }
-        
-        div = binary.Right as Division;
+
+        div = binary.Right as Division<T>;
         if (div is not null)
         {
-            aux = ReducePowPossible(Pow.DeterminatePow(binary.Left, div.Left));
+            aux = ReducePowPossible(Pow<T>.DeterminatePow(binary.Left, div.Left));
             if (aux is not null)
-                return ReducePow(Pow.DeterminatePow(aux, new NumberExpression(RealNumbers.Real1) / div.Right));
+                return ReducePow(Pow<T>.DeterminatePow(aux,
+                    new NumberExpression<T>(binary.Arithmetic.Real1, binary.Arithmetic) / div.Right));
         }
 
         return null;
@@ -78,13 +79,13 @@ internal static class ReducePowLogarithm
     /// </summary>
     /// <param name="binary">Expresion binaria</param>
     /// <returns>Expresion resultante(si es null es que no se pudo reducir)</returns>
-    internal static ExpressionType? ReducePowSimple(BinaryExpression binary)
+    internal static ExpressionType<T>? ReducePowSimple(BinaryExpression<T> binary)
     {
-        if (binary.Left.Equals(new NumberExpression(RealNumbers.Real0)))
-            return new NumberExpression(RealNumbers.Real0);
-        if (binary.Right.Equals(new NumberExpression(RealNumbers.Real0)))
-            return new NumberExpression(RealNumbers.Real1);
-        if (binary.Right.Equals(new NumberExpression(RealNumbers.Real1)))
+        if (binary.Left.Equals(new NumberExpression<T>(binary.Arithmetic.Real0, binary.Arithmetic)))
+            return new NumberExpression<T>(binary.Arithmetic.Real0, binary.Arithmetic);
+        if (binary.Right.Equals(new NumberExpression<T>(binary.Arithmetic.Real0, binary.Arithmetic)))
+            return new NumberExpression<T>(binary.Arithmetic.Real1, binary.Arithmetic);
+        if (binary.Right.Equals(new NumberExpression<T>(binary.Arithmetic.Real1, binary.Arithmetic)))
             return binary.Left;
 
         return null;
@@ -95,12 +96,12 @@ internal static class ReducePowLogarithm
     /// </summary>
     /// <param name="binary">Expresion binaria</param>
     /// <returns>Expresion resultante</returns>
-    internal static ExpressionType ReduceLogarithm(BinaryExpression binary)
+    internal static ExpressionType<T> ReduceLogarithm(BinaryExpression<T> binary)
     {
-        ExpressionType? aux = ReduceLogarithmSimple(binary);
+        ExpressionType<T>? aux = ReduceLogarithmSimple(binary);
         if (aux is not null) return aux;
 
-        Pow? pow = binary.Right as Pow;
+        Pow<T>? pow = binary.Right as Pow<T>;
         if (pow is not null)
         {
             if (pow.Left.Equals(binary.Left)) return pow.Right;
@@ -115,12 +116,13 @@ internal static class ReducePowLogarithm
     /// </summary>
     /// <param name="binary">Expresion binaria</param>
     /// <returns>Expresion resultante(si es null es que no se pudo reducir)</returns>
-    private static ExpressionType? ReduceLogarithmSimple(BinaryExpression binary)
+    private static ExpressionType<T>? ReduceLogarithmSimple(BinaryExpression<T> binary)
     {
-        if (binary.Right.Equals(new NumberExpression(RealNumbers.Real1)))
-            return new NumberExpression(RealNumbers.Real0);
+        if (binary.Right.Equals(new NumberExpression<T>(binary.Arithmetic.Real1, binary.Arithmetic)))
+            return new NumberExpression<T>(binary.Arithmetic.Real0, binary.Arithmetic);
 
-        if (binary.Right.Equals(binary.Left)) return new NumberExpression(RealNumbers.Real1);
+        if (binary.Right.Equals(binary.Left))
+            return new NumberExpression<T>(binary.Arithmetic.Real1, binary.Arithmetic);
 
         return null;
     }

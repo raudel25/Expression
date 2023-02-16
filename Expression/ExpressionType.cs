@@ -1,6 +1,4 @@
-﻿using BigNum;
-
-namespace Expression;
+﻿namespace Expression;
 
 public abstract class ExpressionType<T>
 {
@@ -61,19 +59,19 @@ public abstract class ExpressionType<T>
     #region Operadores
 
     public static Sum<T> operator +(ExpressionType<T> left, ExpressionType<T> right) =>
-        new(left, right, left.Arithmetic);
+        new(left, right);
 
     public static Subtraction<T> operator -(ExpressionType<T> left, ExpressionType<T> right) =>
-        new(left, right, left.Arithmetic);
+        new(left, right);
 
     public static Subtraction<T> operator -(ExpressionType<T> value) =>
-        new(new NumberExpression<T>(value.Arithmetic.Real0, value.Arithmetic), value, value.Arithmetic);
+        new(new NumberExpression<T>(value.Arithmetic.Real0, value.Arithmetic), value);
 
     public static Multiply<T> operator *(ExpressionType<T> left, ExpressionType<T> right) =>
-        new(left, right, left.Arithmetic);
+        new(left, right);
 
     public static Division<T> operator /(ExpressionType<T> left, ExpressionType<T> right) =>
-        new(left, right, left.Arithmetic);
+        new(left, right);
 
     public static ExpressionType<T> operator ++(ExpressionType<T> value) =>
         value + new NumberExpression<T>(value.Arithmetic.Real1, value.Arithmetic);
@@ -90,11 +88,11 @@ public abstract class BinaryExpression<T> : ExpressionType<T>
 
     public readonly ExpressionType<T> Right;
 
-    public BinaryExpression(ExpressionType<T> left, ExpressionType<T> right, IArithmetic<T> arithmetic) :
-        base(arithmetic)
+    public BinaryExpression(ExpressionType<T> left, ExpressionType<T> right) :
+        base(left.Arithmetic)
     {
-        this.Left = ReduceExpression.Reduce(left);
-        this.Right = ReduceExpression.Reduce(right);
+        this.Left = ReduceExpression<T>.Reduce(left);
+        this.Right = ReduceExpression<T>.Reduce(right);
     }
 
     public override ExpressionType<T> Derivative(char variable) => this.Derivative(variable, this.Left, this.Right);
@@ -137,9 +135,9 @@ public abstract class UnaryExpression<T> : ExpressionType<T>
 {
     public readonly ExpressionType<T> Value;
 
-    public UnaryExpression(ExpressionType<T> value, IArithmetic<T> arithmetic) : base(arithmetic)
+    public UnaryExpression(ExpressionType<T> value) : base(value.Arithmetic)
     {
-        this.Value = ReduceExpression.Reduce(value);
+        this.Value = ReduceExpression<T>.Reduce(value);
     }
 
     public override ExpressionType<T> Derivative(char variable) =>
