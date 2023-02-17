@@ -11,7 +11,7 @@ internal static class IntegerOperations
     internal static IntegerNumbers Mcd(IntegerNumbers x, IntegerNumbers y)
     {
         if (x == x.Integer0 || y == y.Integer0)
-            throw new Exception("Operacion Invalida (division por 0)");
+            throw new Exception("Invalid Operation (division by 0)");
 
         var (a, b) = (BigNumMath.Max(x, y), BigNumMath.Min(x, y));
         var rest = x.Integer1;

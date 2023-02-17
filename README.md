@@ -8,7 +8,7 @@ genera dicha expresión.
 
 ## Dependencias
 
-El proyecto está implementado en C# 10 y .NET Core 7.0, para ejecutar el proyecto, solo debe escribir en consola:
+El proyecto está implementado en C# 11 y .NET Core 7.0, para ejecutar el proyecto, solo debe escribir en consola:
 
 ```bash
 make
@@ -28,6 +28,18 @@ El funcionamiento básico de esta biblioteca es realizar las operaciones matemá
 en un formato de artimética de punto fijo en base 10, esto para buscar mayor precisión a la hora de efectuar las operaciones, manteniendo una precisión exacta de los lugares decimales, mientras tanto en la representación de la parte entera si no contamos con ningún límite, por lo que dentro de nuestros límites computacionales podemos representar cualquier número. Además también cuenta con el objeto `IntegerNumbers` que hereda de `RealNumbers` y modela el comportamiento de un número entero.
 
 Para la optimización de las operaciones en `BigNum` y aprovechándonos de que la aritmética de los enteros en la computadora es exacta, variamos la base de la aritmética a potencias de 10, siempre y cuando no no excedan la aritmética entera que suele ser en la mayoría de los casos de 64 bits.
+
+### Uso de la biblioteca `BigNum`
+
+Para usar las implementaciones de la biblioteca debe instaciar la clase `BigNumMath` que recive los parámetros `precision`, cantidad de lugares
+de bits para la parte decimal, `indBase10`, exponente de la potencia en base 10 que representa la base. Luego mediante los métodos `Int` y `Real`
+se pueden obtener los números enteros y reales que representa dicha aritmética.
+
+```csharp
+var big = new BigNumMath(6, 9);
+var real = big.Real("2");
+var integer = big.Int("2");
+```
 
 ### Operaciones
 
@@ -64,18 +76,17 @@ public static IntegerNumbers Rest(IntegerNumbers x, IntegerNumbers y) =>
     DivisionOperations.Division(x, y, true).Item2;
 ```
 
-- Potencia(exponente entero): Operación realizada entre un objeto de la clase `RealNumbers`(base) y `IntegerNumbers`(
-  exponente), basada en la repetición de la multiplicación de la base antes definida.
+- Potencia(exponente entero): Operación realizada entre un objeto de la clase `RealNumbers`(base), basada en la repetición de la multiplicación de la base antes definida.
 
 ```csharp
-public static RealNumbers Pow(RealNumbers x, RealNumbers y) => PowOperations.Pow(x, y);
+public static RealNumbers Pow(RealNumbers x, int y) => PowOperations.Pow(x, y);
 ```
 
 - Raíz n-ésima: Para esta operación se trata de aproximar mediante una potencia entera y luego se aproxima mediante el
   siguiente <a href="https://es.frwiki.wiki/wiki/Algorithme_de_calcul_de_la_racine_n-i%C3%A8me">algoritmo</a>.
 
 ```csharp
-public static RealNumbers Sqrt(RealNumbers x, IntegerNumbers y) => SqrtOperations.Sqrt(x, y);
+public static RealNumbers Sqrt(RealNumbers x, int y) => SqrtOperations.Sqrt(x, y);
 ```
 
 - Potencia: Para esta operación se busca la fracción que genera el exponente y luego se calcula la raíz y la potencia
@@ -164,6 +175,20 @@ los cuales se encargan de obtener el valor numérico y la derivada de la expresi
 unarias,
 se modelan mediante las clases abstractas `BinaryExpression` y `UnaryExpression`, las cuales sirven de plantilla, para
 las demás expreiones.
+
+### Uso de la biblioteca Expression
+
+Para usar la biblioteca primero debe definir su propia aritmética, la cual se puede definir mediante una clase que implemente la interfaz
+`IAritmetic`. Por defecto la biblioteca cuenta cuenta con una artmética implementada con la biblioteca `BigNum` mediante la clase
+`BigNumExp` y la aritmética nativa del lenguaje mediante la clase `NativeExp`. Una vez definida la aritmética se debe instancear la clase
+`ArithmeticExp` y mediante los métodos `NumberExpression` y `VariableExpression` puede obtener las expresiones que le sirven para definir las 
+restantes.
+
+```csharp
+var big = new BigNumMath(6, 9);
+var arithmetic = new ArithmeticExp<RealNumbers>(new BigNumExp(big));
+var number10 = arithmetic.NumberExpression(big.Real("10"));
+```
 
 ### ConvertExpression
 

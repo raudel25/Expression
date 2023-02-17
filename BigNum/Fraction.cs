@@ -21,7 +21,7 @@ public class Fraction : IComparable<Fraction>
 
     public int CompareTo(Fraction? frac)
     {
-        if (frac is null) throw new Exception("El valor introducido no es correcto");
+        if (frac is null) throw new Exception("The entered value is not correct");
 
         if (Sign == frac.Sign)
         {

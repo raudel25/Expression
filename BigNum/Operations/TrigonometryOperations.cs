@@ -61,7 +61,7 @@ internal static class TrigonometryOperations
 
     internal static RealNumbers Asin(RealNumbers x)
     {
-        if (x.Abs > x.Real1) throw new Exception("Operacion Invalida (arcsin recive valores entre 1 y -1)");
+        if (x.Abs > x.Real1) throw new Exception("Invalid Operation (arcsin receives values between 1 and -1)");
 
         var index = x.Real1;
         var even = x.Real1;

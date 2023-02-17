@@ -15,7 +15,7 @@ public class RealNumbers : IComparable<RealNumbers>
         IndBase10 = indBase10;
         Base10 = base10;
         Precision = precision;
-        if (!Check(s)) throw new Exception("El valor introducido no es correcto");
+        if (!Check(s)) throw new Exception("The entered value is not correct");
 
         var part = s.Split('.');
 
@@ -57,7 +57,7 @@ public class RealNumbers : IComparable<RealNumbers>
 
     public int CompareTo(RealNumbers? n)
     {
-        if (n == null) throw new Exception("El valor introducido no es correcto");
+        if (n == null) throw new Exception("The entered value is not correct");
 
         if (Sign == n.Sign)
         {

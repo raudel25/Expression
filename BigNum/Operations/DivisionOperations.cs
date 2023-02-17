@@ -15,7 +15,7 @@ internal static class DivisionOperations
 
         var positive = x.Sign == y.Sign;
 
-        if (y == y.Real0) throw new Exception("Operacion Invalida (division por 0)");
+        if (y == y.Real0) throw new Exception("Invalid Operation (division by 0)");
         if (y.Abs == y.Real1)
             return new RealNumbers(x.NumberValue, x.Precision, x.Base10, x.IndBase10, positive);
 

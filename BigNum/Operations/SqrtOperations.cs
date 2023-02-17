@@ -24,7 +24,7 @@ internal static class SqrtOperations
         var parity = yInt % 2 == 0;
         var positive = parity || x.Positive();
 
-        if (parity && !x.Positive()) throw new Exception("Operacion Invalida (el resultado no es real)");
+        if (parity && !x.Positive()) throw new Exception("Invalid Operation (result is not real)");
 
         var sqrt = AlgorithmSqrt(aux, BigNumMath.Abs(y), yInt);
 
