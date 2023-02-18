@@ -5,6 +5,18 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <RootNamespace>BigNum</RootNamespace>
+        <OutputType>Library</OutputType>
+        <PackageId>BigNum</PackageId>
+        <Version>1.1.0</Version>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <Authors>Raudel Alejadro Gomez Molina</Authors>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageDescription>Arithmetic BigNum</PackageDescription>
+        <RepositoryUrl>https://github.com/raudel25/Expression</RepositoryUrl>
     </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="..\README.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
 
 </Project>

@@ -4,10 +4,19 @@
         <TargetFramework>net7.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <OutputType>Library</OutputType>
+        <PackageId>Expression</PackageId>
+        <Version>1.0.3</Version>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <Authors>Raudel Alejadro Gomez Molina</Authors>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageDescription>Mathematical Expression</PackageDescription>
+        <RepositoryUrl>https://github.com/raudel25/Expression</RepositoryUrl>
     </PropertyGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\BigNum\BigNum.csproj" />
+        <None Include="..\README.md" Pack="true" PackagePath="\" />
     </ItemGroup>
 
 </Project>

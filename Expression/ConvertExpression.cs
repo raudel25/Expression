@@ -43,7 +43,6 @@ internal static class ConvertExpression<T>
     internal static ExpressionType<T>? Parsing(string s, IArithmetic<T> arithmetic)
     {
         s = FormatStringExp(s);
-        Console.WriteLine(s);
         var operators = new List<Operators<T>>();
 
         var cantParent = 0;
@@ -80,9 +79,31 @@ internal static class ConvertExpression<T>
         return exp is null ? null : ReduceExpression<T>.Reduce(exp);
     }
 
+    /// <summary>
+    ///     Eliminar espacios
+    /// </summary>
+    /// <param name="s">String</param>
+    /// <returns>String Formateado</returns>
+    private static string EliminateSpaces(string s)
+    {
+        var exp = new StringBuilder();
+
+        foreach (var i in s.Where(i => i != ' '))
+        {
+            exp.Append(i);
+        }
+
+        return exp.ToString();
+    }
+
+    /// <summary>
+    ///     Formatear la expresion
+    /// </summary>
+    /// <param name="s">Expresion</param>
+    /// <returns>Expresion formateada</returns>
     private static string FormatStringExp(string s)
     {
-        s = s.Trim();
+        s = EliminateSpaces(s);
         var exp = new StringBuilder();
 
         for (var i = 0; i < s.Length - 1; i++)
