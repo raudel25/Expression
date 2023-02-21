@@ -2,11 +2,11 @@ namespace Expression.Expressions;
 
 public class Sin<T> : UnaryExpression<T>
 {
-    public Sin(ExpressionType<T> value) : base(value)
+    public Sin(Function<T> value) : base(value)
     {
     }
 
-    protected override ExpressionType<T> Derivative(ExpressionType<T> value)
+    protected override Function<T> Derivative(Function<T> value)
     {
         return new Cos<T>(value);
     }
@@ -16,7 +16,7 @@ public class Sin<T> : UnaryExpression<T>
         return Arithmetic.Sin(value);
     }
 
-    protected override ExpressionType<T> EvaluateExpression(ExpressionType<T> value)
+    protected override Function<T> EvaluateExpression(Function<T> value)
     {
         return new Sin<T>(value);
     }
@@ -42,11 +42,11 @@ public class Sin<T> : UnaryExpression<T>
 
 public class Cos<T> : UnaryExpression<T>
 {
-    public Cos(ExpressionType<T> value) : base(value)
+    public Cos(Function<T> value) : base(value)
     {
     }
 
-    protected override ExpressionType<T> Derivative(ExpressionType<T> value)
+    protected override Function<T> Derivative(Function<T> value)
     {
         return new NumberExpression<T>(Arithmetic.RealN1, Arithmetic) * new Sin<T>(value);
     }
@@ -56,7 +56,7 @@ public class Cos<T> : UnaryExpression<T>
         return Arithmetic.Cos(value);
     }
 
-    protected override ExpressionType<T> EvaluateExpression(ExpressionType<T> value)
+    protected override Function<T> EvaluateExpression(Function<T> value)
     {
         return new Cos<T>(value);
     }
@@ -82,11 +82,11 @@ public class Cos<T> : UnaryExpression<T>
 
 public class Tan<T> : UnaryExpression<T>
 {
-    public Tan(ExpressionType<T> value) : base(value)
+    public Tan(Function<T> value) : base(value)
     {
     }
 
-    protected override ExpressionType<T> Derivative(ExpressionType<T> value)
+    protected override Function<T> Derivative(Function<T> value)
     {
         return Pow<T>.DeterminatePow(new Sec<T>(value),
             new NumberExpression<T>(Arithmetic.StringToNumber("2"), Arithmetic));
@@ -97,7 +97,7 @@ public class Tan<T> : UnaryExpression<T>
         return Arithmetic.Division(Arithmetic.Sin(value), Arithmetic.Cos(value));
     }
 
-    protected override ExpressionType<T> EvaluateExpression(ExpressionType<T> value)
+    protected override Function<T> EvaluateExpression(Function<T> value)
     {
         return new Tan<T>(value);
     }
@@ -123,11 +123,11 @@ public class Tan<T> : UnaryExpression<T>
 
 public class Cot<T> : UnaryExpression<T>
 {
-    public Cot(ExpressionType<T> value) : base(value)
+    public Cot(Function<T> value) : base(value)
     {
     }
 
-    protected override ExpressionType<T> Derivative(ExpressionType<T> value)
+    protected override Function<T> Derivative(Function<T> value)
     {
         return Pow<T>.DeterminatePow(new Csc<T>(value),
             new NumberExpression<T>(Arithmetic.StringToNumber("2"), Arithmetic));
@@ -138,7 +138,7 @@ public class Cot<T> : UnaryExpression<T>
         return Arithmetic.Division(Arithmetic.Cos(value), Arithmetic.Sin(value));
     }
 
-    protected override ExpressionType<T> EvaluateExpression(ExpressionType<T> value)
+    protected override Function<T> EvaluateExpression(Function<T> value)
     {
         return new Cot<T>(value);
     }
@@ -164,11 +164,11 @@ public class Cot<T> : UnaryExpression<T>
 
 public class Sec<T> : UnaryExpression<T>
 {
-    public Sec(ExpressionType<T> value) : base(value)
+    public Sec(Function<T> value) : base(value)
     {
     }
 
-    protected override ExpressionType<T> Derivative(ExpressionType<T> value)
+    protected override Function<T> Derivative(Function<T> value)
     {
         return new Sec<T>(value) * new Tan<T>(value);
     }
@@ -178,7 +178,7 @@ public class Sec<T> : UnaryExpression<T>
         return Arithmetic.Division(Arithmetic.Real1, Arithmetic.Cos(value));
     }
 
-    protected override ExpressionType<T> EvaluateExpression(ExpressionType<T> value)
+    protected override Function<T> EvaluateExpression(Function<T> value)
     {
         return new Sec<T>(value);
     }
@@ -204,11 +204,11 @@ public class Sec<T> : UnaryExpression<T>
 
 public class Csc<T> : UnaryExpression<T>
 {
-    public Csc(ExpressionType<T> value) : base(value)
+    public Csc(Function<T> value) : base(value)
     {
     }
 
-    protected override ExpressionType<T> Derivative(ExpressionType<T> value)
+    protected override Function<T> Derivative(Function<T> value)
     {
         return -new Csc<T>(value) * new Cot<T>(value);
     }
@@ -218,7 +218,7 @@ public class Csc<T> : UnaryExpression<T>
         return Arithmetic.Division(Arithmetic.Real1, Arithmetic.Sin(value));
     }
 
-    protected override ExpressionType<T> EvaluateExpression(ExpressionType<T> value)
+    protected override Function<T> EvaluateExpression(Function<T> value)
     {
         return new Csc<T>(value);
     }
@@ -244,11 +244,11 @@ public class Csc<T> : UnaryExpression<T>
 
 public class Asin<T> : UnaryExpression<T>
 {
-    public Asin(ExpressionType<T> value) : base(value)
+    public Asin(Function<T> value) : base(value)
     {
     }
 
-    protected override ExpressionType<T> Derivative(ExpressionType<T> value)
+    protected override Function<T> Derivative(Function<T> value)
     {
         return new NumberExpression<T>(Arithmetic.Real1, Arithmetic) /
                Pow<T>.DeterminatePow(
@@ -262,7 +262,7 @@ public class Asin<T> : UnaryExpression<T>
         return Arithmetic.Asin(value);
     }
 
-    protected override ExpressionType<T> EvaluateExpression(ExpressionType<T> value)
+    protected override Function<T> EvaluateExpression(Function<T> value)
     {
         return new Asin<T>(value);
     }
@@ -288,11 +288,11 @@ public class Asin<T> : UnaryExpression<T>
 
 public class Acos<T> : UnaryExpression<T>
 {
-    public Acos(ExpressionType<T> value) : base(value)
+    public Acos(Function<T> value) : base(value)
     {
     }
 
-    protected override ExpressionType<T> Derivative(ExpressionType<T> value)
+    protected override Function<T> Derivative(Function<T> value)
     {
         return -new NumberExpression<T>(Arithmetic.Real1, Arithmetic) /
                Pow<T>.DeterminatePow(
@@ -306,7 +306,7 @@ public class Acos<T> : UnaryExpression<T>
         return Arithmetic.Acos(value);
     }
 
-    protected override ExpressionType<T> EvaluateExpression(ExpressionType<T> value)
+    protected override Function<T> EvaluateExpression(Function<T> value)
     {
         return new Acos<T>(value);
     }
@@ -332,11 +332,11 @@ public class Acos<T> : UnaryExpression<T>
 
 public class Atan<T> : UnaryExpression<T>
 {
-    public Atan(ExpressionType<T> value) : base(value)
+    public Atan(Function<T> value) : base(value)
     {
     }
 
-    protected override ExpressionType<T> Derivative(ExpressionType<T> value)
+    protected override Function<T> Derivative(Function<T> value)
     {
         return new NumberExpression<T>(Arithmetic.Real1, Arithmetic) /
                (new NumberExpression<T>(Arithmetic.Real1, Arithmetic) + Pow<T>.DeterminatePow(value,
@@ -348,7 +348,7 @@ public class Atan<T> : UnaryExpression<T>
         return Arithmetic.Atan(value);
     }
 
-    protected override ExpressionType<T> EvaluateExpression(ExpressionType<T> value)
+    protected override Function<T> EvaluateExpression(Function<T> value)
     {
         return new Atan<T>(value);
     }
@@ -374,11 +374,11 @@ public class Atan<T> : UnaryExpression<T>
 
 public class Acot<T> : UnaryExpression<T>
 {
-    public Acot(ExpressionType<T> value) : base(value)
+    public Acot(Function<T> value) : base(value)
     {
     }
 
-    protected override ExpressionType<T> Derivative(ExpressionType<T> value)
+    protected override Function<T> Derivative(Function<T> value)
     {
         return -new NumberExpression<T>(Arithmetic.Real1, Arithmetic) /
                (new NumberExpression<T>(Arithmetic.Real1, Arithmetic) + Pow<T>.DeterminatePow(value,
@@ -390,7 +390,7 @@ public class Acot<T> : UnaryExpression<T>
         return Arithmetic.Acot(value);
     }
 
-    protected override ExpressionType<T> EvaluateExpression(ExpressionType<T> value)
+    protected override Function<T> EvaluateExpression(Function<T> value)
     {
         return new Acot<T>(value);
     }

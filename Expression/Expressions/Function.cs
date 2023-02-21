@@ -2,18 +2,23 @@
 
 namespace Expression.Expressions;
 
-public abstract class ExpressionType<T>
+public abstract class Function<T>
 {
     internal readonly IArithmetic<T> Arithmetic;
 
-    internal ExpressionType(IArithmetic<T> arithmetic)
+    internal Function(IArithmetic<T> arithmetic)
     {
         Arithmetic = arithmetic;
     }
 
-    public static List<char> VariablesToExpression(ExpressionType<T> exp)
+    public static List<char> VariablesToExpression(Function<T> exp)
     {
         return Aux<T>.VariablesToExpression(exp);
+    }
+
+    public static Function<T> Reduce(Function<T> exp)
+    {
+        return ReduceExpression<T>.Reduce(exp);
     }
 
     /// <summary>
@@ -26,7 +31,7 @@ public abstract class ExpressionType<T>
     /// </summary>
     /// <param name="variable">Variable sobre la cual se esta derivando</param>
     /// <returns>Derivada</returns>
-    public abstract ExpressionType<T> Derivative(char variable);
+    public abstract Function<T> Derivative(char variable);
 
     /// <summary>
     ///     Evaluar la expresion
@@ -40,7 +45,7 @@ public abstract class ExpressionType<T>
     /// </summary>
     /// <param name="variables">Lista de variables con sus respectivas expresiones</param>
     /// <returns>Nueva expresion</returns>
-    public abstract ExpressionType<T> EvaluateExpression(List<(char, ExpressionType<T>)> variables);
+    public abstract Function<T> EvaluateExpression(List<(char, Function<T>)> variables);
 
     /// <summary>
     ///     Determinar si la expresion es binaria
@@ -57,7 +62,7 @@ public abstract class ExpressionType<T>
     /// <param name="variable">Variable sobre la cual se esta derivando</param>
     /// <param name="n">indice de la derivada</param>
     /// <returns>Derivada n-esima</returns>
-    public ExpressionType<T> Derivative(char variable, int n)
+    public Function<T> Derivative(char variable, int n)
     {
         var expression = Derivative(variable);
 
@@ -68,37 +73,37 @@ public abstract class ExpressionType<T>
 
     #region Operadores
 
-    public static Sum<T> operator +(ExpressionType<T> left, ExpressionType<T> right)
+    public static Sum<T> operator +(Function<T> left, Function<T> right)
     {
         return new(left, right);
     }
 
-    public static Subtraction<T> operator -(ExpressionType<T> left, ExpressionType<T> right)
+    public static Subtraction<T> operator -(Function<T> left, Function<T> right)
     {
         return new(left, right);
     }
 
-    public static Subtraction<T> operator -(ExpressionType<T> value)
+    public static Subtraction<T> operator -(Function<T> value)
     {
         return new(new NumberExpression<T>(value.Arithmetic.Real0, value.Arithmetic), value);
     }
 
-    public static Multiply<T> operator *(ExpressionType<T> left, ExpressionType<T> right)
+    public static Multiply<T> operator *(Function<T> left, Function<T> right)
     {
         return new(left, right);
     }
 
-    public static Division<T> operator /(ExpressionType<T> left, ExpressionType<T> right)
+    public static Division<T> operator /(Function<T> left, Function<T> right)
     {
         return new(left, right);
     }
 
-    public static ExpressionType<T> operator ++(ExpressionType<T> value)
+    public static Function<T> operator ++(Function<T> value)
     {
         return value + new NumberExpression<T>(value.Arithmetic.Real1, value.Arithmetic);
     }
 
-    public static ExpressionType<T> operator --(ExpressionType<T> value)
+    public static Function<T> operator --(Function<T> value)
     {
         return value - new NumberExpression<T>(value.Arithmetic.Real1, value.Arithmetic);
     }
@@ -106,20 +111,20 @@ public abstract class ExpressionType<T>
     #endregion
 }
 
-public abstract class BinaryExpression<T> : ExpressionType<T>
+public abstract class BinaryExpression<T> : Function<T>
 {
-    public readonly ExpressionType<T> Left;
+    public readonly Function<T> Left;
 
-    public readonly ExpressionType<T> Right;
+    public readonly Function<T> Right;
 
-    protected BinaryExpression(ExpressionType<T> left, ExpressionType<T> right) :
+    protected BinaryExpression(Function<T> left, Function<T> right) :
         base(left.Arithmetic)
     {
         Left = ReduceExpression<T>.Reduce(left);
         Right = ReduceExpression<T>.Reduce(right);
     }
 
-    public override ExpressionType<T> Derivative(char variable)
+    public override Function<T> Derivative(char variable)
     {
         return Derivative(variable, Left, Right);
     }
@@ -129,16 +134,16 @@ public abstract class BinaryExpression<T> : ExpressionType<T>
         return Evaluate(Left.Evaluate(variables), Right.Evaluate(variables));
     }
 
-    public override ExpressionType<T> EvaluateExpression(List<(char, ExpressionType<T>)> variables)
+    public override Function<T> EvaluateExpression(List<(char, Function<T>)> variables)
     {
         return EvaluateExpression(Left.EvaluateExpression(variables), Right.EvaluateExpression(variables));
     }
 
-    protected abstract ExpressionType<T> Derivative(char variable, ExpressionType<T> left, ExpressionType<T> right);
+    protected abstract Function<T> Derivative(char variable, Function<T> left, Function<T> right);
 
     protected abstract T Evaluate(T left, T right);
 
-    protected abstract ExpressionType<T> EvaluateExpression(ExpressionType<T> left, ExpressionType<T> right);
+    protected abstract Function<T> EvaluateExpression(Function<T> left, Function<T> right);
 
     protected abstract bool IsBinaryImplement();
 
@@ -165,18 +170,18 @@ public abstract class BinaryExpression<T> : ExpressionType<T>
     }
 }
 
-public abstract class UnaryExpression<T> : ExpressionType<T>
+public abstract class UnaryExpression<T> : Function<T>
 {
-    public readonly ExpressionType<T> Value;
+    public readonly Function<T> Value;
 
-    protected UnaryExpression(ExpressionType<T> value) : base(value.Arithmetic)
+    protected UnaryExpression(Function<T> value) : base(value.Arithmetic)
     {
         Value = ReduceExpression<T>.Reduce(value);
     }
 
     public override int Priority => 5;
 
-    public override ExpressionType<T> Derivative(char variable)
+    public override Function<T> Derivative(char variable)
     {
         return Derivative(Value) * Value.Derivative(variable);
     }
@@ -186,15 +191,15 @@ public abstract class UnaryExpression<T> : ExpressionType<T>
         return Evaluate(Value.Evaluate(variables));
     }
 
-    public override ExpressionType<T> EvaluateExpression(List<(char, ExpressionType<T>)> variables)
+    public override Function<T> EvaluateExpression(List<(char, Function<T>)> variables)
     {
         return EvaluateExpression(Value.EvaluateExpression(variables));
     }
 
 
-    protected abstract ExpressionType<T> Derivative(ExpressionType<T> value);
+    protected abstract Function<T> Derivative(Function<T> value);
 
     protected abstract T Evaluate(T x);
 
-    protected abstract ExpressionType<T> EvaluateExpression(ExpressionType<T> value);
+    protected abstract Function<T> EvaluateExpression(Function<T> value);
 }

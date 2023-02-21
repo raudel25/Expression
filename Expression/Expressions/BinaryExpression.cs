@@ -2,13 +2,13 @@ namespace Expression.Expressions;
 
 public class Sum<T> : BinaryExpression<T>
 {
-    public Sum(ExpressionType<T> left, ExpressionType<T> right) : base(left, right)
+    public Sum(Function<T> left, Function<T> right) : base(left, right)
     {
     }
 
     public override int Priority => 1;
 
-    protected override ExpressionType<T> Derivative(char variable, ExpressionType<T> left, ExpressionType<T> right)
+    protected override Function<T> Derivative(char variable, Function<T> left, Function<T> right)
     {
         return left.Derivative(variable) + right.Derivative(variable);
     }
@@ -18,7 +18,7 @@ public class Sum<T> : BinaryExpression<T>
         return Arithmetic.Sum(left, right);
     }
 
-    protected override ExpressionType<T> EvaluateExpression(ExpressionType<T> left, ExpressionType<T> right)
+    protected override Function<T> EvaluateExpression(Function<T> left, Function<T> right)
     {
         return left + right;
     }
@@ -58,13 +58,13 @@ public class Sum<T> : BinaryExpression<T>
 
 public class Subtraction<T> : BinaryExpression<T>
 {
-    public Subtraction(ExpressionType<T> left, ExpressionType<T> right) : base(left, right)
+    public Subtraction(Function<T> left, Function<T> right) : base(left, right)
     {
     }
 
     public override int Priority => 1;
 
-    protected override ExpressionType<T> Derivative(char variable, ExpressionType<T> left, ExpressionType<T> right)
+    protected override Function<T> Derivative(char variable, Function<T> left, Function<T> right)
     {
         return left.Derivative(variable) - right.Derivative(variable);
     }
@@ -74,7 +74,7 @@ public class Subtraction<T> : BinaryExpression<T>
         return Arithmetic.Subtraction(left, right);
     }
 
-    protected override ExpressionType<T> EvaluateExpression(ExpressionType<T> left, ExpressionType<T> right)
+    protected override Function<T> EvaluateExpression(Function<T> left, Function<T> right)
     {
         return left - right;
     }
@@ -113,13 +113,13 @@ public class Subtraction<T> : BinaryExpression<T>
 
 public class Multiply<T> : BinaryExpression<T>
 {
-    public Multiply(ExpressionType<T> left, ExpressionType<T> right) : base(left, right)
+    public Multiply(Function<T> left, Function<T> right) : base(left, right)
     {
     }
 
     public override int Priority => 2;
 
-    protected override ExpressionType<T> Derivative(char variable, ExpressionType<T> left, ExpressionType<T> right)
+    protected override Function<T> Derivative(char variable, Function<T> left, Function<T> right)
     {
         return left.Derivative(variable) * right + left * right.Derivative(variable);
     }
@@ -129,7 +129,7 @@ public class Multiply<T> : BinaryExpression<T>
         return Arithmetic.Multiply(left, right);
     }
 
-    protected override ExpressionType<T> EvaluateExpression(ExpressionType<T> left, ExpressionType<T> right)
+    protected override Function<T> EvaluateExpression(Function<T> left, Function<T> right)
     {
         return left * right;
     }
@@ -182,13 +182,13 @@ public class Multiply<T> : BinaryExpression<T>
 
 public class Division<T> : BinaryExpression<T>
 {
-    public Division(ExpressionType<T> left, ExpressionType<T> right) : base(left, right)
+    public Division(Function<T> left, Function<T> right) : base(left, right)
     {
     }
 
     public override int Priority => 2;
 
-    protected override ExpressionType<T> Derivative(char variable, ExpressionType<T> left, ExpressionType<T> right)
+    protected override Function<T> Derivative(char variable, Function<T> left, Function<T> right)
     {
         return (left.Derivative(variable) * right - left * right.Derivative(variable)) / (right * right);
     }
@@ -198,7 +198,7 @@ public class Division<T> : BinaryExpression<T>
         return Arithmetic.Division(left, right);
     }
 
-    protected override ExpressionType<T> EvaluateExpression(ExpressionType<T> left, ExpressionType<T> right)
+    protected override Function<T> EvaluateExpression(Function<T> left, Function<T> right)
     {
         return left / right;
     }

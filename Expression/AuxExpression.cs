@@ -19,7 +19,7 @@ internal static class Aux<T>
     /// </summary>
     /// <param name="exp">Cadena de texto</param>
     /// <returns>Cadena modificada</returns>
-    internal static string Opposite(ExpressionType<T> exp)
+    internal static string Opposite(Function<T> exp)
     {
         var s = exp.ToString()!;
         if (s[0] == '-')
@@ -33,7 +33,7 @@ internal static class Aux<T>
     /// </summary>
     /// <param name="exp">Expresion</param>
     /// <returns>Lista de variables de la expresion</returns>
-    internal static List<char> VariablesToExpression(ExpressionType<T> exp)
+    internal static List<char> VariablesToExpression(Function<T> exp)
     {
         var variables = new HashSet<char>();
         VariablesToExpression(exp, variables);
@@ -41,7 +41,7 @@ internal static class Aux<T>
         return variables.ToList();
     }
 
-    private static void VariablesToExpression(ExpressionType<T> exp, HashSet<char> variables)
+    private static void VariablesToExpression(Function<T> exp, HashSet<char> variables)
     {
         switch (exp)
         {

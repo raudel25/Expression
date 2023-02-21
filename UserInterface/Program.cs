@@ -2,7 +2,6 @@
 using Expression;
 using Expression.Expressions;
 using Expression.Arithmetics;
-using Expression.Reduce;
 
 UserInterface();
 
@@ -27,7 +26,7 @@ static void UserInterface()
     }
 }
 
-static void Options<T>(ExpressionType<T> exp, ArithmeticExp<T> arithmeticExp)
+static void Options<T>(Function<T> exp, ArithmeticExp<T> arithmeticExp)
 {
     var stop = false;
 
@@ -73,14 +72,14 @@ static void ReturnWith()
     Console.ReadLine();
 }
 
-static void Show<T>(ExpressionType<T> exp, string message = "")
+static void Show<T>(Function<T> exp, string message = "")
 {
     Console.Clear();
     Console.WriteLine(exp);
     if (message != "") Console.WriteLine(message);
 }
 
-static void Derivative<T>(ExpressionType<T> exp, ArithmeticExp<T> arithmeticExp)
+static void Derivative<T>(Function<T> exp, ArithmeticExp<T> arithmeticExp)
 {
     Show(exp);
     Console.WriteLine("Introduzca la variable sobre la cual quiere derivar");
@@ -95,10 +94,10 @@ static void Derivative<T>(ExpressionType<T> exp, ArithmeticExp<T> arithmeticExp)
     }
 
     var derivative = exp.Derivative(variable[0]);
-    ExpressionResult(ReduceExpression<T>.Reduce(derivative), arithmeticExp);
+    ExpressionResult(Function<T>.Reduce(derivative), arithmeticExp);
 }
 
-static void Evaluate<T>(ExpressionType<T> exp, ArithmeticExp<T> arithmeticExp)
+static void Evaluate<T>(Function<T> exp, ArithmeticExp<T> arithmeticExp)
 {
     Show(exp);
     var evaluate = DeterminateVariables(exp, arithmeticExp.Arithmetic);
@@ -108,15 +107,15 @@ static void Evaluate<T>(ExpressionType<T> exp, ArithmeticExp<T> arithmeticExp)
     ReturnWith();
 }
 
-static void EvaluateFunc<T>(ExpressionType<T> exp, ArithmeticExp<T> arithmeticExp)
+static void EvaluateFunc<T>(Function<T> exp, ArithmeticExp<T> arithmeticExp)
 {
     Show(exp);
     var evaluate = DeterminateVariablesFunc(exp, arithmeticExp);
 
-    ExpressionResult(ReduceExpression<T>.Reduce(exp.EvaluateExpression(evaluate)), arithmeticExp);
+    ExpressionResult(Function<T>.Reduce(exp.EvaluateExpression(evaluate)), arithmeticExp);
 }
 
-static void Taylor<T>(ExpressionType<T> exp, ArithmeticExp<T> arithmeticExp)
+static void Taylor<T>(Function<T> exp, ArithmeticExp<T> arithmeticExp)
 {
     Show(exp);
     var evaluate = DeterminateVariables(exp, arithmeticExp.Arithmetic, "Introduzca los valores del centro");
@@ -128,10 +127,10 @@ static void Taylor<T>(ExpressionType<T> exp, ArithmeticExp<T> arithmeticExp)
     while (!int.TryParse(Console.ReadLine(), out cant)) Error();
 
     var taylor = new Taylor<T>(exp, evaluate, cant);
-    ExpressionResult(ReduceExpression<T>.Reduce(taylor.ExpressionResult), arithmeticExp);
+    ExpressionResult(Function<T>.Reduce(taylor.ExpressionResult), arithmeticExp);
 }
 
-static void ExpressionResult<T>(ExpressionType<T> exp, ArithmeticExp<T> arithmeticExp)
+static void ExpressionResult<T>(Function<T> exp, ArithmeticExp<T> arithmeticExp)
 {
     Show(exp);
     Console.WriteLine("Presiona a para analizar esta expresion o cualquier tecla para volver");
@@ -141,10 +140,10 @@ static void ExpressionResult<T>(ExpressionType<T> exp, ArithmeticExp<T> arithmet
     if (s == "a") Options(exp, arithmeticExp);
 }
 
-static List<(char, T)> DeterminateVariables<T>(ExpressionType<T> exp, IArithmetic<T> arithmetic, string message = "")
+static List<(char, T)> DeterminateVariables<T>(Function<T> exp, IArithmetic<T> arithmetic, string message = "")
 {
     if (message == "") message = "Ingrese los valores de las variables";
-    var variables = ExpressionType<T>.VariablesToExpression(exp);
+    var variables = Function<T>.VariablesToExpression(exp);
     var evaluate = new List<(char, T)>();
 
     foreach (var item in variables)
@@ -190,16 +189,16 @@ static List<(char, T)> DeterminateVariables<T>(ExpressionType<T> exp, IArithmeti
     return evaluate;
 }
 
-static List<(char, ExpressionType<T>)> DeterminateVariablesFunc<T>(ExpressionType<T> exp,
+static List<(char, Function<T>)> DeterminateVariablesFunc<T>(Function<T> exp,
     ArithmeticExp<T> arithmeticExp)
 {
     var message = "Ingrese los valores de las variables";
-    var variables = ExpressionType<T>.VariablesToExpression(exp);
-    var evaluate = new List<(char, ExpressionType<T>)>();
+    var variables = Function<T>.VariablesToExpression(exp);
+    var evaluate = new List<(char, Function<T>)>();
 
     foreach (var item in variables)
     {
-        ExpressionType<T>? expFunc;
+        Function<T>? expFunc;
 
         while (true)
         {

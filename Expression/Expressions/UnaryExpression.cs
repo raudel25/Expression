@@ -1,6 +1,6 @@
 namespace Expression.Expressions;
 
-public class NumberExpression<T> : ExpressionType<T>
+public class NumberExpression<T> : Function<T>
 {
     public readonly T Value;
 
@@ -11,7 +11,7 @@ public class NumberExpression<T> : ExpressionType<T>
 
     public override int Priority => 6;
 
-    public override ExpressionType<T> Derivative(char variable)
+    public override Function<T> Derivative(char variable)
     {
         return new NumberExpression<T>(Arithmetic.Real0, Arithmetic);
     }
@@ -21,7 +21,7 @@ public class NumberExpression<T> : ExpressionType<T>
         return Value;
     }
 
-    public override ExpressionType<T> EvaluateExpression(List<(char, ExpressionType<T>)> variables)
+    public override Function<T> EvaluateExpression(List<(char, Function<T>)> variables)
     {
         return this;
     }
@@ -45,7 +45,7 @@ public class NumberExpression<T> : ExpressionType<T>
     }
 }
 
-public class VariableExpression<T> : ExpressionType<T>
+public class VariableExpression<T> : Function<T>
 {
     public readonly char Variable;
 
@@ -56,7 +56,7 @@ public class VariableExpression<T> : ExpressionType<T>
 
     public override int Priority => 6;
 
-    public override ExpressionType<T> Derivative(char variable)
+    public override Function<T> Derivative(char variable)
     {
         return variable == Variable
             ? new NumberExpression<T>(Arithmetic.Real1, Arithmetic)
@@ -72,7 +72,7 @@ public class VariableExpression<T> : ExpressionType<T>
         throw new Exception("No se ha introducido un valor para cada variable");
     }
 
-    public override ExpressionType<T> EvaluateExpression(List<(char, ExpressionType<T>)> variables)
+    public override Function<T> EvaluateExpression(List<(char, Function<T>)> variables)
     {
         foreach (var item in variables)
             if (item.Item1 == Variable)
@@ -100,7 +100,7 @@ public class VariableExpression<T> : ExpressionType<T>
     }
 }
 
-public class ConstantE<T> : ExpressionType<T>
+public class ConstantE<T> : Function<T>
 {
     internal ConstantE(IArithmetic<T> arithmetic) : base(arithmetic)
     {
@@ -108,7 +108,7 @@ public class ConstantE<T> : ExpressionType<T>
 
     public override int Priority => 6;
 
-    public override ExpressionType<T> Derivative(char variable)
+    public override Function<T> Derivative(char variable)
     {
         return new NumberExpression<T>(Arithmetic.Real0, Arithmetic);
     }
@@ -118,7 +118,7 @@ public class ConstantE<T> : ExpressionType<T>
         return Arithmetic.E;
     }
 
-    public override ExpressionType<T> EvaluateExpression(List<(char, ExpressionType<T>)> variables)
+    public override Function<T> EvaluateExpression(List<(char, Function<T>)> variables)
     {
         return this;
     }
@@ -139,7 +139,7 @@ public class ConstantE<T> : ExpressionType<T>
     }
 }
 
-public class ConstantPI<T> : ExpressionType<T>
+public class ConstantPI<T> : Function<T>
 {
     internal ConstantPI(IArithmetic<T> arithmetic) : base(arithmetic)
     {
@@ -147,7 +147,7 @@ public class ConstantPI<T> : ExpressionType<T>
 
     public override int Priority => 6;
 
-    public override ExpressionType<T> Derivative(char variable)
+    public override Function<T> Derivative(char variable)
     {
         return new NumberExpression<T>(Arithmetic.Real0, Arithmetic);
     }
@@ -157,7 +157,7 @@ public class ConstantPI<T> : ExpressionType<T>
         return Arithmetic.PI;
     }
 
-    public override ExpressionType<T> EvaluateExpression(List<(char, ExpressionType<T>)> variables)
+    public override Function<T> EvaluateExpression(List<(char, Function<T>)> variables)
     {
         return this;
     }
@@ -178,7 +178,7 @@ public class ConstantPI<T> : ExpressionType<T>
     }
 }
 
-public class Factorial<T> : ExpressionType<T>
+public class Factorial<T> : Function<T>
 {
     private readonly T _integer;
 
@@ -206,7 +206,7 @@ public class Factorial<T> : ExpressionType<T>
 
     public override int Priority => 5;
 
-    public override ExpressionType<T> Derivative(char variable)
+    public override Function<T> Derivative(char variable)
     {
         return new NumberExpression<T>(Arithmetic.Real0, Arithmetic);
     }
@@ -216,7 +216,7 @@ public class Factorial<T> : ExpressionType<T>
         return Value;
     }
 
-    public override ExpressionType<T> EvaluateExpression(List<(char, ExpressionType<T>)> variables)
+    public override Function<T> EvaluateExpression(List<(char, Function<T>)> variables)
     {
         return this;
     }

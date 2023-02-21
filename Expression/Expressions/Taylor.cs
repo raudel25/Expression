@@ -7,16 +7,16 @@ public class Taylor<T>
     /// <summary>
     ///     Expresion resultante
     /// </summary>
-    public readonly ExpressionType<T> ExpressionResult;
+    public readonly Function<T> ExpressionResult;
 
-    public Taylor(ExpressionType<T> exp, List<(char, T)> center,
+    public Taylor(Function<T> exp, List<(char, T)> center,
         int precision)
     {
         if (!Check(center, exp))
             throw new Exception(
                 "No se ha introducido un valor para cada variable o se ha introducido una variable adicional");
 
-        var centerExpression = new List<(char, ExpressionType<T>)>();
+        var centerExpression = new List<(char, Function<T>)>();
         foreach (var item in center)
             centerExpression.Add((item.Item1, new NumberExpression<T>(item.Item2, exp.Arithmetic)));
 
@@ -30,12 +30,12 @@ public class Taylor<T>
     /// <param name="center">Numero para centrar</param>
     /// <param name="precision">Precison</param>
     /// <returns></returns>
-    private ExpressionType<T> TaylorSerial(ExpressionType<T> exp, List<(char, ExpressionType<T>)> center, int precision)
+    private Function<T> TaylorSerial(Function<T> exp, List<(char, Function<T>)> center, int precision)
     {
         var taylorValue = exp.EvaluateExpression(center);
         var fact = exp.Arithmetic.Real1;
         var index = exp.Arithmetic.Real1;
-        var taylorFunction = new Queue<(ExpressionType<T>, int[])>();
+        var taylorFunction = new Queue<(Function<T>, int[])>();
         taylorFunction.Enqueue((exp, new int[center.Count]));
 
         //Serie de taylor 
@@ -64,10 +64,10 @@ public class Taylor<T>
     /// <param name="ind"></param>
     /// <param name="arithmetic">Aritmetica</param>
     /// <returns>Indice de la derivada</returns>
-    private ExpressionType<T> Derivative(Queue<(ExpressionType<T>, int[])> taylorFunction,
-        List<(char, ExpressionType<T>)> center, int ind, IArithmetic<T> arithmetic)
+    private Function<T> Derivative(Queue<(Function<T>, int[])> taylorFunction,
+        List<(char, Function<T>)> center, int ind, IArithmetic<T> arithmetic)
     {
-        ExpressionType<T> sum = new NumberExpression<T>(arithmetic.Real0, arithmetic);
+        Function<T> sum = new NumberExpression<T>(arithmetic.Real0, arithmetic);
         var len = (int)Math.Pow(center.Count, ind - 1);
 
         for (var i = 0; i < len; i++)
@@ -98,10 +98,10 @@ public class Taylor<T>
     /// <param name="indices">Indices para cada variables</param>
     /// <param name="arithmetic">Aritmetica</param>
     /// <returns>Expresion resultante</returns>
-    private ExpressionType<T> Elevate(List<(char, ExpressionType<T>)> variables, int[] indices,
+    private Function<T> Elevate(List<(char, Function<T>)> variables, int[] indices,
         IArithmetic<T> arithmetic)
     {
-        ExpressionType<T> product = new NumberExpression<T>(arithmetic.Real1, arithmetic);
+        Function<T> product = new NumberExpression<T>(arithmetic.Real1, arithmetic);
 
         for (var i = 0; i < variables.Count; i++)
             product *= new Pow<T>(new VariableExpression<T>(variables[i].Item1, arithmetic) - variables[i].Item2,
@@ -116,7 +116,7 @@ public class Taylor<T>
     /// <param name="variables">Lista de varibles</param>
     /// <param name="exp">Expresion</param>
     /// <returns>Si el centro es correcto</returns>
-    private bool Check(List<(char, T)> variables, ExpressionType<T> exp)
+    private bool Check(List<(char, T)> variables, Function<T> exp)
     {
         var variablesExp = Aux<T>.VariablesToExpression(exp);
 

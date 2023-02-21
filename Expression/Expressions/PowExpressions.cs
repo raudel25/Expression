@@ -2,20 +2,20 @@ namespace Expression.Expressions;
 
 public class Pow<T> : BinaryExpression<T>
 {
-    public Pow(ExpressionType<T> left, ExpressionType<T> right) : base(left, right)
+    public Pow(Function<T> left, Function<T> right) : base(left, right)
     {
     }
 
     public override int Priority => 3;
 
-    public static Pow<T> DeterminatePow(ExpressionType<T> left, ExpressionType<T> right)
+    public static Pow<T> DeterminatePow(Function<T> left, Function<T> right)
     {
         if (right is NumberExpression<T> number) return new PowExponentNumber<T>(left, number);
 
         return left is ConstantE<T> ? new PowE<T>(right, right.Arithmetic) : new Pow<T>(left, right);
     }
 
-    protected override ExpressionType<T> Derivative(char variable, ExpressionType<T> left, ExpressionType<T> right)
+    protected override Function<T> Derivative(char variable, Function<T> left, Function<T> right)
     {
         return new PowE<T>(right * new Ln<T>(left), right.Arithmetic) *
                (right * new Ln<T>(left)).Derivative(variable);
@@ -26,7 +26,7 @@ public class Pow<T> : BinaryExpression<T>
         return Arithmetic.Pow(left, right);
     }
 
-    protected override ExpressionType<T> EvaluateExpression(ExpressionType<T> left, ExpressionType<T> right)
+    protected override Function<T> EvaluateExpression(Function<T> left, Function<T> right)
     {
         return DeterminatePow(left, right);
     }
@@ -70,11 +70,11 @@ public class Pow<T> : BinaryExpression<T>
 
 public class PowExponentNumber<T> : Pow<T>
 {
-    public PowExponentNumber(ExpressionType<T> exp, NumberExpression<T> number) : base(exp, number)
+    public PowExponentNumber(Function<T> exp, NumberExpression<T> number) : base(exp, number)
     {
     }
 
-    protected override ExpressionType<T> Derivative(char variable, ExpressionType<T> left, ExpressionType<T> right)
+    protected override Function<T> Derivative(char variable, Function<T> left, Function<T> right)
     {
         return right *
                new PowExponentNumber<T>(left, new NumberExpression<T>(
@@ -85,11 +85,11 @@ public class PowExponentNumber<T> : Pow<T>
 
 public class PowE<T> : Pow<T>
 {
-    public PowE(ExpressionType<T> pow, IArithmetic<T> arithmetic) : base(new ConstantE<T>(arithmetic), pow)
+    public PowE(Function<T> pow, IArithmetic<T> arithmetic) : base(new ConstantE<T>(arithmetic), pow)
     {
     }
 
-    protected override ExpressionType<T> Derivative(char variable, ExpressionType<T> left, ExpressionType<T> right)
+    protected override Function<T> Derivative(char variable, Function<T> left, Function<T> right)
     {
         return this * right.Derivative(variable);
     }

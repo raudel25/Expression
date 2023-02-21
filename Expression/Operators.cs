@@ -4,7 +4,7 @@ namespace Expression;
 
 internal class Operators<T>
 {
-    internal delegate ExpressionType<T> Expression(ExpressionType<T>[] exp);
+    internal delegate Function<T> Expression(Function<T>[] exp);
 
     /// <summary>
     ///     Determinar si el oerador es binario

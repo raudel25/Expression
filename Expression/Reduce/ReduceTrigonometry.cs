@@ -9,9 +9,9 @@ internal static class ReduceTrigonometry<T>
     /// </summary>
     /// <param name="exp">Expresion para reducir</param>
     /// <returns>Expresion reducida</returns>
-    internal static ExpressionType<T> ReduceSin(UnaryExpression<T> exp)
+    internal static Function<T> ReduceSin(UnaryExpression<T> exp)
     {
-        return ReduceSinCos(exp, true);
+        return exp.Value is Asin<T> value ? value.Value : ReduceSinCos(exp, true);
     }
 
     /// <summary>
@@ -19,9 +19,9 @@ internal static class ReduceTrigonometry<T>
     /// </summary>
     /// <param name="exp">Expresion para reducir</param>
     /// <returns>Expresion reducida</returns>
-    internal static ExpressionType<T> ReduceCos(UnaryExpression<T> exp)
+    internal static Function<T> ReduceCos(UnaryExpression<T> exp)
     {
-        return ReduceSinCos(exp, false);
+        return exp is Acos<T> value ? value.Value : ReduceSinCos(exp, false);
     }
 
     /// <summary>
@@ -30,7 +30,7 @@ internal static class ReduceTrigonometry<T>
     /// <param name="exp">Expresion para reducir</param>
     /// <param name="sin">Seno</param>
     /// <returns>Expresion reducida</returns>
-    private static ExpressionType<T> ReduceSinCos(UnaryExpression<T> exp, bool sin)
+    private static Function<T> ReduceSinCos(UnaryExpression<T> exp, bool sin)
     {
         var number = exp.Value as NumberExpression<T>;
 
@@ -48,8 +48,8 @@ internal static class ReduceTrigonometry<T>
 
         var multiply = exp.Value as Multiply<T>;
 
-        ExpressionType<T>? index = null;
-        ExpressionType<T>? reduce = null;
+        Function<T>? index = null;
+        Function<T>? reduce = null;
         if (multiply is null) return reduce ?? exp;
         if (multiply.Left.Equals(new ConstantPI<T>(exp.Arithmetic))) index = multiply.Right;
         if (multiply.Right.Equals(new ConstantPI<T>(exp.Arithmetic))) index = multiply.Left;
@@ -57,11 +57,9 @@ internal static class ReduceTrigonometry<T>
         number = index as NumberExpression<T>;
         if (number is not null) reduce = Determinate(number.Value, sin, exp.Arithmetic);
 
-        if (index is BinaryExpression<T> binary)
-        {
-            number = Aux<T>.Numbers(binary);
-            if (number is not null) reduce = Determinate(number.Value, sin, exp.Arithmetic);
-        }
+        if (index is not BinaryExpression<T> binary) return reduce ?? exp;
+        number = Aux<T>.Numbers(binary);
+        if (number is not null) reduce = Determinate(number.Value, sin, exp.Arithmetic);
 
         return reduce ?? exp;
     }
@@ -73,7 +71,7 @@ internal static class ReduceTrigonometry<T>
     /// <param name="sin">Seno</param>
     /// <param name="arithmetic">Aritmetica</param>
     /// <returns>Expresion reducida(si es null no se puede reducir)</returns>
-    private static ExpressionType<T>? Determinate(T number, bool sin, IArithmetic<T> arithmetic)
+    private static Function<T>? Determinate(T number, bool sin, IArithmetic<T> arithmetic)
     {
         if (arithmetic.IsInteger(number))
         {
@@ -90,16 +88,13 @@ internal static class ReduceTrigonometry<T>
             ? arithmetic.Subtraction(number, arithmetic.StringToNumber("0.5"))
             : arithmetic.Sum(number, arithmetic.StringToNumber("0.5"));
 
-        if (arithmetic.IsInteger(integer))
-        {
-            var result = Determinate(integer, !sin, arithmetic);
+        if (!arithmetic.IsInteger(integer)) return null;
+        var result = Determinate(integer, !sin, arithmetic);
 
-            if (result is null) return null;
-            return arithmetic.Positive(number)
-                ? result
-                : new NumberExpression<T>(arithmetic.RealN1, arithmetic) * result;
-        }
+        if (result is null) return null;
+        return arithmetic.Positive(number)
+            ? result
+            : new NumberExpression<T>(arithmetic.RealN1, arithmetic) * result;
 
-        return null;
     }
 }

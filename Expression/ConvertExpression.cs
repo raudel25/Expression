@@ -40,7 +40,7 @@ internal static class ConvertExpression<T>
     /// <param name="s">Cadena de texto</param>
     /// <param name="arithmetic">Aritmetica</param>
     /// <returns>Expresion resultante(si devuelve null la expresion no es correcta)</returns>
-    internal static ExpressionType<T>? Parsing(string s, IArithmetic<T> arithmetic)
+    internal static Function<T>? Parsing(string s, IArithmetic<T> arithmetic)
     {
         s = FormatStringExp(s);
         var operators = new List<Operators<T>>();
@@ -153,7 +153,7 @@ internal static class ConvertExpression<T>
     /// <param name="operators">Lista de operadores</param>
     /// <param name="arithmetic">Aritmetica</param>
     /// <returns>Expresion resultante(si devuelve null la expresion no es correcta)</returns>
-    private static ExpressionType<T>? DeterminateExpression(string s, int start, int end, bool[] visited,
+    private static Function<T>? DeterminateExpression(string s, int start, int end, bool[] visited,
         List<Operators<T>> operators, IArithmetic<T> arithmetic)
     {
         if (start > end) return null;
@@ -199,7 +199,7 @@ internal static class ConvertExpression<T>
     /// <param name="s">Cadena</param>
     /// <param name="arithmetic">Aritmetica</param>
     /// <returns>Expresion resultante</returns>
-    private static ExpressionType<T>? VariableOrNumberOrFact(string s, IArithmetic<T> arithmetic)
+    private static Function<T>? VariableOrNumberOrFact(string s, IArithmetic<T> arithmetic)
     {
         var (start, end) = (EliminateParentLeft(s, 0, s.Length - 1), EliminateParentRight(s, 0, s.Length - 1));
         if (start == -1 || end == -1) return null;
@@ -233,11 +233,11 @@ internal static class ConvertExpression<T>
     /// <param name="index">Operador actual</param>
     /// <param name="arithmetic">Aritmetica</param>
     /// <returns>Expresion resultante(si devuelve null la expresion no es correcta)</returns>
-    private static ExpressionType<T>? ConvertBinary(string s, int start, int end, bool[] visited,
+    private static Function<T>? ConvertBinary(string s, int start, int end, bool[] visited,
         List<Operators<T>> operators, int index, IArithmetic<T> arithmetic)
     {
-        ExpressionType<T>? left;
-        ExpressionType<T>? right;
+        Function<T>? left;
+        Function<T>? right;
 
         if (operators[index].Operator == "-")
         {
@@ -287,7 +287,7 @@ internal static class ConvertExpression<T>
     /// <param name="index">Operador actual</param>
     /// <param name="arithmetic">Aritmetica</param>
     /// <returns>Expresion resultante(si devuelve null la expresion no es correcta)</returns>
-    private static ExpressionType<T>? ConvertUnary(string s, int start, int end, bool[] visited,
+    private static Function<T>? ConvertUnary(string s, int start, int end, bool[] visited,
         List<Operators<T>> operators, int index, IArithmetic<T> arithmetic)
     {
         start = EliminateParentLeft(s, start, end);

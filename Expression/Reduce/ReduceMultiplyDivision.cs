@@ -9,7 +9,7 @@ internal static class ReduceMultiplyDivision<T>
     /// </summary>
     /// <param name="binary">Expresion binaria</param>
     /// <returns>Expresion resultante</returns>
-    internal static ExpressionType<T> ReduceMultiply(BinaryExpression<T> binary)
+    internal static Function<T> ReduceMultiply(BinaryExpression<T> binary)
     {
         var aux = ReduceMultiplySimple(binary);
         if (aux is not null) return aux;
@@ -25,7 +25,7 @@ internal static class ReduceMultiplyDivision<T>
     /// </summary>
     /// <param name="binary">Expresion binaria</param>
     /// <returns>Expresion resultante(si es null es que no se pudo reducir)</returns>
-    internal static ExpressionType<T>? ReduceMultiplySimple(BinaryExpression<T> binary)
+    internal static Function<T>? ReduceMultiplySimple(BinaryExpression<T> binary)
     {
         if (binary.Left.Equals(new NumberExpression<T>(binary.Arithmetic.Real0, binary.Arithmetic)) ||
             binary.Right.Equals(new NumberExpression<T>(binary.Arithmetic.Real0, binary.Arithmetic)))
@@ -46,7 +46,7 @@ internal static class ReduceMultiplyDivision<T>
     /// <param name="indLeft">Indice de la expresion izquierda</param>
     /// <param name="indRight">Indice de la expresion derecha</param>
     /// <returns>Expresion resultante</returns>
-    private static ExpressionType<T> ReduceMultiplyCheck(ExpressionType<T> left, ExpressionType<T> right, T indLeft,
+    private static Function<T> ReduceMultiplyCheck(Function<T> left, Function<T> right, T indLeft,
         T indRight)
     {
         var aux = ReduceMultiply(left, right, indLeft, indRight);
@@ -69,7 +69,7 @@ internal static class ReduceMultiplyDivision<T>
     /// <param name="indLeft">Indice de la expresion izquierda</param>
     /// <param name="indRight">Indice de la expresion derecha</param>
     /// <returns>Expresion resultante(si es null es que no se pudo reducir)</returns>
-    private static ExpressionType<T>? ReduceMultiply(ExpressionType<T> left, ExpressionType<T> right, T indLeft,
+    private static Function<T>? ReduceMultiply(Function<T> left, Function<T> right, T indLeft,
         T indRight)
     {
         var auxExp = PowInd(left);
@@ -80,7 +80,7 @@ internal static class ReduceMultiplyDivision<T>
         var (leftBinary, rightBinary) =
             (left as BinaryExpression<T>, right as BinaryExpression<T>);
 
-        ExpressionType<T>? aux;
+        Function<T>? aux;
 
         if (leftBinary is Multiply<T>)
         {
@@ -137,7 +137,7 @@ internal static class ReduceMultiplyDivision<T>
     /// </summary>
     /// <param name="binary">Expresion binaria</param>
     /// <returns>Expresion resultante</returns>
-    internal static ExpressionType<T> ReduceDivision(BinaryExpression<T> binary)
+    internal static Function<T> ReduceDivision(BinaryExpression<T> binary)
     {
         var aux = ReduceDivisionSimple(binary);
         if (aux is not null) return aux;
@@ -153,7 +153,7 @@ internal static class ReduceMultiplyDivision<T>
     /// </summary>
     /// <param name="binary">Expresion binaria</param>
     /// <returns>Expresion resultante(si es null es que no se pudo reducir)</returns>
-    private static ExpressionType<T>? ReduceDivisionSimple(BinaryExpression<T> binary)
+    private static Function<T>? ReduceDivisionSimple(BinaryExpression<T> binary)
 
     {
         if (binary.Left.Equals(new NumberExpression<T>(binary.Arithmetic.Real0, binary.Arithmetic)))
@@ -172,7 +172,7 @@ internal static class ReduceMultiplyDivision<T>
     /// <param name="indLeft">Indice de la expresion izquierda</param>
     /// <param name="indRight">Indice de la expresion derecha</param>
     /// <returns>Expresion resultante</returns>
-    private static ExpressionType<T> ReduceDivisionCheck(ExpressionType<T> left, ExpressionType<T> right, T indLeft,
+    private static Function<T> ReduceDivisionCheck(Function<T> left, Function<T> right, T indLeft,
         T indRight)
     {
         var aux = ReduceDivision(left, right, indLeft, indRight);
@@ -195,7 +195,7 @@ internal static class ReduceMultiplyDivision<T>
     /// <param name="indLeft">Indice de la expresion izquierda</param>
     /// <param name="indRight">Indice de la expresion derecha</param>
     /// <returns>Expresion resultante(si es null es que no se pudo reducir)</returns>
-    private static ExpressionType<T>? ReduceDivision(ExpressionType<T> left, ExpressionType<T> right, T indLeft,
+    private static Function<T>? ReduceDivision(Function<T> left, Function<T> right, T indLeft,
         T indRight)
     {
         var auxExp = PowInd(left);
@@ -206,7 +206,7 @@ internal static class ReduceMultiplyDivision<T>
         var (leftBinary, rightBinary) =
             (left as BinaryExpression<T>, right as BinaryExpression<T>);
 
-        ExpressionType<T>? aux;
+        Function<T>? aux;
 
         if (leftBinary is Multiply<T>)
         {
@@ -258,7 +258,7 @@ internal static class ReduceMultiplyDivision<T>
         return null;
     }
 
-    private static (ExpressionType<T>, T) PowInd(ExpressionType<T> exp)
+    private static (Function<T>, T) PowInd(Function<T> exp)
     {
         var binary = exp as Pow<T>;
         if (binary is null) return (exp, exp.Arithmetic.Real1);

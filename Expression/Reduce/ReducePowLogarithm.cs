@@ -9,7 +9,7 @@ internal static class ReducePowLogarithm<T>
     /// </summary>
     /// <param name="binary">Expresion binaria</param>
     /// <returns>Expresion resultante</returns>
-    internal static ExpressionType<T> ReducePow(BinaryExpression<T> binary)
+    internal static Function<T> ReducePow(BinaryExpression<T> binary)
     {
         var aux = ReducePowPossible(binary);
         if (aux is not null) return aux;
@@ -22,7 +22,7 @@ internal static class ReducePowLogarithm<T>
     /// </summary>
     /// <param name="binary">Expresion binaria</param>
     /// <returns>Expresion resultante(si es null no es posible)</returns>
-    private static ExpressionType<T>? ReducePowPossible(BinaryExpression<T> binary)
+    private static Function<T>? ReducePowPossible(BinaryExpression<T> binary)
     {
         var aux = ReducePowSimple(binary);
         if (aux is not null) return aux;
@@ -70,7 +70,7 @@ internal static class ReducePowLogarithm<T>
     /// </summary>
     /// <param name="binary">Expresion binaria</param>
     /// <returns>Expresion resultante(si es null es que no se pudo reducir)</returns>
-    internal static ExpressionType<T>? ReducePowSimple(BinaryExpression<T> binary)
+    internal static Function<T>? ReducePowSimple(BinaryExpression<T> binary)
     {
         if (binary.Left.Equals(new NumberExpression<T>(binary.Arithmetic.Real0, binary.Arithmetic)))
             return new NumberExpression<T>(binary.Arithmetic.Real0, binary.Arithmetic);
@@ -87,7 +87,7 @@ internal static class ReducePowLogarithm<T>
     /// </summary>
     /// <param name="binary">Expresion binaria</param>
     /// <returns>Expresion resultante</returns>
-    internal static ExpressionType<T> ReduceLogarithm(BinaryExpression<T> binary)
+    internal static Function<T> ReduceLogarithm(BinaryExpression<T> binary)
     {
         var aux = ReduceLogarithmSimple(binary);
         if (aux is not null) return aux;
@@ -105,7 +105,7 @@ internal static class ReducePowLogarithm<T>
     /// </summary>
     /// <param name="binary">Expresion binaria</param>
     /// <returns>Expresion resultante(si es null es que no se pudo reducir)</returns>
-    private static ExpressionType<T>? ReduceLogarithmSimple(BinaryExpression<T> binary)
+    private static Function<T>? ReduceLogarithmSimple(BinaryExpression<T> binary)
     {
         if (binary.Right.Equals(new NumberExpression<T>(binary.Arithmetic.Real1, binary.Arithmetic)))
             return new NumberExpression<T>(binary.Arithmetic.Real0, binary.Arithmetic);

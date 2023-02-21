@@ -30,7 +30,7 @@ public class ArithmeticExp<T>
         return new(value, Arithmetic);
     }
 
-    public ExpressionType<T>? Parsing(string s)
+    public Function<T>? Parsing(string s)
     {
         return ConvertExpression<T>.Parsing(s, Arithmetic);
     }

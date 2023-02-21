@@ -2,7 +2,7 @@ namespace Expression.Expressions;
 
 public class Log<T> : BinaryExpression<T>
 {
-    public Log(ExpressionType<T> left, ExpressionType<T> right) : base(left, right)
+    public Log(Function<T> left, Function<T> right) : base(left, right)
     {
     }
 
@@ -14,14 +14,12 @@ public class Log<T> : BinaryExpression<T>
     /// <param name="left">Expresion izquierda</param>
     /// <param name="right">Expresion derecha</param>
     /// <returns>Expresion logaritmica</returns>
-    public static Log<T> DeterminateLog(ExpressionType<T> left, ExpressionType<T> right)
+    public static Log<T> DeterminateLog(Function<T> left, Function<T> right)
     {
-        if (left is ConstantE<T>) return new Ln<T>(right);
-
-        return new Log<T>(left, right);
+        return left is ConstantE<T> ? new Ln<T>(right) : new Log<T>(left, right);
     }
 
-    protected override ExpressionType<T> Derivative(char variable, ExpressionType<T> left, ExpressionType<T> right)
+    protected override Function<T> Derivative(char variable, Function<T> left, Function<T> right)
     {
         return (new Ln<T>(right) / new Ln<T>(left)).Derivative(variable);
     }
@@ -31,7 +29,7 @@ public class Log<T> : BinaryExpression<T>
         return Arithmetic.Log(left, right);
     }
 
-    protected override ExpressionType<T> EvaluateExpression(ExpressionType<T> left, ExpressionType<T> right)
+    protected override Function<T> EvaluateExpression(Function<T> left, Function<T> right)
     {
         return DeterminateLog(left, right);
     }
@@ -52,8 +50,7 @@ public class Log<T> : BinaryExpression<T>
 
     public override bool Equals(object? obj)
     {
-        var binary = obj as Log<T>;
-        if (binary is null) return false;
+        if (obj is not Log<T> binary) return false;
 
         return Left.Equals(binary.Left) && Right.Equals(binary.Right);
     }
@@ -66,11 +63,11 @@ public class Log<T> : BinaryExpression<T>
 
 public class Ln<T> : Log<T>
 {
-    public Ln(ExpressionType<T> value) : base(new ConstantE<T>(value.Arithmetic), value)
+    public Ln(Function<T> value) : base(new ConstantE<T>(value.Arithmetic), value)
     {
     }
 
-    protected override ExpressionType<T> Derivative(char variable, ExpressionType<T> left, ExpressionType<T> right)
+    protected override Function<T> Derivative(char variable, Function<T> left, Function<T> right)
     {
         return new NumberExpression<T>(Arithmetic.Real1, Arithmetic) / right * right.Derivative(variable);
     }
