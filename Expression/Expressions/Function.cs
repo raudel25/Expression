@@ -6,16 +6,30 @@ public abstract class Function<T>
 {
     internal readonly IArithmetic<T> Arithmetic;
 
+    /// <summary>
+    ///     Aritmetica
+    /// </summary>
+    /// <param name="arithmetic">Aritmetica</param>
     internal Function(IArithmetic<T> arithmetic)
     {
         Arithmetic = arithmetic;
     }
 
+    /// <summary>
+    ///     Determinar las varibles de una expresion
+    /// </summary>
+    /// <param name="exp">Expresion</param>
+    /// <returns>Lista de variables de la expresion</returns>
     public static List<char> VariablesToExpression(Function<T> exp)
     {
         return Aux<T>.VariablesToExpression(exp);
     }
 
+    /// <summary>
+    ///     Reducir una expresion
+    /// </summary>
+    /// <param name="exp">Expresion para reducir</param>
+    /// <returns>Expresion reducida</returns>
     public static Function<T> Reduce(Function<T> exp)
     {
         return ReduceExpression<T>.Reduce(exp);
