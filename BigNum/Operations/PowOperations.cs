@@ -12,7 +12,7 @@ internal static class PowOperations
     {
         if (y == x.Real0) return x.Real1;
 
-        var s = y.ToString().Split('.');
+        var s = y.Abs.ToString().Split('.');
 
         if (s.Length == 1) return Pow(x, int.Parse(y.ToString()));
 
