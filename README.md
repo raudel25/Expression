@@ -41,6 +41,8 @@ var real = big.Real("2");
 var integer = big.Int("2");
 ```
 
+Puede instalar la biblioteca para usarla en sus proyectos mediante siguiente paquete <a href="https://www.nuget.org/packages/BigNum/">nuget</a>.
+
 ### Operaciones
 
 En la clase `BigNumMath` se encuentran implementadas las operaciones que se pueden realizar con los objetos del
@@ -181,7 +183,7 @@ las demás expreiones.
 Para usar la biblioteca primero debe definir su propia aritmética, la cual se puede definir mediante una clase que implemente la interfaz
 `IAritmetic`. Por defecto la biblioteca cuenta cuenta con una artmética implementada con la biblioteca `BigNum` mediante la clase
 `BigNumExp` y la aritmética nativa del lenguaje mediante la clase `NativeExp`. Una vez definida la aritmética se debe instancear la clase
-`ArithmeticExp` y mediante los métodos `NumberExpression` y `VariableExpression` puede obtener las expresiones que le sirven para definir las 
+`ArithmeticExp` y mediante los métodos `NumberExpression` y `VariableExpression` puede obtener las expresiones que le sirven para definir las
 restantes.
 
 ```csharp
@@ -189,6 +191,8 @@ var big = new BigNumMath(6, 9);
 var arithmetic = new ArithmeticExp<RealNumbers>(new BigNumExp(big));
 var number10 = arithmetic.NumberExpression(big.Real("10"));
 ```
+
+Puede instalar la biblioteca para usarla en sus proyectos mediante siguiente paquete <a href="https://www.nuget.org/packages/Expression/">nuget</a>.
 
 ### ConvertExpression
 
@@ -206,7 +210,7 @@ Prioridad 1:
 
 Prioridad 2:
 
-- Multiplicación (**x * y**): efectúa la multiplicación entre dos expresiones.
+- Multiplicación (**x \* y**): efectúa la multiplicación entre dos expresiones.
 - División (**x / y**): efectúa la división entre dos expresiones.
 
 Prioridad 3:
