@@ -1,7 +1,6 @@
 @using Expression.Expressions
 @using BigNum
 @using Expression.Arithmetics
-@using System.Runtime.CompilerServices
 
 <h3>Function Analize</h3>
 
@@ -15,14 +14,17 @@
 <div>
     <button @onclick="() => { _action = Actions.Derivative; _result = null;}">dy/dx</button>
     <button>Taylor</button>
-    <button>Evaluate</button>
+    <button @onclick="() => { _action = Actions.Evaluative; _result = null;}">Evaluate</button>
 </div>
 
 @if (_action == Actions.Derivative)
 {
     <Derivative Function="Functions[Ind[0]]" Derv="Derivative"></Derivative>
 }
-
+@if (_action == Actions.Evaluative)
+{
+    <EvalVarible Variables="Function<RealNumbers>.VariablesToExpression(Functions[0])" Eval="Eval"></EvalVarible>
+}
 @if (_result is not null)
 {
     <div>
@@ -37,6 +39,12 @@
 
     [Parameter]
     public List<int> Ind { get; set; }
+    
+    [Parameter]
+    public BigNumMath Big { get; set; }
+    
+    [Parameter]
+    public  ArithmeticExp<RealNumbers> ArithmeticExp { get; set; }
 
 
     private enum Actions
@@ -53,6 +61,20 @@
     private void Derivative(char variable)
     {
         _result = Functions[Ind[0]].Derivative(variable);
+        
+        _action = Actions.None;
+        StateHasChanged();
+    }
+
+    private void Eval(double[] values)
+    {
+        var variables = Function<RealNumbers>.VariablesToExpression(Functions[Ind[0]]);
+        var eval = new List<(char,RealNumbers)>(variables.Count);
+        eval.AddRange(variables.Select((t, i) => (t,Big.ConvertToRealNumbers(values[i]))));
+
+        _result = ArithmeticExp.NumberExpression(Functions[Ind[0]].Evaluate(eval));
+
+        _action = Actions.None;
         StateHasChanged();
     }
 

@@ -1,0 +1,35 @@
+@using BigNum
+@using Expression.Expressions
+<h3>EvalVarible</h3>
+
+@foreach (var (value,index) in _variables)
+{
+    <input type="number" @bind="@_values[index]" placeholder="@value = "/>
+    <button @onclick="() => Eval(_values)">Accept</button>
+}
+
+@code {
+
+    [Parameter]
+    public List<char> Variables { get; set; }
+
+    [Parameter]
+    public Action<double[]> Eval { get; set; }
+
+    private List<(char,int)> _variables;
+
+    private double[] _values;
+
+
+    protected override void OnInitialized()
+    {
+        _variables = new List<(char, int)>(Variables.Count);
+        _values = new double[Variables.Count];
+
+        for (var i = 0; i < Variables.Count; i++)
+        {
+            _variables.Add((Variables[0],i));
+        }
+    }
+
+}
