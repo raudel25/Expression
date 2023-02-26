@@ -2,7 +2,7 @@
 @using BigNum
 @using Expression.Arithmetics
 
-<h3>Function Analize</h3>
+<h3>Function Analyze</h3>
 
 <button @onclick="() => { Ind[0] = Ind[0] - 1 >= 0 ? Ind[0] - 1 : Ind[0]; _action = Actions.None; }">P</button>
 <button @onclick="() => { Ind[0] = Ind[0] + 1 < Functions.Count ? Ind[0] + 1 : Ind[0];_action = Actions.None; }">N</button>
@@ -12,7 +12,7 @@
 </div>
 
 <div>
-    <button @onclick="() => { _action = Actions.Derivative; _result = null;}">dy/dx</button>
+    <button @onclick="DerivativeD">dy/dx</button>
     <button @onclick="() => { _action = Actions.Taylor; _result = null;}">Taylor</button>
     <button @onclick="() => { _action = Actions.Evaluative; _result = null;}">Evaluate</button>
 </div>
@@ -33,6 +33,7 @@
 {
     <div>
         <label>@_result.ToString()</label>
+        <button @onclick="AnalyzeFunc">Analyze</button>
     </div>
 }
 
@@ -52,7 +53,6 @@
 
     protected override void OnInitialized()
     {
-        
     }
 
     private enum Actions
@@ -65,6 +65,25 @@
 
     private Actions _action;
     private Function<RealNumbers>? _result;
+
+    private void DerivativeD()
+    {
+        var variables = Function<RealNumbers>.VariablesToExpression(Functions[Ind[0]]);
+
+        switch (variables.Count)
+        {
+            case 0:
+                Derivative('x');
+                return;
+            case 1:
+                Derivative(variables[0]);
+                return;
+            default:
+                _action = Actions.Derivative;
+                _result = null;
+                break;
+        }
+    }
 
     private void Derivative(char variable)
     {
@@ -89,6 +108,14 @@
 
         _action = Actions.None;
         StateHasChanged();
+    }
+
+    private void AnalyzeFunc()
+    {
+        Functions.Add(_result!);
+        Ind[0] = Functions.Count - 1;
+        _result = null;
+        _action = Actions.None;
     }
 
 }

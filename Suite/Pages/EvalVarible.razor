@@ -1,12 +1,21 @@
 @using BigNum
 @using Expression.Expressions
+
 <h3>EvalVarible</h3>
 
 @foreach (var (value,index) in _variables)
 {
-    <input type="number" @bind="@_values[index]" placeholder="@value = "/>
-    <button @onclick="Convert">Accept</button>
+    if (index == _ind)
+    {
+        <input type="number" @bind="@_values[index]" placeholder="@value = "/>
+    }
 }
+
+@if (_ind != 0)
+{
+    <button @onclick="() => _ind--">Preview</button>
+}
+<button @onclick="Next">@_valueButton</button>
 
 @code {
 
@@ -23,11 +32,15 @@
 
     private double[] _values = null!;
 
+    private int _ind;
+
+    private string _valueButton = "";
 
     protected override void OnInitialized()
     {
         _variables = new List<(char, int)>(Variables.Count);
         _values = new double[Variables.Count];
+        _valueButton = _ind == Variables.Count - 1 ? "Accept" : "Next";
 
         for (var i = 0; i < Variables.Count; i++)
         {
@@ -35,8 +48,15 @@
         }
     }
 
-    private void Convert()
+    private void Next()
     {
+        if (_ind < Variables.Count - 1)
+        {
+            _ind++;
+            _valueButton = _ind == Variables.Count - 1 ? "Accept" : "Next";
+            return;
+        }
+
         var eval = new List<(char,RealNumbers)>(Variables.Count);
         eval.AddRange(Variables.Select((t, i) => (t,Big.ConvertToRealNumbers(_values[i]))));
 
