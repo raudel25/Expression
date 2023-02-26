@@ -1,0 +1,33 @@
+@using Expression.Expressions
+@using BigNum
+<h3>Derivative</h3>
+
+<h5>Variable</h5>
+<div>
+    <select>
+        @foreach (var item in _variables)
+        {
+            <option @onselect="() => _variableSelect = item">@item</option>
+        }
+    </select>
+    <button @onclick="() => Derv(_variableSelect)">Accept</button>
+</div>
+
+@code {
+
+    [Parameter]
+    public Function<RealNumbers> Function { get; set; }
+
+    [Parameter]
+    public Action<char> Derv { get; set; }
+
+    private char _variableSelect;
+
+    private List<char> _variables;
+
+    protected override void OnInitialized()
+    {
+        _variables = Function<RealNumbers>.VariablesToExpression(Function);
+        _variableSelect = _variables[0];
+    }
+}
