@@ -1,0 +1,23 @@
+@using BigNum
+
+<h3>Taylor</h3>
+
+<input type="number" @bind="_cant"/>
+
+<EvalVarible Eval="Accept" Big="Big" Variables="Variables"></EvalVarible>
+
+@code {
+
+    [Parameter]
+    public List<char> Variables { get; set; } = null!;
+
+    [Parameter]
+    public BigNumMath Big { get; set; } = null!;
+
+    [Parameter]
+    public Action<List<(char,RealNumbers)>, int> PolTaylor { get; set; } = null!;
+
+    private int _cant;
+
+    private void Accept(List<(char,RealNumbers)> eval) => PolTaylor(eval, _cant);
+}

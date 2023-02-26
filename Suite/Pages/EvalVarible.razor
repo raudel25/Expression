@@ -5,20 +5,23 @@
 @foreach (var (value,index) in _variables)
 {
     <input type="number" @bind="@_values[index]" placeholder="@value = "/>
-    <button @onclick="() => Eval(_values)">Accept</button>
+    <button @onclick="Convert">Accept</button>
 }
 
 @code {
 
     [Parameter]
-    public List<char> Variables { get; set; }
+    public List<char> Variables { get; set; } = null!;
 
     [Parameter]
-    public Action<double[]> Eval { get; set; }
+    public Action<List<(char,RealNumbers)>> Eval { get; set; } = null!;
 
-    private List<(char,int)> _variables;
+    [Parameter]
+    public BigNumMath Big { get; set; } = null!;
 
-    private double[] _values;
+    private List<(char,int)> _variables = null!;
+
+    private double[] _values = null!;
 
 
     protected override void OnInitialized()
@@ -30,6 +33,14 @@
         {
             _variables.Add((Variables[0],i));
         }
+    }
+
+    private void Convert()
+    {
+        var eval = new List<(char,RealNumbers)>(Variables.Count);
+        eval.AddRange(Variables.Select((t, i) => (t,Big.ConvertToRealNumbers(_values[i]))));
+
+        Eval(eval);
     }
 
 }

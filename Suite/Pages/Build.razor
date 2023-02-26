@@ -11,21 +11,22 @@
 @code {
 
     [Parameter]
-    public ArithmeticExp<RealNumbers> ArithmeticExp { get; set; }
+    public ArithmeticExp<RealNumbers> ArithmeticExp { get; set; } = null!;
 
     [Parameter]
-    public List<Function<RealNumbers>> Functions { get; set; }
+    public List<Function<RealNumbers>> Functions { get; set; }= null!;
 
     [Parameter]
-    public List<int> Ind { get; set; }
+    public List<int> Ind { get; set; }= null!;
     
     [Parameter]
-    public Action Changed { get; set; }
+    public Action Changed { get; set; }= null!;
 
     private string _function = "";
 
     private void AddFunction()
     {
+        if(_function=="") return;
         var exp = ArithmeticExp.Parsing(_function);
 
         if (exp is null) return;

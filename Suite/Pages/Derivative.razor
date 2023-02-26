@@ -16,18 +16,19 @@
 @code {
 
     [Parameter]
-    public Function<RealNumbers> Function { get; set; }
+    public Function<RealNumbers> Function { get; set; } = null!;
 
     [Parameter]
-    public Action<char> Derv { get; set; }
+    public Action<char> Derv { get; set; } = null!;
 
     private char _variableSelect;
 
-    private List<char> _variables;
+    private List<char> _variables = null!;
 
     protected override void OnInitialized()
     {
         _variables = Function<RealNumbers>.VariablesToExpression(Function);
         _variableSelect = _variables[0];
     }
+
 }
