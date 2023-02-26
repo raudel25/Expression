@@ -17,9 +17,6 @@
     public List<Function<RealNumbers>> Functions { get; set; }= null!;
 
     [Parameter]
-    public List<int> Ind { get; set; }= null!;
-    
-    [Parameter]
     public Action Changed { get; set; }= null!;
 
     private string _function = "";
@@ -32,7 +29,6 @@
         if (exp is null) return;
 
         Functions.Add(exp);
-        Ind[0] = Functions.Count - 1;
         _function = "";
         Changed();
     }

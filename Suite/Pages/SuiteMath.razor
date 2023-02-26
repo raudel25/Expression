@@ -1,0 +1,132 @@
+@using Expression.Expressions
+@using BigNum
+@using Expression.Arithmetics
+
+<h3>Function Analyze</h3>
+
+@if (_action == Actions.Build)
+{
+    <Build Functions="_functions" ArithmeticExp="ArithmeticExp" Changed="NewExp"></Build>
+}
+else
+{
+    <button @onclick="() => _action = Actions.Build">New</button>
+}
+
+@if (_functions.Count != 0)
+{
+    <button @onclick="() => { _ind = _ind - 1 >= 0 ? _ind - 1 : _ind; _action = Actions.None; }">P</button>
+    <button @onclick="() => { _ind = _ind + 1 < _functions.Count ? _ind + 1 : _ind;_action = Actions.None; }">N</button>
+
+    <div>
+        <label>@_functions[_ind].ToString()</label>
+    </div>
+
+    <div>
+        <button @onclick="DerivativeD">dy/dx</button>
+        <button @onclick="() => _action = Actions.Taylor">Taylor</button>
+        <button @onclick="() => _action = Actions.Evaluative">Evaluate</button>
+    </div>
+}
+
+@if (_action == Actions.Derivative)
+{
+    <Derivative Function="_functions[_ind]" Derv="Derivative"></Derivative>
+}
+@if (_action == Actions.Evaluative)
+{
+    <EvalVarible Variables="Function<RealNumbers>.VariablesToExpression(_functions[_ind])" Eval="Eval" Big="Big"></EvalVarible>
+}
+@if (_action == Actions.Taylor)
+{
+    <Taylor Variables="Function<RealNumbers>.VariablesToExpression(_functions[_ind])" PolTaylor="Taylor" Big="Big"></Taylor>
+}
+@if (_action == Actions.Result)
+{
+    <div>
+        <label>@_result.ToString()</label>
+        <button @onclick="Analyze">Analyze</button>
+    </div>
+}
+
+@code {
+
+    private readonly List<Function<RealNumbers>> _functions = new();
+
+    private int _ind;
+
+    private static readonly BigNumMath Big = new(6, 9);
+
+    private static readonly ArithmeticExp<RealNumbers> ArithmeticExp = new(new BigNumExp(Big));
+
+    private enum Actions
+    {
+        None,
+        Derivative,
+        Taylor,
+        Evaluative,
+        Build,
+        Result
+    }
+
+    private Actions _action;
+    private Function<RealNumbers> _result = null!;
+
+    private void DerivativeD()
+    {
+        var variables = Function<RealNumbers>.VariablesToExpression(_functions[_ind]);
+
+        switch (variables.Count)
+        {
+            case 0:
+                Derivative('x');
+                return;
+            case 1:
+                Derivative(variables[0]);
+                return;
+            default:
+                _action = Actions.Derivative;
+                break;
+        }
+    }
+
+    private void Derivative(char variable)
+    {
+        _result = _functions[_ind].Derivative(variable);
+
+        _action = Actions.Result;
+        StateHasChanged();
+    }
+
+    private void Eval(List<(char,RealNumbers)> eval)
+    {
+        _result = ArithmeticExp.NumberExpression(_functions[_ind].Evaluate(eval));
+
+        _action = Actions.Result;
+        StateHasChanged();
+    }
+
+    private void Taylor(List<(char,RealNumbers)> eval, int cant)
+    {
+        var taylor = new Taylor<RealNumbers>(_functions[_ind], eval, cant);
+        _result = taylor.ExpressionResult;
+
+        _action = Actions.Result;
+        StateHasChanged();
+    }
+
+    private void Analyze()
+    {
+        _functions.Add(_result);
+        _ind = _functions.Count - 1;
+        _action = Actions.None;
+    }
+
+    private void NewExp()
+    {
+        _action = Actions.None;
+        _ind = _functions.Count - 1;
+        StateHasChanged();
+    }
+
+}

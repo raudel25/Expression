@@ -1,28 +1,7 @@
 ﻿@page "/"
-@using Expression.Expressions
-@using BigNum
-@using Expression.Arithmetics
 
 <PageTitle>Index</PageTitle>
 
 <h1>Hello, world!</h1>
 
-<button class="btn btn-primary"></button>
-
-<Build Functions="_functions" Ind="_ind" ArithmeticExp="Arithmetic" Changed="@StateHasChanged" ></Build>
-
-@if (_functions.Count != 0)
-{
-    <Analyze Functions="_functions" Ind="_ind" ArithmeticExp="Arithmetic" Big="Big"></Analyze>
-}
-
-@code{
-    private static readonly BigNumMath Big = new(6, 9);
-
-    private static readonly ArithmeticExp<RealNumbers> Arithmetic = new(new BigNumExp(Big));
-
-    private readonly List<Function<RealNumbers>> _functions = new();
-
-    private readonly List<int> _ind = new() { 0 };
-
-}
+<SuiteMath></SuiteMath>
