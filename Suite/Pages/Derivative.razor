@@ -1,16 +1,19 @@
 @using Expression.Expressions
 @using BigNum
-<h3>Derivative</h3>
 
-<h5>Variable</h5>
-<div>
-    <select>
-        @foreach (var item in _variables)
-        {
-            <option @onselect="() => _variableSelect = item">@item</option>
-        }
-    </select>
-    <button @onclick="() => Derv(_variableSelect)">Accept</button>
+<div style="display: grid">
+    <div style="justify-self: center; margin: 5px;">
+        <span>Select the variable to derive</span>
+    </div>
+    <div class="input-group">
+        <select class="form-select">
+            @foreach (var item in _variables)
+            {
+                <option @onselect="() => _variableSelect = item">@item</option>
+            }
+        </select>
+        <button class="input-group-text" @onclick="() => Derv(_variableSelect)">Accept</button>
+    </div>
 </div>
 
 @code {

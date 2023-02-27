@@ -1,0 +1,11 @@
+@using BigNum
+@using Expression.Expressions
+
+<label>@Function.ToString()</label>
+
+@code {
+
+    [Parameter]
+    public Function<RealNumbers> Function { get; set; } = null!;
+
+}

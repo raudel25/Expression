@@ -1,10 +1,17 @@
 @using BigNum
 
-<h3>Taylor</h3>
-
-<input type="number" @bind="_cant"/>
-
-<EvalVarible Eval="Accept" Big="Big" Variables="Variables"></EvalVarible>
+<div style="display: grid">
+    <div style="justify-self: center; margin: 5px;">
+        <span>Enter the number of terms</span>
+    </div>
+    <div style="width: 100px;justify-self: center;">
+        <input class="form-control" type="number" @bind="_cant"/>
+    </div>
+    <div style="justify-self: center; margin: 10px">
+        <span>Enter the center values</span>
+    </div>
+    <EvalVarible Eval="Accept" Big="Big" Variables="Variables"></EvalVarible>
+</div>
 
 @code {
 

@@ -2,52 +2,74 @@
 @using BigNum
 @using Expression.Arithmetics
 
-<h3>Function Analyze</h3>
+<div class="suite">
+    <div class="build">
+        @if (_action == Actions.Build)
+        {
+            <div style="justify-self: flex-end">
+                <button class="btn btn-dark" @onclick="() => _action = Actions.None">Back</button>
+            </div>
 
-@if (_action == Actions.Build)
-{
-    <Build Functions="_functions" ArithmeticExp="ArithmeticExp" Changed="NewExp"></Build>
-}
-else
-{
-    <button @onclick="() => _action = Actions.Build">New</button>
-}
-
-@if (_functions.Count != 0)
-{
-    <button @onclick="() => { _ind = _ind - 1 >= 0 ? _ind - 1 : _ind; _action = Actions.None; }">P</button>
-    <button @onclick="() => { _ind = _ind + 1 < _functions.Count ? _ind + 1 : _ind;_action = Actions.None; }">N</button>
-
-    <div>
-        <label>@_functions[_ind].ToString()</label>
+            <div style="margin-top: 20px">
+                <Build Functions="_functions" ArithmeticExp="ArithmeticExp" Changed="NewExp"></Build>
+            </div>
+        }
+        else
+        {
+            <div style="height: 40px">
+                <button class="btn btn-dark" @onclick="() => _action = Actions.Build">New</button>
+            </div>
+        }
     </div>
 
-    <div>
-        <button @onclick="DerivativeD">dy/dx</button>
-        <button @onclick="() => _action = Actions.Taylor">Taylor</button>
-        <button @onclick="() => _action = Actions.Evaluative">Evaluate</button>
-    </div>
-}
+    <div class="math">
+        @if (_functions.Count != 0)
+        {
+            <div class="nav-exp">
+                @if (_ind != 0)
+                {
+                    <button class="btn btn-light" @onclick="() => { _ind--; _action = Actions.None; }">Previous</button>
+                }
+                @if (_ind != _functions.Count - 1)
+                {
+                    <button class="btn btn-light" aria-label="Next" @onclick="() => { _ind++; _action = Actions.None; }">Next</button>
+                }
+            </div>
 
-@if (_action == Actions.Derivative)
-{
-    <Derivative Function="_functions[_ind]" Derv="Derivative"></Derivative>
-}
-@if (_action == Actions.Evaluative)
-{
-    <EvalVarible Variables="Function<RealNumbers>.VariablesToExpression(_functions[_ind])" Eval="Eval" Big="Big"></EvalVarible>
-}
-@if (_action == Actions.Taylor)
-{
-    <Taylor Variables="Function<RealNumbers>.VariablesToExpression(_functions[_ind])" PolTaylor="Taylor" Big="Big"></Taylor>
-}
-@if (_action == Actions.Result)
-{
-    <div>
-        <label>@_result.ToString()</label>
-        <button @onclick="Analyze">Analyze</button>
+            <div class="show-exp">
+                <ShowExp Function="_functions[_ind]"></ShowExp>
+            </div>
+
+            <div>
+                <button @onclick="DerivativeD">dy/dx</button>
+                <button @onclick="() => _action = Actions.Taylor">Taylor</button>
+                <button @onclick="() => _action = Actions.Evaluative">Evaluate</button>
+            </div>
+        }
+
+        <div class="show-actions">
+            @if (_action == Actions.Derivative)
+            {
+                <Derivative Function="_functions[_ind]" Derv="Derivative"></Derivative>
+            }
+            @if (_action == Actions.Evaluative)
+            {
+                <EvalVarible Variables="Function<RealNumbers>.VariablesToExpression(_functions[_ind])" Eval="Eval" Big="Big"></EvalVarible>
+            }
+            @if (_action == Actions.Taylor)
+            {
+                <Taylor Variables="Function<RealNumbers>.VariablesToExpression(_functions[_ind])" PolTaylor="Taylor" Big="Big"></Taylor>
+            }
+            @if (_action == Actions.Result)
+            {
+                <div>
+                    <ShowExp Function="_result"></ShowExp>
+                    <button class="btn btn-dark" @onclick="Analyze">Analyze</button>
+                </div>
+            }
+        </div>
     </div>
-}
+</div>
 
 @code {
 

@@ -63,6 +63,38 @@ a, .btn-link {
     color: white;
 }
 
-    .blazor-error-boundary::after {
-        content: "An error has occurred."
-    }
+.blazor-error-boundary::after {
+    content: "An error has occurred."
+}
+    
+.suite{
+    display: flex;
+}
+
+.build{
+    margin: 20px;
+    display: grid;
+}
+
+.math{
+    width: 100%;
+    display: grid;
+    margin: 20px;
+}
+
+.nav-exp{
+    grid-row: 1;
+    justify-self: flex-end;
+}
+
+.show-exp{
+    grid-row: 2;
+    justify-self: center;
+    margin: 20px;
+}
+
+.show-actions{
+    grid-row: 3;
+    justify-self: center;
+    margin: 20px;
+}

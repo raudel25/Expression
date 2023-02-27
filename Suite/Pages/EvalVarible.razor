@@ -1,21 +1,32 @@
 @using BigNum
 @using Expression.Expressions
 
-<h3>EvalVarible</h3>
-
-@foreach (var (value,index) in _variables)
-{
-    if (index == _ind)
+<div class="input-group">
+    @foreach (var (value,index) in _variables)
     {
-        <input type="number" @bind="@_values[index]" placeholder="@value = "/>
+        if (index == _ind)
+        {
+            <span class="input-group-text">@Equal(value)</span>
+            <input class="form-control" type="number" @bind="@_values[index]"/>
+        }
     }
-}
 
-@if (_ind != 0)
-{
-    <button @onclick="() => _ind--">Preview</button>
-}
-<button @onclick="Next">@_valueButton</button>
+    @if (_ind != 0)
+    {
+        <button class="input-group-text" @onclick="() => _ind--">Previous</button>
+    }
+
+    <button class="input-group-text" @onclick="Next">
+        @if (_ind == Variables.Count - 1)
+        {
+            <span>Accept</span>
+        }
+        else
+        {
+            <span>Next</span>;
+        }
+    </button>
+</div>
 
 @code {
 
@@ -34,17 +45,16 @@
 
     private int _ind;
 
-    private string _valueButton = "";
+    private string Equal(char s) => $"{s} = ";
 
     protected override void OnInitialized()
     {
         _variables = new List<(char, int)>(Variables.Count);
         _values = new double[Variables.Count];
-        _valueButton = _ind == Variables.Count - 1 ? "Accept" : "Next";
 
         for (var i = 0; i < Variables.Count; i++)
         {
-            _variables.Add((Variables[0],i));
+            _variables.Add((Variables[i],i));
         }
     }
 
@@ -53,7 +63,6 @@
         if (_ind < Variables.Count - 1)
         {
             _ind++;
-            _valueButton = _ind == Variables.Count - 1 ? "Accept" : "Next";
             return;
         }
 

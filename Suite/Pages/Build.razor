@@ -2,11 +2,11 @@
 @using BigNum
 @using Expression.Arithmetics
 
-<h3>FunctionConstruct</h3>
+<div class="input-group my-md-10">
+    <input class="form-control" type="text" @bind="_function"/>
 
-<input type="text" @bind="_function"/>
-
-<button @onclick="AddFunction">Exp</button>
+    <button class="input-group-text" @onclick="AddFunction">Exp</button>
+</div>
 
 @code {
 
@@ -14,16 +14,16 @@
     public ArithmeticExp<RealNumbers> ArithmeticExp { get; set; } = null!;
 
     [Parameter]
-    public List<Function<RealNumbers>> Functions { get; set; }= null!;
+    public List<Function<RealNumbers>> Functions { get; set; } = null!;
 
     [Parameter]
-    public Action Changed { get; set; }= null!;
+    public Action Changed { get; set; } = null!;
 
     private string _function = "";
 
     private void AddFunction()
     {
-        if(_function=="") return;
+        if (_function == "") return;
         var exp = ArithmeticExp.Parsing(_function);
 
         if (exp is null) return;
