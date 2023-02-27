@@ -2,10 +2,12 @@
 @using BigNum
 @using Expression.Arithmetics
 
-<div class="input-group my-md-10">
-    <input class="form-control" type="text" @bind="_function"/>
-
-    <button class="input-group-text" @onclick="AddFunction">Exp</button>
+<div style="width: 350px; margin: 10px;">
+    <div class="input-group">
+        <input class="form-control" type="text" @bind="_function"/>
+    
+        <button class="input-group-text" @onclick="AddFunction">Exp</button>
+    </div>
 </div>
 
 @code {

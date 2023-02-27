@@ -16,10 +16,24 @@
         }
         else
         {
-            <div style="height: 40px">
-                <button class="btn btn-dark" @onclick="() => _action = Actions.Build">New</button>
-            </div>
+            @if (_action == Actions.EvaluativeFunc)
+            {
+                <div style="justify-self: flex-end">
+                    <button class="btn btn-dark" @onclick="() => _action = Actions.Build">New</button>
+                </div>
+
+                <EvalFunc Eval="EvalFunc" ArithmeticExp="ArithmeticExp"
+                          Variables="Function<RealNumbers>.VariablesToExpression(_functions[_ind])">
+                </EvalFunc>
+            }
+            else
+            {
+                <div style="height: 40px">
+                    <button class="btn btn-dark" @onclick="() => _action = Actions.Build">New</button>
+                </div>
+            }
         }
+
     </div>
 
     <div class="math">
@@ -32,7 +46,9 @@
                 }
                 @if (_ind != _functions.Count - 1)
                 {
-                    <button class="btn btn-light" aria-label="Next" @onclick="() => { _ind++; _action = Actions.None; }">Next</button>
+                    <button class="btn btn-light" aria-label="Next" @onclick="() => { _ind++; _action = Actions.None; }">
+                        Next
+                    </button>
                 }
             </div>
 
@@ -44,6 +60,7 @@
                 <button @onclick="DerivativeD">dy/dx</button>
                 <button @onclick="() => _action = Actions.Taylor">Taylor</button>
                 <button @onclick="() => _action = Actions.Evaluative">Evaluate</button>
+                <button @onclick="() => _action = Actions.EvaluativeFunc">EvaluateFunc</button>
             </div>
         }
 
@@ -54,11 +71,15 @@
             }
             @if (_action == Actions.Evaluative)
             {
-                <EvalVarible Variables="Function<RealNumbers>.VariablesToExpression(_functions[_ind])" Eval="Eval" Big="Big"></EvalVarible>
+                <EvalVarible Variables="Function<RealNumbers>.VariablesToExpression(_functions[_ind])"
+                             Eval="Eval" Big="Big">
+                </EvalVarible>
             }
             @if (_action == Actions.Taylor)
             {
-                <Taylor Variables="Function<RealNumbers>.VariablesToExpression(_functions[_ind])" PolTaylor="Taylor" Big="Big"></Taylor>
+                <Taylor Variables="Function<RealNumbers>.VariablesToExpression(_functions[_ind])"
+                        PolTaylor="Taylor" Big="Big">
+                </Taylor>
             }
             @if (_action == Actions.Result)
             {
@@ -87,6 +108,7 @@
         Derivative,
         Taylor,
         Evaluative,
+        EvaluativeFunc,
         Build,
         Result
     }
@@ -114,7 +136,7 @@
 
     private void Derivative(char variable)
     {
-        _result = _functions[_ind].Derivative(variable);
+        _result = Function<RealNumbers>.Reduce(_functions[_ind].Derivative(variable));
 
         _action = Actions.Result;
         StateHasChanged();
@@ -128,10 +150,18 @@
         StateHasChanged();
     }
 
+    private void EvalFunc(List<(char,Function<RealNumbers>)> eval)
+    {
+        _result = Function<RealNumbers>.Reduce(_functions[_ind].EvaluateExpression(eval));
+
+        _action = Actions.Result;
+        StateHasChanged();
+    }
+
     private void Taylor(List<(char,RealNumbers)> eval, int cant)
     {
         var taylor = new Taylor<RealNumbers>(_functions[_ind], eval, cant);
-        _result = taylor.ExpressionResult;
+        _result = Function<RealNumbers>.Reduce(taylor.ExpressionResult);
 
         _action = Actions.Result;
         StateHasChanged();

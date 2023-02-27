@@ -1,0 +1,92 @@
+@using BigNum
+@using Expression.Arithmetics
+@using Expression.Expressions
+
+<div style="display: grid">
+    @foreach (var (value,index) in _variables)
+    {
+        if (index == _ind)
+        {
+            <div style="display: flex; margin: 10px;">
+                <span >@Equal(value)</span>
+                @if (_values[_ind].Count != 0)
+                {
+                    <ShowExp Function="_values[_ind][^1]"></ShowExp>
+                }
+            </div>
+
+            <Build Functions="_values[_ind]" ArithmeticExp="ArithmeticExp" Changed="StateHasChanged"></Build>
+        }
+    }
+
+    <div style="justify-self: center; margin: 10px;">
+        @if (_ind != 0)
+        {
+            <button class="btn btn-light" @onclick="() => _ind--">Previous</button>
+        }
+
+        <button class="btn btn-light" @onclick="Next">
+            @if (_ind == Variables.Count - 1)
+            {
+                <span>Accept</span>
+            }
+            else
+            {
+                <span>Next</span>
+            }
+        </button>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public List<char> Variables { get; set; } = null!;
+
+    [Parameter]
+    public Action<List<(char,Function<RealNumbers>)>> Eval { get; set; } = null!;
+
+    [Parameter]
+    public ArithmeticExp<RealNumbers> ArithmeticExp { get; set; } = null!;
+
+    private List<(char,int)> _variables = null!;
+
+    private List<Function<RealNumbers>>[] _values = null!;
+
+    private int _ind;
+
+    private string Equal(char s) => $"{s} = ";
+
+    protected override void OnInitialized()
+    {
+        _variables = new List<(char, int)>(Variables.Count);
+        _values = new List<Function<RealNumbers>>[Variables.Count];
+
+        for (var i = 0; i < Variables.Count; i++)
+        {
+            _variables.Add((Variables[i],i));
+            _values[i] = new List<Function<RealNumbers>>();
+        }
+    }
+
+    private void Next()
+    {
+        if (_ind < Variables.Count - 1)
+        {
+            _ind++;
+            return;
+        }
+
+        var eval = new List<(char,Function<RealNumbers>)>(Variables.Count);
+
+        for (var i = 0; i < Variables.Count; i++)
+        {
+            if (_values[i].Count == 0)
+                return;
+            eval.Add((Variables[i],_values[i][^1]));
+        }
+
+        Eval(eval);
+    }
+
+}
