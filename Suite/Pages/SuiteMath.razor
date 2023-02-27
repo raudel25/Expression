@@ -37,30 +37,34 @@
     </div>
 
     <div class="math">
+        <div class="nav-exp">
+            @if (_ind != 0)
+            {
+                <button class="btn btn-light" @onclick="() => { _ind--; _action = Actions.None; }">Previous</button>
+            }
+            @if (_ind != _functions.Count - 1 && _functions.Count != 0)
+            {
+                <button class="btn btn-light" aria-label="Next" @onclick="() => { _ind++; _action = Actions.None; }">
+                    Next
+                </button>
+            }
+        </div>
+
+        <div style="grid-row:2; justify-self: center">
+            <h1>Suite</h1>
+        </div>
+
         @if (_functions.Count != 0)
         {
-            <div class="nav-exp">
-                @if (_ind != 0)
-                {
-                    <button class="btn btn-light" @onclick="() => { _ind--; _action = Actions.None; }">Previous</button>
-                }
-                @if (_ind != _functions.Count - 1)
-                {
-                    <button class="btn btn-light" aria-label="Next" @onclick="() => { _ind++; _action = Actions.None; }">
-                        Next
-                    </button>
-                }
-            </div>
-
             <div class="show-exp">
                 <ShowExp Function="_functions[_ind]"></ShowExp>
             </div>
 
-            <div>
-                <button @onclick="DerivativeD">dy/dx</button>
-                <button @onclick="() => _action = Actions.Taylor">Taylor</button>
-                <button @onclick="() => _action = Actions.Evaluative">Evaluate</button>
-                <button @onclick="() => _action = Actions.EvaluativeFunc">EvaluateFunc</button>
+            <div class="options">
+                <button class="btn btn-dark" @onclick="DerivativeD">dy/dx</button>
+                <button class="btn btn-dark" @onclick="() => _action = Actions.Taylor">Taylor</button>
+                <button class="btn btn-dark" @onclick="() => _action = Actions.Evaluative">Evaluate</button>
+                <button class="btn btn-dark" @onclick="() => _action = Actions.EvaluativeFunc">EvaluateFunc</button>
             </div>
         }
 
