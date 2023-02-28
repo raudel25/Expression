@@ -125,8 +125,8 @@ internal static class ConvertExpression<T>
             if (findOp) continue;
 
             exp.Append(s[i]);
-            if(s[i]=='p'&&s[i+1]=='i') continue;
-            
+            if (s[i] == 'p' && s[i + 1] == 'i') continue;
+
             if (AddMult(s, i))
                 exp.Append('*');
         }

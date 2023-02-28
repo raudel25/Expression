@@ -42,17 +42,23 @@ public class Sum<T> : BinaryExpression<T>
         return Left.GetHashCode() * Right.GetHashCode();
     }
 
-    public override string ToString()
+    private string AuxString(bool latex)
     {
-        if (Left.ToString() == "0") return Right.ToString()!;
-        if (Right.ToString() == "0") return Left.ToString()!;
-
-        var (left, right) = DeterminatePriority();
+        var (left, right) = latex ? (Left.ToLatex(), Right.ToLatex()) : (Left.ToString()!, Right.ToString()!);
+        (left, right) = DeterminatePriority(left, right, latex);
 
         var rightOpposite = right[0] == '-';
-        if (rightOpposite) return $"{left} - {right.Substring(1, right.Length - 1)}";
+        return rightOpposite ? $"{left} - {right.Substring(1, right.Length - 1)}" : $"{left} + {right}";
+    }
 
-        return $"{left} + {right}";
+    public override string ToString()
+    {
+        return AuxString(false);
+    }
+
+    public override string ToLatex()
+    {
+        return AuxString(true);
     }
 }
 
@@ -84,19 +90,6 @@ public class Subtraction<T> : BinaryExpression<T>
         return !(Left.ToString() == "0" || Right.ToString() == "0");
     }
 
-    public override string ToString()
-    {
-        if (Left.ToString() == "0") return Aux<T>.Opposite(Right);
-        if (Right.ToString() == "0") return Left.ToString()!;
-
-        var (left, right) = DeterminatePriority();
-
-        var rightOpposite = right[0] == '-';
-        if (rightOpposite) return $"{left} + {right.Substring(1, right.Length - 1)}";
-
-        return $"{left} - {right}";
-    }
-
     public override bool Equals(object? obj)
     {
         var binary = obj as Subtraction<T>;
@@ -108,6 +101,25 @@ public class Subtraction<T> : BinaryExpression<T>
     public override int GetHashCode()
     {
         return 2 * Left.GetHashCode() * Right.GetHashCode();
+    }
+
+    private string AuxString(bool latex)
+    {
+        var (left, right) = latex ? (Left.ToLatex(), Right.ToLatex()) : (Left.ToString()!, Right.ToString()!);
+        (left, right) = DeterminatePriority(left, right, latex);
+
+        var rightOpposite = right[0] == '-';
+        return rightOpposite ? $"{left} + {right.Substring(1, right.Length - 1)}" : $"{left} - {right}";
+    }
+
+    public override string ToString()
+    {
+        return AuxString(false);
+    }
+
+    public override string ToLatex()
+    {
+        return AuxString(true);
     }
 }
 
@@ -157,26 +169,35 @@ public class Multiply<T> : BinaryExpression<T>
         return 3 * Left.GetHashCode() * Right.GetHashCode();
     }
 
-    public override string ToString()
+    private string AuxString(bool latex)
     {
-        if (Left.ToString() == "0" || Right.ToString() == "0") return "0";
-        if (Left.ToString() == "1") return Right.ToString()!;
-        if (Right.ToString() == "1") return Left.ToString()!;
-        if (Left.ToString() == "-1" && Right.ToString() == "-1") return "1";
-        if (Left.ToString() == "-1") return Aux<T>.Opposite(Right);
-        if (Right.ToString() == "-1") return Aux<T>.Opposite(Left);
+        var (left, right) = latex ? (Left.ToLatex(), Right.ToLatex()) : (Left.ToString()!, Right.ToString()!);
+        var symbol = latex ? "\\cdot" : " * ";
 
-        var (left, right) = DeterminatePriority();
+        if (left == "-1") return Aux<T>.Opposite(right, Right.Priority, latex);
+        if (right == "-1") return Aux<T>.Opposite(left, Left.Priority, latex);
+
+        (left, right) = DeterminatePriority(left, right, latex);
 
         var (leftOpposite, rightOpposite) = (left[0] == '-', right[0] == '-');
 
         if (leftOpposite && rightOpposite)
             return $"{left.Substring(1, left.Length - 1)} * {right.Substring(1, right.Length - 1)}";
-        if (rightOpposite) return $"{left} * {Aux<T>.Colocated(right)}";
+        if (rightOpposite) return $"{left}{symbol}{Aux<T>.Colocated(right, latex)}";
 
         return this.Left is not NumberExpression<T> || this.Right is not NumberExpression<T>
             ? this.Right is NumberExpression<T> ? $"{right}{left}" : $"{left}{right}"
-            : $"{left} * {right}";
+            : $"{left}{symbol}{right}";
+    }
+
+    public override string ToString()
+    {
+        return AuxString(false);
+    }
+
+    public override string ToLatex()
+    {
+        return AuxString(true);
     }
 }
 
@@ -208,24 +229,6 @@ public class Division<T> : BinaryExpression<T>
         return !(Left.ToString() == "0" || Right.ToString() == "1");
     }
 
-    public override string ToString()
-    {
-        if (Left.ToString() == "0") return "0";
-        if (Right.ToString() == "1") return Left.ToString()!;
-
-        var (left, right) = DeterminatePriority();
-
-        if (Right is Division<T>) right = Aux<T>.Colocated(right);
-
-        var (leftOpposite, rightOpposite) = (left[0] == '-', right[0] == '-');
-
-        if (leftOpposite && rightOpposite)
-            return $"{left.Substring(1, left.Length - 1)} / {right.Substring(1, right.Length - 1)}";
-        if (rightOpposite) return $"{left} / {Aux<T>.Colocated(right)}";
-
-        return $"{left} / {right}";
-    }
-
     public override bool Equals(object? obj)
     {
         var binary = obj as Division<T>;
@@ -237,5 +240,24 @@ public class Division<T> : BinaryExpression<T>
     public override int GetHashCode()
     {
         return 4 * Left.GetHashCode() * Right.GetHashCode();
+    }
+
+    public override string ToString()
+    {
+        var (left, right) = DeterminatePriority(Left.ToString()!, Right.ToString()!);
+
+        if (Right is Division<T>) right = Aux<T>.Colocated(right);
+
+        var (leftOpposite, rightOpposite) = (left[0] == '-', right[0] == '-');
+
+        if (leftOpposite && rightOpposite)
+            return $"{left.Substring(1, left.Length - 1)} / {right.Substring(1, right.Length - 1)}";
+        return rightOpposite ? $"{left} / {Aux<T>.Colocated(right)}" : $"{left} / {right}";
+    }
+
+    public override string ToLatex()
+    {
+        var (l, r) = ("{", "}");
+        return $"{l}{Left.ToLatex()}\\over {Right.ToLatex()}{r}";
     }
 }

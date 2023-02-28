@@ -35,6 +35,8 @@ public abstract class Function<T>
         return ReduceExpression<T>.Reduce(exp);
     }
 
+    public abstract string ToLatex();
+
     /// <summary>
     ///     Prioridad de la operacion
     /// </summary>
@@ -172,15 +174,15 @@ public abstract class BinaryExpression<T> : Function<T>
     ///     Reterminar la prioridad o colocar parentesis
     /// </summary>
     /// <returns>Cadenas modificadas</returns>
-    protected (string, string) DeterminatePriority()
+    protected (string, string) DeterminatePriority(string left, string right, bool latex = false)
     {
         return (
             Left.Priority < Priority && Left.IsBinary()
-                ? Aux<T>.Colocated(Left.ToString()!)
-                : Left.ToString()!,
+                ? Aux<T>.Colocated(left, latex)
+                : left,
             Right.Priority < Priority && Right.IsBinary()
-                ? Aux<T>.Colocated(Right.ToString()!)
-                : Right.ToString()!);
+                ? Aux<T>.Colocated(right, latex)
+                : right);
     }
 }
 

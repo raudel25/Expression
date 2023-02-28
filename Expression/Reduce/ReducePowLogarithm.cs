@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using Expression.Expressions;
 
 namespace Expression.Reduce;
@@ -44,7 +45,7 @@ internal static class ReducePowLogarithm<T>
                 (divL.Left is NumberExpression<T> || divL.Right is NumberExpression<T>))
                 return ReduceMultiplyDivision<T>.ReduceDivision(Pow<T>.DeterminatePow(divL.Left, binary.Right) /
                                                                 Pow<T>.DeterminatePow(divL.Right, binary.Right));
-        
+
         if (binary.Right is Multiply<T> multR)
         {
             aux = ReducePowPossible(Pow<T>.DeterminatePow(binary.Left, multR.Right));
@@ -53,7 +54,7 @@ internal static class ReducePowLogarithm<T>
             aux = ReducePowPossible(Pow<T>.DeterminatePow(binary.Left, multR.Left));
             if (aux is not null) return ReducePow(Pow<T>.DeterminatePow(aux, multR.Right));
         }
-        
+
         if (binary.Right is Division<T> divR)
         {
             aux = ReducePowPossible(Pow<T>.DeterminatePow(binary.Left, divR.Left));
@@ -92,11 +93,11 @@ internal static class ReducePowLogarithm<T>
         var aux = ReduceLogarithmSimple(binary);
         if (aux is not null) return aux;
 
-        if (binary.Right is Pow<T> pow)
-            if (pow.Left.Equals(binary.Left))
-                return pow.Right;
-
-        return binary;
+        if (binary.Right.Equals(new NumberExpression<T>(binary.Arithmetic.Real1, binary.Arithmetic)))
+            return new NumberExpression<T>(binary.Arithmetic.Real0, binary.Arithmetic);
+        if (binary.Right is not Pow<T> pow) return binary;
+        
+        return pow.Left.Equals(binary.Left) ? pow.Right : binary;
     }
 
     /// <summary>

@@ -1,7 +1,10 @@
 @using BigNum
 @using Expression.Expressions
+@using MathJaxBlazor
 
-<label>@Function.ToString()</label>
+@inherits MathJaxContentComponent
+
+<Equation Value="@Function.ToLatex()"></Equation>
 
 @code {
 

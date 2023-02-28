@@ -26,12 +26,6 @@ public class NumberExpression<T> : Function<T>
         return this;
     }
 
-    public override string ToString()
-    {
-        if (Value is null) return "";
-        return Value.ToString() is null ? "" : Value.ToString()!;
-    }
-
     public override bool Equals(object? obj)
     {
         if (obj is not NumberExpression<T> exp) return false;
@@ -42,6 +36,17 @@ public class NumberExpression<T> : Function<T>
     {
         if (Value is null) return 0;
         return Value.GetHashCode();
+    }
+
+    public override string ToString()
+    {
+        if (Value is null) return "";
+        return Value.ToString() is null ? "" : Value.ToString()!;
+    }
+
+    public override string ToLatex()
+    {
+        return ToString();
     }
 }
 
@@ -98,6 +103,11 @@ public class VariableExpression<T> : Function<T>
     {
         return Variable.ToString();
     }
+
+    public override string ToLatex()
+    {
+        return ToString();
+    }
 }
 
 public class ConstantE<T> : Function<T>
@@ -123,11 +133,6 @@ public class ConstantE<T> : Function<T>
         return this;
     }
 
-    public override string ToString()
-    {
-        return "e";
-    }
-
     public override bool Equals(object? obj)
     {
         return obj is ConstantE<T>;
@@ -136,6 +141,16 @@ public class ConstantE<T> : Function<T>
     public override int GetHashCode()
     {
         return (int)Math.E;
+    }
+
+    public override string ToString()
+    {
+        return "e";
+    }
+
+    public override string ToLatex()
+    {
+        return ToString();
     }
 }
 
@@ -162,11 +177,6 @@ public class ConstantPI<T> : Function<T>
         return this;
     }
 
-    public override string ToString()
-    {
-        return "pi";
-    }
-
     public override bool Equals(object? obj)
     {
         return obj is ConstantE<T>;
@@ -175,6 +185,16 @@ public class ConstantPI<T> : Function<T>
     public override int GetHashCode()
     {
         return (int)Math.PI;
+    }
+
+    public override string ToString()
+    {
+        return "pi";
+    }
+
+    public override string ToLatex()
+    {
+        return "\\pi";
     }
 }
 
@@ -221,11 +241,6 @@ public class Factorial<T> : Function<T>
         return this;
     }
 
-    public override string ToString()
-    {
-        return $"{_integer}!";
-    }
-
     public override bool Equals(object? obj)
     {
         var exp = obj as NumberExpression<T>;
@@ -239,5 +254,15 @@ public class Factorial<T> : Function<T>
     {
         if (Value is null) return 0;
         return Value.GetHashCode();
+    }
+
+    public override string ToString()
+    {
+        return $"{_integer}!";
+    }
+
+    public override string ToLatex()
+    {
+        return ToString();
     }
 }

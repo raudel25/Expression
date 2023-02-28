@@ -36,24 +36,6 @@ public class Pow<T> : BinaryExpression<T>
         return !(Left.ToString() == "0" || Right.ToString() == "0" || Left.ToString() == "1");
     }
 
-    public override string ToString()
-    {
-        if (Left.ToString() == "0") return "0";
-        if (Left.ToString() == "1" || Right.ToString() == "0") return "1";
-        if (Right.ToString() == "1") return Left.ToString()!;
-
-        var (left, right) = DeterminatePriority();
-
-        if (Right is Pow<T>) right = Aux<T>.Colocated(right);
-
-        var (leftOpposite, rightOpposite) = (left[0] == '-', right[0] == '-');
-
-        if (leftOpposite) return $"{Aux<T>.Colocated(left)} ^ {right}";
-        if (rightOpposite) return $"{left} ^ {Aux<T>.Colocated(right)}";
-
-        return $"{left} ^ {right}";
-    }
-
     public override bool Equals(object? obj)
     {
         var binary = obj as Pow<T>;
@@ -65,6 +47,27 @@ public class Pow<T> : BinaryExpression<T>
     public override int GetHashCode()
     {
         return 6 * Left.GetHashCode() * Right.GetHashCode();
+    }
+
+    public override string ToString()
+    {
+        var (left, right) = DeterminatePriority(Left.ToString()!, Right.ToString()!);
+
+        if (Right is Pow<T>) right = Aux<T>.Colocated(right);
+
+        var (leftOpposite, rightOpposite) = (left[0] == '-', right[0] == '-');
+
+        if (leftOpposite) return $"{Aux<T>.Colocated(left)} ^ {right}";
+        if (rightOpposite) return $"{left} ^ {Aux<T>.Colocated(right)}";
+
+        return $"{left} ^ {right}";
+    }
+
+    public override string ToLatex()
+    {
+        var (l, r) = ("{", "}");
+
+        return $"{Left.ToLatex()}^{l}{Right.ToLatex()}{r}";
     }
 }
 

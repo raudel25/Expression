@@ -21,11 +21,6 @@ public class Sin<T> : UnaryExpression<T>
         return new Sin<T>(value);
     }
 
-    public override string ToString()
-    {
-        return $"sin({Value})";
-    }
-
     public override bool Equals(object? obj)
     {
         var unary = obj as Sin<T>;
@@ -37,6 +32,16 @@ public class Sin<T> : UnaryExpression<T>
     public override int GetHashCode()
     {
         return Value.GetHashCode();
+    }
+    
+    public override string ToString()
+    {
+        return $"sin({Value})";
+    }
+    
+    public override string ToLatex()
+    {
+        return $"\\sin\\left({Value.ToLatex()}\\right)";
     }
 }
 
@@ -61,11 +66,6 @@ public class Cos<T> : UnaryExpression<T>
         return new Cos<T>(value);
     }
 
-    public override string ToString()
-    {
-        return $"cos({Value})";
-    }
-
     public override bool Equals(object? obj)
     {
         var unary = obj as Cos<T>;
@@ -77,6 +77,16 @@ public class Cos<T> : UnaryExpression<T>
     public override int GetHashCode()
     {
         return 2 * Value.GetHashCode();
+    }
+    
+    public override string ToString()
+    {
+        return $"cos({Value})";
+    }
+    
+    public override string ToLatex()
+    {
+        return $"\\cos\\left({Value.ToLatex()}\\right)";
     }
 }
 
@@ -102,11 +112,6 @@ public class Tan<T> : UnaryExpression<T>
         return new Tan<T>(value);
     }
 
-    public override string ToString()
-    {
-        return $"tan({Value})";
-    }
-
     public override bool Equals(object? obj)
     {
         var unary = obj as Tan<T>;
@@ -118,6 +123,16 @@ public class Tan<T> : UnaryExpression<T>
     public override int GetHashCode()
     {
         return 3 * Value.GetHashCode();
+    }
+    
+    public override string ToString()
+    {
+        return $"tan({Value})";
+    }
+    
+    public override string ToLatex()
+    {
+        return $"\\tan\\left({Value.ToLatex()}\\right)";
     }
 }
 
@@ -143,11 +158,6 @@ public class Cot<T> : UnaryExpression<T>
         return new Cot<T>(value);
     }
 
-    public override string ToString()
-    {
-        return $"cot({Value})";
-    }
-
     public override bool Equals(object? obj)
     {
         var unary = obj as Cot<T>;
@@ -159,6 +169,16 @@ public class Cot<T> : UnaryExpression<T>
     public override int GetHashCode()
     {
         return 4 * Value.GetHashCode();
+    }
+    
+    public override string ToString()
+    {
+        return $"cot({Value})";
+    }
+    
+    public override string ToLatex()
+    {
+        return $"\\cot\\left({Value.ToLatex()}\\right)";
     }
 }
 
@@ -183,11 +203,6 @@ public class Sec<T> : UnaryExpression<T>
         return new Sec<T>(value);
     }
 
-    public override string ToString()
-    {
-        return $"sec({Value})";
-    }
-
     public override bool Equals(object? obj)
     {
         var unary = obj as Sec<T>;
@@ -199,6 +214,16 @@ public class Sec<T> : UnaryExpression<T>
     public override int GetHashCode()
     {
         return 5 * Value.GetHashCode();
+    }
+    
+    public override string ToString()
+    {
+        return $"sec({Value})";
+    }
+    
+    public override string ToLatex()
+    {
+        return $"\\sec\\left({Value.ToLatex()}\\right)";
     }
 }
 
@@ -223,11 +248,6 @@ public class Csc<T> : UnaryExpression<T>
         return new Csc<T>(value);
     }
 
-    public override string ToString()
-    {
-        return $"csc({Value})";
-    }
-
     public override bool Equals(object? obj)
     {
         var unary = obj as Csc<T>;
@@ -239,6 +259,16 @@ public class Csc<T> : UnaryExpression<T>
     public override int GetHashCode()
     {
         return 6 * Value.GetHashCode();
+    }
+    
+    public override string ToString()
+    {
+        return $"csc({Value})";
+    }
+    
+    public override string ToLatex()
+    {
+        return $"\\csc\\left({Value.ToLatex()}\\right)";
     }
 }
 
@@ -267,11 +297,6 @@ public class Asin<T> : UnaryExpression<T>
         return new Asin<T>(value);
     }
 
-    public override string ToString()
-    {
-        return $"arcsin({Value})";
-    }
-
     public override bool Equals(object? obj)
     {
         var unary = obj as Asin<T>;
@@ -283,6 +308,16 @@ public class Asin<T> : UnaryExpression<T>
     public override int GetHashCode()
     {
         return 7 * Value.GetHashCode();
+    }
+    
+    public override string ToString()
+    {
+        return $"arcsin({Value})";
+    }
+    
+    public override string ToLatex()
+    {
+        return $"\\arcsin\\left({Value.ToLatex()}\\right)";
     }
 }
 
@@ -311,11 +346,6 @@ public class Acos<T> : UnaryExpression<T>
         return new Acos<T>(value);
     }
 
-    public override string ToString()
-    {
-        return $"arccos({Value})";
-    }
-
     public override bool Equals(object? obj)
     {
         var unary = obj as Acos<T>;
@@ -327,6 +357,16 @@ public class Acos<T> : UnaryExpression<T>
     public override int GetHashCode()
     {
         return 8 * Value.GetHashCode();
+    }
+    
+    public override string ToString()
+    {
+        return $"arccos({Value})";
+    }
+    
+    public override string ToLatex()
+    {
+        return $"\\arccos\\left({Value.ToLatex()}\\right)";
     }
 }
 
@@ -353,11 +393,6 @@ public class Atan<T> : UnaryExpression<T>
         return new Atan<T>(value);
     }
 
-    public override string ToString()
-    {
-        return $"arctan({Value})";
-    }
-
     public override bool Equals(object? obj)
     {
         var unary = obj as Atan<T>;
@@ -369,6 +404,16 @@ public class Atan<T> : UnaryExpression<T>
     public override int GetHashCode()
     {
         return 9 * Value.GetHashCode();
+    }
+    
+    public override string ToString()
+    {
+        return $"arctan({Value})";
+    }
+    
+    public override string ToLatex()
+    {
+        return $"\\arctan\\left({Value.ToLatex()}\\right)";
     }
 }
 
@@ -395,11 +440,6 @@ public class Acot<T> : UnaryExpression<T>
         return new Acot<T>(value);
     }
 
-    public override string ToString()
-    {
-        return $"arccot({Value})";
-    }
-
     public override bool Equals(object? obj)
     {
         var unary = obj as Acot<T>;
@@ -411,5 +451,15 @@ public class Acot<T> : UnaryExpression<T>
     public override int GetHashCode()
     {
         return 10 * Value.GetHashCode();
+    }
+    
+    public override string ToString()
+    {
+        return $"arccot({Value})";
+    }
+    
+    public override string ToLatex()
+    {
+        return $"\\arccot\\left({Value.ToLatex()}\\right)";
     }
 }

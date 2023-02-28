@@ -8,24 +8,31 @@ internal static class Aux<T>
     ///     Colocar parentesis
     /// </summary>
     /// <param name="s">Cadena de texto</param>
+    /// <param name="latex">Ganerar codigo de latex</param>
     /// <returns>Cadena modificada</returns>
-    internal static string Colocated(string s)
+    internal static string Colocated(string s, bool latex = false)
     {
-        return s[0] == '(' && s[^1] == ')' ? s : $"({s})";
+        var (l, r) = latex ? ("\\left", "\\right") : ("", "");
+
+        return s[0] == '(' && s[^1] == ')' ? s : $"{l}({s}{r})";
     }
 
     /// <summary>
     ///     Colocar el signo negativo
     /// </summary>
     /// <param name="exp">Cadena de texto</param>
+    /// <param name="priority">Prioridad</param>
+    /// <param name="latex">Ganerar codigo de latex</param>
     /// <returns>Cadena modificada</returns>
-    internal static string Opposite(Function<T> exp)
+    internal static string Opposite(string exp, int priority, bool latex = false)
     {
-        var s = exp.ToString()!;
+        var (l, r) = latex ? ("\\left", "\\right") : ("", "");
+        var s = exp;
+
         if (s[0] == '-')
             return s.Substring(1, s.Length - 1);
         if (s == "0") return "0";
-        return exp.Priority == 1 ? $"-({exp})" : $"-{exp}";
+        return priority == 1 ? $"-{l}({exp}{r})" : $"-{exp}";
     }
 
     /// <summary>

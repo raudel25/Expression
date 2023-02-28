@@ -112,3 +112,7 @@ a, .btn-link {
     
     grid-template-columns: 90% 10%;
 }
+
+.MathJax {
+    font-size: 30px;
+}

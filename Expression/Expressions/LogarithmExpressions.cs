@@ -41,11 +41,13 @@ public class Log<T> : BinaryExpression<T>
 
     public override string ToString()
     {
-        var (left, right) = (Left.ToString()!, Right.ToString()!);
-
-        if (right == "1") return "0";
-
-        return $"log[{left}]({right})";
+        return $"log[{Left}]({Right})";
+    }
+    
+    public override string ToLatex()
+    {
+        var (l, r) = ("{", "}");
+        return $"\\log_{l}{Left.ToLatex()}{r}\\left({Right.ToLatex()}\\right)";
     }
 
     public override bool Equals(object? obj)
@@ -79,7 +81,11 @@ public class Ln<T> : Log<T>
 
     public override string ToString()
     {
-        if (Right.ToString() == "1") return "0";
         return $"ln({Right})";
+    }
+    
+    public override string ToLatex()
+    {
+        return $"\\ln\\left({Right.ToLatex()}\\right)";
     }
 }
