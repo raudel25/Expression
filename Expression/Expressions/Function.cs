@@ -35,6 +35,10 @@ public abstract class Function<T>
         return ReduceExpression<T>.Reduce(exp);
     }
 
+    /// <summary>
+    /// Expresion en latex
+    /// </summary>
+    /// <returns>Expresion en latex</returns>
     public abstract string ToLatex();
 
     /// <summary>

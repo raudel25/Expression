@@ -179,7 +179,7 @@ public class ConstantPI<T> : Function<T>
 
     public override bool Equals(object? obj)
     {
-        return obj is ConstantE<T>;
+        return obj is ConstantPI<T>;
     }
 
     public override int GetHashCode()
