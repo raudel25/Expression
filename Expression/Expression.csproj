@@ -6,7 +6,7 @@
         <Nullable>enable</Nullable>
         <OutputType>Library</OutputType>
         <PackageId>Expression</PackageId>
-        <Version>1.0.4</Version>
+        <Version>1.1.1</Version>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <Authors>Raudel Alejadro Gomez Molina</Authors>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -16,7 +16,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\BigNum\BigNum.csproj" />
-        <None Include="..\README.md" Pack="true" PackagePath="\" />
+        <None Include="README.md" Pack="true" PackagePath="\" />
     </ItemGroup>
 
 </Project>
