@@ -1,4 +1,4 @@
-namespace Expression;
+namespace Expression.Arithmetics;
 
 public interface IArithmetic<T>
 {
@@ -35,6 +35,8 @@ public interface IArithmetic<T>
     public T Pow(T x, T y);
 
     public T Sin(T x);
+
+    public T Sqrt(T x, T y);
 
     public T Cos(T x);
     public T Tan(T x);

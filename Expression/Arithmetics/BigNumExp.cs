@@ -128,4 +128,11 @@ public class BigNumExp : IArithmetic<RealNumbers>
     {
         return BigNumMath.Acot(x);
     }
+
+    public RealNumbers Sqrt(RealNumbers x, RealNumbers y)
+    {
+        if (!BigNumMath.IsInteger(y))
+            throw new Exception("The index is not real");
+        return BigNumMath.Sqrt(x, int.Parse(y.ToString()));
+    }
 }

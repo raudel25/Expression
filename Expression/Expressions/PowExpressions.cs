@@ -1,3 +1,5 @@
+using Expression.Arithmetics;
+
 namespace Expression.Expressions;
 
 public class Pow<T> : BinaryExpression<T>
@@ -97,3 +99,73 @@ public class PowE<T> : Pow<T>
         return this * right.Derivative(variable);
     }
 }
+
+// public class Sqrt<T> : BinaryExpression<T>
+// {
+//     public Sqrt(Function<T> left, NumberExpression<T> right) : base(left, right)
+//     {
+//     }
+//
+//     public override string ToLatex()
+//     {
+//         throw new NotImplementedException();
+//     }
+//
+//     public override int Priority => 3;
+//
+//     public override Function<T> Derivative(char variable)
+//     {
+//         var num1 = new NumberExpression<T>(Arithmetic.Real1, Arithmetic);
+//         return num1 / (Right * new Sqrt<T>(Pow<T>.DeterminatePow(Left, Right - num1), (NumberExpression<T>)Right));
+//     }
+//
+//     public override T Evaluate(List<(char, T)> variables)
+//     {
+//         return base.Evaluate(variables);
+//     }
+//
+//     public override Function<T> EvaluateExpression(List<(char, Function<T>)> variables)
+//     {
+//         return base.EvaluateExpression(variables);
+//     }
+//
+//     public override bool IsBinary()
+//     {
+//         return base.IsBinary();
+//     }
+//
+//     protected override Function<T> Derivative(char variable, Function<T> left, Function<T> right)
+//     {
+//         throw new NotImplementedException();
+//     }
+//
+//     protected override T Evaluate(T left, T right)
+//     {
+//         throw new NotImplementedException();
+//     }
+//
+//     protected override Function<T> EvaluateExpression(Function<T> left, Function<T> right)
+//     {
+//         throw new NotImplementedException();
+//     }
+//
+//     protected override bool IsBinaryImplement()
+//     {
+//         throw new NotImplementedException();
+//     }
+//
+//     public override bool Equals(object? obj)
+//     {
+//         return base.Equals(obj);
+//     }
+//
+//     public override int GetHashCode()
+//     {
+//         return base.GetHashCode();
+//     }
+//
+//     public override string ToString()
+//     {
+//         return base.ToString();
+//     }
+// }

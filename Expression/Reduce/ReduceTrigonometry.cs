@@ -1,4 +1,5 @@
 using Expression.Expressions;
+using Expression.Arithmetics;
 
 namespace Expression.Reduce;
 

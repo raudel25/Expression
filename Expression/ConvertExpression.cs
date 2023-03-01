@@ -1,6 +1,7 @@
 using System.Text;
 using Expression.Reduce;
 using Expression.Expressions;
+using Expression.Arithmetics;
 
 namespace Expression;
 

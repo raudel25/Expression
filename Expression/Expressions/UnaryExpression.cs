@@ -1,3 +1,5 @@
+using Expression.Arithmetics;
+
 namespace Expression.Expressions;
 
 public class NumberExpression<T> : Function<T>
