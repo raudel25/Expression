@@ -1,14 +1,35 @@
 @using BigNum
 @using Expression.Expressions
 @using MathJaxBlazor
+@using System.Text
+@using Microsoft.Extensions.Primitives
 
 @inherits MathJaxContentComponent
 
-<Equation Value="@Function.ToLatex()"></Equation>
+<Equation Value="@TransEquation(Function)"></Equation>
 
 @code {
 
     [Parameter]
     public Function<RealNumbers> Function { get; set; } = null!;
+
+    private string TransEquation(Function<RealNumbers> func)
+    {
+        var variables = Function<RealNumbers>.VariablesToExpression(func);
+        if (variables.Count == 0) return func.ToLatex();
+
+        var s = new StringBuilder("f(");
+
+        foreach (var item in variables)
+        {
+            s.Append(item);
+            s.Append(item != variables[^1] ? "," : ")");
+        }
+
+        s.Append("=");
+        s.Append(func.ToLatex());
+
+        return s.ToString();
+    }
 
 }

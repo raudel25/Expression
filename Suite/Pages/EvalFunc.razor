@@ -7,12 +7,8 @@
     {
         if (index == _ind)
         {
-            <div style="display: flex; margin: 10px;">
-                <span >@Equal(value)</span>
-                @if (_values[_ind].Count != 0)
-                {
-                    <ShowExp Function="_values[_ind][^1]"></ShowExp>
-                }
+            <div style="justify-self: center; margin: 10px;">
+                <span>@Info(value)</span>
             </div>
 
             <Build Functions="_values[_ind]" ArithmeticExp="ArithmeticExp" Changed="StateHasChanged"></Build>
@@ -55,7 +51,7 @@
 
     private int _ind;
 
-    private string Equal(char s) => $"{s} = ";
+    private string Info(char s) => $"Introduce the function for variable {s}";
 
     protected override void OnInitialized()
     {
@@ -85,7 +81,7 @@
                 return;
             eval.Add((Variables[i],_values[i][^1]));
         }
-
+        
         Eval(eval);
     }
 

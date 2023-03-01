@@ -3,10 +3,23 @@
 @using Expression.Arithmetics
 
 <div style="width: 350px; margin: 10px;">
+    @if (_auxFun is not null)
+    {
+        <div style="justify-self: center; margin: 5px; font-size: 20px;">
+            <ShowExp Function="_auxFun"></ShowExp>
+        </div>
+    }
+    @if (_auxFun is null && _function != "")
+    {
+        <div class="alert alert-danger">
+            The expression is incorrect
+        </div>
+    }
     <div class="input-group">
-        <input class="form-control" type="text" @bind="_function"/>
-    
-        <button class="input-group-text" @onclick="AddFunction">Exp</button>
+        <input class="form-control" type="text" @onkeyup="() => _auxFun = ArithmeticExp.Parsing(_function)"
+               placeholder="Introduce your expression" @bind="_function" @bind:event="oninput"/>
+
+        <button class="input-group-text" @onclick="AddFunction">f(x)</button>
     </div>
 </div>
 
@@ -23,9 +36,10 @@
 
     private string _function = "";
 
+    private Function<RealNumbers>? _auxFun;
+
     private void AddFunction()
     {
-        if (_function == "") return;
         var exp = ArithmeticExp.Parsing(_function);
 
         if (exp is null) return;

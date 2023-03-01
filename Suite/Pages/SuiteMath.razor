@@ -37,6 +37,8 @@
     </div>
 
     <div class="math">
+
+
         <div class="nav-exp">
             @if (_ind != 0)
             {
@@ -50,9 +52,6 @@
             }
         </div>
 
-        <div style="grid-row:2; justify-self: center">
-            <h1>Suite</h1>
-        </div>
 
         @if (_functions.Count != 0)
         {
@@ -64,7 +63,7 @@
                 <button class="btn btn-dark" @onclick="DerivativeD">dy/dx</button>
                 <button class="btn btn-dark" @onclick="() => _action = Actions.Taylor">Taylor</button>
                 <button class="btn btn-dark" @onclick="() => _action = Actions.Evaluative">Evaluate</button>
-                <button class="btn btn-dark" @onclick="() => _action = Actions.EvaluativeFunc">EvaluateFunc</button>
+                <button class="btn btn-dark" @onclick="() => _action = Actions.EvaluativeFunc">Function</button>
             </div>
         }
 
@@ -87,9 +86,13 @@
             }
             @if (_action == Actions.Result)
             {
-                <div>
-                    <ShowExp Function="_result"></ShowExp>
-                    <button class="btn btn-dark" @onclick="Analyze">Analyze</button>
+                <div style="display: grid;justify-self: center;">
+                    <div style="font-size:20px">
+                        <ShowExp Function="_result"></ShowExp>
+                    </div>
+                    <div style="justify-self: center">
+                        <button class="btn btn-dark" @onclick="Analyze">Analyze</button>
+                    </div>
                 </div>
             }
         </div>

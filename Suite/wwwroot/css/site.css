@@ -93,6 +93,7 @@ a, .btn-link {
     grid-row: 3;
     justify-self: center;
     margin: 20px;
+    font-size: 30px;
 }
 
 .show-actions{
@@ -111,8 +112,4 @@ a, .btn-link {
     display:grid; 
     
     grid-template-columns: 90% 10%;
-}
-
-.MathJax {
-    font-size: 30px;
 }

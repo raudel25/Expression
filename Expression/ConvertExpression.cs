@@ -42,6 +42,7 @@ internal static class ConvertExpression<T>
     /// <returns>Expresion resultante(si devuelve null la expresion no es correcta)</returns>
     internal static Function<T>? Parsing(string s, IArithmetic<T> arithmetic)
     {
+        if (s == "") return null;
         s = FormatStringExp(s);
         var operators = new List<Operators<T>>();
 
