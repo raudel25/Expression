@@ -78,4 +78,16 @@ internal static class Aux<T>
             ? new NumberExpression<T>(binary.Evaluate(new List<(char, T)>()), binary.Arithmetic)
             : null;
     }
+    
+    /// <summary>
+    ///     Determinar si la expresion es completamente numerica
+    /// </summary>
+    /// <param name="unary">Expresion unaria</param>
+    /// <returns>Expresion resultante(si es null es que no se pudo reducir)</returns>
+    internal static NumberExpression<T>? Numbers(UnaryExpression<T> unary)
+    {
+        return unary.Value is  NumberExpression<T>
+            ? new NumberExpression<T>(unary.Evaluate(new List<(char, T)>()), unary.Arithmetic)
+            : null;
+    }
 }
