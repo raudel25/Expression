@@ -25,7 +25,9 @@
                 }
             }
 
-            <Build Functions="_values[_ind]" ArithmeticExp="ArithmeticExp" Changed="StateHasChanged"></Build>
+            <Build Functions="_values[_ind]" ArithmeticExp="ArithmeticExp" Changed="StateHasChanged"
+                   @key="_ind" @ref="_builds[_ind]">
+            </Build>
         }
     }
 
@@ -65,10 +67,12 @@
 
     private int _ind;
 
-    private bool[] _firstVariable=null!;
+    private bool[] _firstVariable = null!;
+
+    private Build[] _builds = null!;
 
     private string Info(char s) => $"Introduce the function for variable {s}";
-    
+
     private string InfoDanger(char s) => $"There is not value for {s}";
 
     protected override void OnInitialized()
@@ -76,6 +80,7 @@
         _variables = new List<(char, int)>(Variables.Count);
         _values = new List<Function<RealNumbers>>[Variables.Count];
         _firstVariable = new bool[Variables.Count];
+        _builds = new Build[Variables.Count];
 
         for (var i = 0; i < Variables.Count; i++)
         {
@@ -87,16 +92,18 @@
     private void Next()
     {
         _firstVariable[_ind] = true;
-        
+
         if (_ind < Variables.Count - 1)
         {
+            _builds[_ind].AddFunction();
             if (_values[_ind].Count == 0)
                 return;
             _ind++;
             return;
         }
 
-        if (_values[Variables.Count - 1].Count == 0)
+        _builds[^1].AddFunction();
+        if (_values[^1].Count == 0)
             return;
 
 

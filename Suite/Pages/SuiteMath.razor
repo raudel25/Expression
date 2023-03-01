@@ -23,7 +23,7 @@
                 </div>
 
                 <EvalFunc Eval="EvalFunc" ArithmeticExp="ArithmeticExp"
-                          Variables="Function<RealNumbers>.VariablesToExpression(_functions[_ind])">
+                          Variables="Variables()">
                 </EvalFunc>
             }
             else
@@ -58,10 +58,10 @@
             </div>
 
             <div class="options">
-                <button class="btn btn-dark" @onclick="DerivativeD">Derivative</button>
-                <button class="btn btn-dark" @onclick="() => _action = Actions.Taylor">Taylor</button>
-                <button class="btn btn-dark" @onclick="() => _action = Actions.Evaluative">Evaluate</button>
-                <button class="btn btn-dark" @onclick="() => _action = Actions.EvaluativeFunc">Function</button>
+                <button class="btn btn-dark" @onclick="() => DecideVariables(Actions.Derivative)">Derivative</button>
+                <button class="btn btn-dark" @onclick="() => DecideVariables(Actions.Taylor)">Taylor</button>
+                <button class="btn btn-dark" @onclick="() => DecideVariables(Actions.Evaluative)">Evaluate</button>
+                <button class="btn btn-dark" @onclick="() => DecideVariables(Actions.EvaluativeFunc)">Function</button>
             </div>
         }
 
@@ -72,13 +72,13 @@
             }
             @if (_action == Actions.Evaluative)
             {
-                <EvalVarible Variables="Function<RealNumbers>.VariablesToExpression(_functions[_ind])"
+                <EvalVarible Variables="Variables()"
                              Eval="Eval" Big="Big" Message="Enter the variables values">
                 </EvalVarible>
             }
             @if (_action == Actions.Taylor)
             {
-                <Taylor Variables="Function<RealNumbers>.VariablesToExpression(_functions[_ind])"
+                <Taylor Variables="Variables()"
                         PolTaylor="Taylor" Big="Big">
                 </Taylor>
             }
@@ -121,22 +121,47 @@
     private Actions _action;
     private Function<RealNumbers> _result = null!;
 
-    private void DerivativeD()
-    {
-        var variables = Function<RealNumbers>.VariablesToExpression(_functions[_ind]);
+    private List<char> Variables() => Function<RealNumbers>.VariablesToExpression(_functions[_ind]);
 
-        switch (variables.Count)
+    private void DecideVariables(Actions act)
+    {
+        var variables = Variables();
+
+        if (Variables().Count == 0)
         {
-            case 0:
-                Derivative('x');
-                return;
-            case 1:
-                Derivative(variables[0]);
-                return;
-            default:
-                _action = Actions.Derivative;
-                break;
+            switch (act)
+            {
+                case Actions.Derivative:
+                    Derivative('x');
+                    break;
+
+                case Actions.Evaluative:
+                    Eval(new List<(char, RealNumbers)>());
+                    break;
+
+                case Actions.EvaluativeFunc:
+                    EvalFunc(new List<(char, Function<RealNumbers>)>());
+                    break;
+
+                case Actions.None:
+                case Actions.Taylor:
+                case Actions.Build:
+                case Actions.Result:
+                default:
+                    Taylor(new List<(char, RealNumbers)>(), 0);
+                    break;
+            }
+
+            return;
         }
+
+        if (act == Actions.Derivative && Variables().Count == 1)
+        {
+            Derivative(variables[0]);
+            return;
+        }
+
+        _action = act;
     }
 
     private void Derivative(char variable)
