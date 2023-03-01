@@ -11,6 +11,20 @@
                 <span>@Info(value)</span>
             </div>
 
+            if (_values[_ind].Count != 0)
+            {
+                <ShowExp Function="_values[_ind][^1]"></ShowExp>
+            }
+            else
+            {
+                if (_firstVariable[_ind])
+                {
+                    <div class="alert alert-danger h-50">
+                        @InfoDanger(value)
+                    </div>
+                }
+            }
+
             <Build Functions="_values[_ind]" ArithmeticExp="ArithmeticExp" Changed="StateHasChanged"></Build>
         }
     }
@@ -51,12 +65,17 @@
 
     private int _ind;
 
+    private bool[] _firstVariable=null!;
+
     private string Info(char s) => $"Introduce the function for variable {s}";
+    
+    private string InfoDanger(char s) => $"There is not value for {s}";
 
     protected override void OnInitialized()
     {
         _variables = new List<(char, int)>(Variables.Count);
         _values = new List<Function<RealNumbers>>[Variables.Count];
+        _firstVariable = new bool[Variables.Count];
 
         for (var i = 0; i < Variables.Count; i++)
         {
@@ -67,20 +86,22 @@
 
     private void Next()
     {
+        _firstVariable[_ind] = true;
+        
         if (_ind < Variables.Count - 1)
         {
+            if (_values[_ind].Count == 0)
+                return;
             _ind++;
             return;
         }
 
-        var eval = new List<(char,Function<RealNumbers>)>(Variables.Count);
+        if (_values[Variables.Count - 1].Count == 0)
+            return;
 
-        for (var i = 0; i < Variables.Count; i++)
-        {
-            if (_values[i].Count == 0)
-                return;
-            eval.Add((Variables[i],_values[i][^1]));
-        }
+
+        var eval = new List<(char,Function<RealNumbers>)>(Variables.Count);
+        eval.AddRange(Variables.Select((t, i) => (t,_values[i][^1])));
 
         Eval(eval);
     }

@@ -53,12 +53,13 @@
 
         Functions.Add(exp);
         _function = "";
+        _auxFun = null;
         Changed();
     }
 
     private void Press(KeyboardEventArgs e)
     {
-        if(e.Code=="Enter")
+        if (e.Code == "Enter")
             AddFunction();
         _auxFun = ArithmeticExp.Parsing(_function);
     }
