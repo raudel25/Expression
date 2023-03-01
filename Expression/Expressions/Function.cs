@@ -18,22 +18,15 @@ public abstract class Function<T>
     /// <summary>
     ///     Determinar las varibles de una expresion
     /// </summary>
-    /// <param name="exp">Expresion</param>
     /// <returns>Lista de variables de la expresion</returns>
-    public static List<char> VariablesToExpression(Function<T> exp)
-    {
-        return Aux<T>.VariablesToExpression(exp);
-    }
+    public List<char> VariablesToExpression => Aux<T>.VariablesToExpression(this);
+
 
     /// <summary>
     ///     Reducir una expresion
     /// </summary>
-    /// <param name="exp">Expresion para reducir</param>
     /// <returns>Expresion reducida</returns>
-    public static Function<T> Reduce(Function<T> exp)
-    {
-        return ReduceExpression<T>.Reduce(exp);
-    }
+    public Function<T> Reduce => ReduceExpression<T>.Reduce(this);
 
     /// <summary>
     /// Expresion en latex

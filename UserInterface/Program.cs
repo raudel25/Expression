@@ -94,7 +94,7 @@ static void Derivative<T>(Function<T> exp, ArithmeticExp<T> arithmeticExp)
     }
 
     var derivative = exp.Derivative(variable[0]);
-    ExpressionResult(Function<T>.Reduce(derivative), arithmeticExp);
+    ExpressionResult(derivative.Reduce, arithmeticExp);
 }
 
 static void Evaluate<T>(Function<T> exp, ArithmeticExp<T> arithmeticExp)
@@ -112,7 +112,7 @@ static void EvaluateFunc<T>(Function<T> exp, ArithmeticExp<T> arithmeticExp)
     Show(exp);
     var evaluate = DeterminateVariablesFunc(exp, arithmeticExp);
 
-    ExpressionResult(Function<T>.Reduce(exp.EvaluateExpression(evaluate)), arithmeticExp);
+    ExpressionResult(exp.EvaluateExpression(evaluate).Reduce, arithmeticExp);
 }
 
 static void Taylor<T>(Function<T> exp, ArithmeticExp<T> arithmeticExp)
@@ -127,7 +127,7 @@ static void Taylor<T>(Function<T> exp, ArithmeticExp<T> arithmeticExp)
     while (!int.TryParse(Console.ReadLine(), out cant)) Error();
 
     var taylor = new Taylor<T>(exp, evaluate, cant);
-    ExpressionResult(Function<T>.Reduce(taylor.ExpressionResult), arithmeticExp);
+    ExpressionResult(taylor.ExpressionResult.Reduce, arithmeticExp);
 }
 
 static void ExpressionResult<T>(Function<T> exp, ArithmeticExp<T> arithmeticExp)
@@ -143,7 +143,7 @@ static void ExpressionResult<T>(Function<T> exp, ArithmeticExp<T> arithmeticExp)
 static List<(char, T)> DeterminateVariables<T>(Function<T> exp, IArithmetic<T> arithmetic, string message = "")
 {
     if (message == "") message = "Ingrese los valores de las variables";
-    var variables = Function<T>.VariablesToExpression(exp);
+    var variables = exp.VariablesToExpression;
     var evaluate = new List<(char, T)>();
 
     foreach (var item in variables)
@@ -193,7 +193,7 @@ static List<(char, Function<T>)> DeterminateVariablesFunc<T>(Function<T> exp,
     ArithmeticExp<T> arithmeticExp)
 {
     var message = "Ingrese los valores de las variables";
-    var variables = Function<T>.VariablesToExpression(exp);
+    var variables = exp.VariablesToExpression;
     var evaluate = new List<(char, Function<T>)>();
 
     foreach (var item in variables)

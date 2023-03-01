@@ -121,7 +121,7 @@
     private Actions _action;
     private Function<RealNumbers> _result = null!;
 
-    private List<char> Variables() => Function<RealNumbers>.VariablesToExpression(_functions[_ind]);
+    private List<char> Variables() => _functions[_ind].VariablesToExpression;
 
     private void DecideVariables(Actions act)
     {
@@ -166,7 +166,7 @@
 
     private void Derivative(char variable)
     {
-        _result = Function<RealNumbers>.Reduce(_functions[_ind].Derivative(variable));
+        _result = _functions[_ind].Derivative(variable).Reduce;
 
         _action = Actions.Result;
         StateHasChanged();
@@ -182,7 +182,7 @@
 
     private void EvalFunc(List<(char,Function<RealNumbers>)> eval)
     {
-        _result = Function<RealNumbers>.Reduce(_functions[_ind].EvaluateExpression(eval));
+        _result = _functions[_ind].EvaluateExpression(eval).Reduce;
 
         _action = Actions.Result;
         StateHasChanged();
@@ -191,7 +191,7 @@
     private void Taylor(List<(char,RealNumbers)> eval, int cant)
     {
         var taylor = new Taylor<RealNumbers>(_functions[_ind], eval, cant);
-        _result = Function<RealNumbers>.Reduce(taylor.ExpressionResult);
+        _result = taylor.ExpressionResult.Reduce;
 
         _action = Actions.Result;
         StateHasChanged();

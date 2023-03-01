@@ -15,7 +15,7 @@
 
     private string TransEquation(Function<RealNumbers> func)
     {
-        var variables = Function<RealNumbers>.VariablesToExpression(func);
+        var variables = func.VariablesToExpression;
         if (variables.Count == 0) return func.ToLatex();
 
         var s = new StringBuilder("f(");
