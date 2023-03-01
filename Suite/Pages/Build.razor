@@ -1,6 +1,9 @@
 @using Expression.Expressions
 @using BigNum
 @using Expression.Arithmetics
+@using MathJaxBlazor
+
+@inherits MathJaxContentComponent
 
 <div style="width: 350px; margin: 10px;">
     @if (_auxFun is not null)
@@ -16,10 +19,14 @@
         </div>
     }
     <div class="input-group">
-        <input class="form-control" type="text" @onkeyup="() => _auxFun = ArithmeticExp.Parsing(_function)"
+        <input class="form-control" type="text" @onkeyup="Press"
                placeholder="Introduce your expression" @bind="_function" @bind:event="oninput"/>
 
-        <button class="input-group-text" @onclick="AddFunction">f(x)</button>
+        <button class="input-group-text" @onclick="AddFunction">
+            <div style="margin-bottom: -1em; margin-top: -1em">
+                \[f(x)\]
+            </div>
+        </button>
     </div>
 </div>
 
@@ -47,6 +54,13 @@
         Functions.Add(exp);
         _function = "";
         Changed();
+    }
+
+    private void Press(KeyboardEventArgs e)
+    {
+        if(e.Code=="Enter")
+            AddFunction();
+        _auxFun = ArithmeticExp.Parsing(_function);
     }
 
 }

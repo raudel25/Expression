@@ -1,31 +1,43 @@
 @using BigNum
 @using Expression.Expressions
+@using MathJaxBlazor
 
-<div class="input-group">
-    @foreach (var (value,index) in _variables)
-    {
-        if (index == _ind)
-        {
-            <span class="input-group-text">@Equal(value)</span>
-            <input class="form-control" type="number" @bind="@_values[index]"/>
-        }
-    }
+@inherits MathJaxContentComponent
 
-    @if (_ind != 0)
-    {
-        <button class="input-group-text" @onclick="() => _ind--">Previous</button>
-    }
+<div style="display: grid">
+    <div style="justify-self: center; margin: 5px;">
+        <span>@Message</span>
+    </div>
+    <div class="input-group">
+        @foreach (var (value,index) in _variables)
+        {
+            if (index == _ind)
+            {
+                <div class="input-group-text">
+                    <div style="margin-bottom: -1em; margin-top: -1em">
+                        <Equation Value="@Equal(value)"></Equation>
+                    </div>
+                </div>
+                <input class="form-control" type="number" @bind="@_values[index]"/>
+            }
+        }
 
-    <button class="input-group-text" @onclick="Next">
-        @if (_ind == Variables.Count - 1)
+        @if (_ind != 0)
         {
-            <span>Accept</span>
+            <button class="input-group-text" @onclick="() => _ind--">Previous</button>
         }
-        else
-        {
-            <span>Next</span>;
-        }
-    </button>
+
+        <button class="input-group-text" @onclick="Next">
+            @if (_ind == Variables.Count - 1)
+            {
+                <span>Accept</span>
+            }
+            else
+            {
+                <span>Next</span>
+            }
+        </button>
+    </div>
 </div>
 
 @code {
@@ -38,6 +50,9 @@
 
     [Parameter]
     public BigNumMath Big { get; set; } = null!;
+
+    [Parameter]
+    public string Message { get; set; } = null!;
 
     private List<(char,int)> _variables = null!;
 

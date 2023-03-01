@@ -37,8 +37,6 @@
     </div>
 
     <div class="math">
-
-
         <div class="nav-exp">
             @if (_ind != 0)
             {
@@ -60,7 +58,7 @@
             </div>
 
             <div class="options">
-                <button class="btn btn-dark" @onclick="DerivativeD">dy/dx</button>
+                <button class="btn btn-dark" @onclick="DerivativeD">Derivative</button>
                 <button class="btn btn-dark" @onclick="() => _action = Actions.Taylor">Taylor</button>
                 <button class="btn btn-dark" @onclick="() => _action = Actions.Evaluative">Evaluate</button>
                 <button class="btn btn-dark" @onclick="() => _action = Actions.EvaluativeFunc">Function</button>
@@ -75,7 +73,7 @@
             @if (_action == Actions.Evaluative)
             {
                 <EvalVarible Variables="Function<RealNumbers>.VariablesToExpression(_functions[_ind])"
-                             Eval="Eval" Big="Big">
+                             Eval="Eval" Big="Big" Message="Enter the variables values">
                 </EvalVarible>
             }
             @if (_action == Actions.Taylor)
