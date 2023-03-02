@@ -47,21 +47,35 @@
 
     public void AddFunction()
     {
-        var exp = ArithmeticExp.Parsing(_function);
+        try
+        {
+            var exp = ArithmeticExp.Parsing(_function);
 
-        if (exp is null) return;
+            if (exp is null) return;
 
-        Functions.Add(exp);
-        _function = "";
-        _auxFun = null;
-        Changed();
+            Functions.Add(exp);
+            _function = "";
+            _auxFun = null;
+            Changed();
+        }
+        catch 
+        {
+            _auxFun = null;
+        }
     }
 
     private void Press(KeyboardEventArgs e)
     {
         if (e.Code == "Enter")
             AddFunction();
-        _auxFun = ArithmeticExp.Parsing(_function);
+        try
+        {
+            _auxFun = ArithmeticExp.Parsing(_function);
+        }
+        catch 
+        {
+            _auxFun = null;
+        }
     }
 
 }
