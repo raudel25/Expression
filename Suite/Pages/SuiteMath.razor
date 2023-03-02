@@ -82,6 +82,12 @@
                         PolTaylor="Taylor" Big="Big">
                 </Taylor>
             }
+            @if (_action == Actions.Error)
+            {
+                <div class="alert alert-danger">
+                    The result is not real
+                </div>
+            }
             @if (_action == Actions.Result)
             {
                 <div style="display: grid;justify-self: center;">
@@ -115,6 +121,7 @@
         Evaluative,
         EvaluativeFunc,
         Build,
+        Error,
         Result
     }
 
@@ -174,9 +181,17 @@
 
     private void Eval(List<(char,RealNumbers)> eval)
     {
-        _result = ArithmeticExp.NumberExpression(_functions[_ind].Evaluate(eval));
+        try
+        {
+            _result = ArithmeticExp.NumberExpression(_functions[_ind].Evaluate(eval));
 
-        _action = Actions.Result;
+            _action = Actions.Result;
+        }
+        catch
+        {
+            _action = Actions.Error;
+        }
+
         StateHasChanged();
     }
 
@@ -190,10 +205,17 @@
 
     private void Taylor(List<(char,RealNumbers)> eval, int cant)
     {
-        var taylor = new Taylor<RealNumbers>(_functions[_ind], eval, cant);
-        _result = taylor.ExpressionResult.Reduce;
+        try
+        {
+            var taylor = new Taylor<RealNumbers>(_functions[_ind], eval, cant);
+            _result = taylor.ExpressionResult.Reduce;
 
-        _action = Actions.Result;
+            _action = Actions.Result;
+        }
+        catch
+        {
+            _action = Actions.Error;
+        }
         StateHasChanged();
     }
 

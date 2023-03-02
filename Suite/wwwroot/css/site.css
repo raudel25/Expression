@@ -106,10 +106,3 @@ a, .btn-link {
     justify-self: center;
     grid-row: 5;
 }
-
-.name{
-    grid-row: 1;
-    display:grid; 
-    
-    grid-template-columns: 90% 10%;
-}
