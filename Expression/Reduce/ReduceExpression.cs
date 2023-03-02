@@ -42,6 +42,7 @@ internal static class ReduceExpression<T>
             Division<T> => ReduceMultiplyDivision<T>.ReduceDivision(binary),
             Pow<T> => ReducePowLogarithm<T>.ReducePow(binary),
             Log<T> => ReducePowLogarithm<T>.ReduceLogarithm(binary),
+            Sqrt<T> => ReducePowLogarithm<T>.ReduceSqrt(binary),
             _ => exp
         };
     }

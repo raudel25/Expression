@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using Expression.Expressions;
 
 namespace Expression.Reduce;
@@ -96,7 +95,7 @@ internal static class ReducePowLogarithm<T>
         if (binary.Right.Equals(new NumberExpression<T>(binary.Arithmetic.Real1, binary.Arithmetic)))
             return new NumberExpression<T>(binary.Arithmetic.Real0, binary.Arithmetic);
         if (binary.Right is not Pow<T> pow) return binary;
-        
+
         return pow.Left.Equals(binary.Left) ? pow.Right : binary;
     }
 
@@ -115,5 +114,41 @@ internal static class ReducePowLogarithm<T>
             return new NumberExpression<T>(binary.Arithmetic.Real1, binary.Arithmetic);
 
         return null;
+    }
+
+    /// <summary>
+    ///     Reducir un una raiz
+    /// </summary>
+    /// <param name="binary">Expresion binaria</param>
+    /// <returns>Expresion reducida</returns>
+    internal static Function<T> ReduceSqrt(BinaryExpression<T> binary)
+    {
+        var ind = (NumberExpression<T>)binary.Right;
+
+        if (ind.Equals(new NumberExpression<T>(binary.Arithmetic.Real1, binary.Arithmetic)))
+            return binary.Left;
+
+        if (binary.Left is Sqrt<T> sqrt)
+        {
+            Function<T> mult = sqrt.Right * ind;
+            return new Sqrt<T>(sqrt.Left, (NumberExpression<T>)mult);
+        }
+
+        if (binary.Left is Pow<T> { Right: NumberExpression<T> num } pow)
+        {
+            if (binary.Arithmetic.IsInteger(num.Value))
+            {
+                if (ind.Value!.Equals(num.Value))
+                    return pow.Left;
+                if (binary.Arithmetic.Rest(ind.Value, num.Value)!.Equals(binary.Arithmetic.Real0))
+                    return new Sqrt<T>(pow.Left, new NumberExpression<T>(
+                        binary.Arithmetic.Division(ind.Value, num.Value), binary.Arithmetic));
+                if (binary.Arithmetic.Rest(num.Value, ind.Value)!.Equals(binary.Arithmetic.Real0))
+                    return Pow<T>.DeterminatePow(pow.Left, new NumberExpression<T>(
+                        binary.Arithmetic.Division(num.Value, ind.Value), binary.Arithmetic));
+            }
+        }
+
+        return binary;
     }
 }
