@@ -7,7 +7,7 @@
         <RootNamespace>BigNum</RootNamespace>
         <OutputType>Library</OutputType>
         <PackageId>BigNum</PackageId>
-        <Version>1.1.2</Version>
+        <Version>1.1.3</Version>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <Authors>Raudel Alejadro Gomez Molina</Authors>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
