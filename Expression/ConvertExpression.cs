@@ -21,6 +21,7 @@ internal static class ConvertExpression<T>
         () => new Operators<T>("*", 2, exp => new Multiply<T>(exp[0], exp[1]), true),
         () => new Operators<T>("/", 2, exp => new Division<T>(exp[0], exp[1]), true),
         () => new Operators<T>("^", 3, exp => Pow<T>.DeterminatePow(exp[0], exp[1]), true),
+        () => new Operators<T>("sqrt", 3, exp => new Sqrt<T>(exp[0], (NumberExpression<T>)exp[1]), true),
         () => new Operators<T>("log", 4, exp => Log<T>.DeterminateLog(exp[0], exp[1]), true),
         () => new Operators<T>("ln", 4, exp => new Ln<T>(exp[0])),
         () => new Operators<T>("sin", 5, exp => new Sin<T>(exp[0])),
@@ -220,9 +221,9 @@ internal static class ConvertExpression<T>
 
         if (double.TryParse(aux, out _)) return new NumberExpression<T>(arithmetic.StringToNumber(aux), arithmetic);
 
-        if (aux[^1] == '!')
-            if (int.TryParse(aux.Substring(0, aux.Length - 1), out var integer) && integer >= 0)
-                return new Factorial<T>(arithmetic.StringToNumber(aux.Substring(0, aux.Length - 1)), arithmetic);
+        if (aux[^1] != '!') return null;
+        if (int.TryParse(aux.AsSpan(0, aux.Length - 1), out var integer) && integer >= 0)
+            return new Factorial<T>(arithmetic.StringToNumber(aux.Substring(0, aux.Length - 1)), arithmetic);
 
         return null;
     }
@@ -271,6 +272,27 @@ internal static class ConvertExpression<T>
             left = DeterminateExpression(s, start + operators[index].Operator.Length + 1, ind - 1, visited, operators,
                 arithmetic);
             right = DeterminateExpression(s, ind + 2, end - 1, visited, operators, arithmetic);
+
+            return left is null || right is null ? null : operators[index].ExpressionOperator(new[] { left, right });
+        }
+
+        if (operators[index].Operator == "sqrt")
+        {
+            start = EliminateParentLeft(s, start, end);
+
+            var ind = DeterminateEndParent(s, start + operators[index].Operator.Length);
+
+            var indSqrt = ind == start + operators[index].Operator.Length
+                ? "2"
+                : s.Substring(start + operators[index].Operator.Length + 1,
+                    ind - (start + operators[index].Operator.Length + 1));
+            if (ind == start + operators[index].Operator.Length) ind--;
+
+            var validInd = int.TryParse(indSqrt, out var indSqrtInt);
+            if (indSqrtInt <= 0) validInd = false;
+            right = validInd ? new NumberExpression<T>(arithmetic.StringToNumber(indSqrt), arithmetic) : null;
+
+            left = DeterminateExpression(s, ind + 2, end - 1, visited, operators, arithmetic);
 
             return left is null || right is null ? null : operators[index].ExpressionOperator(new[] { left, right });
         }

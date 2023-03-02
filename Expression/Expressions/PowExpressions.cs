@@ -100,72 +100,59 @@ public class PowE<T> : Pow<T>
     }
 }
 
-// public class Sqrt<T> : BinaryExpression<T>
-// {
-//     public Sqrt(Function<T> left, NumberExpression<T> right) : base(left, right)
-//     {
-//     }
-//
-//     public override string ToLatex()
-//     {
-//         throw new NotImplementedException();
-//     }
-//
-//     public override int Priority => 3;
-//
-//     public override Function<T> Derivative(char variable)
-//     {
-//         var num1 = new NumberExpression<T>(Arithmetic.Real1, Arithmetic);
-//         return num1 / (Right * new Sqrt<T>(Pow<T>.DeterminatePow(Left, Right - num1), (NumberExpression<T>)Right));
-//     }
-//
-//     public override T Evaluate(List<(char, T)> variables)
-//     {
-//         return base.Evaluate(variables);
-//     }
-//
-//     public override Function<T> EvaluateExpression(List<(char, Function<T>)> variables)
-//     {
-//         return base.EvaluateExpression(variables);
-//     }
-//
-//     public override bool IsBinary()
-//     {
-//         return base.IsBinary();
-//     }
-//
-//     protected override Function<T> Derivative(char variable, Function<T> left, Function<T> right)
-//     {
-//         throw new NotImplementedException();
-//     }
-//
-//     protected override T Evaluate(T left, T right)
-//     {
-//         throw new NotImplementedException();
-//     }
-//
-//     protected override Function<T> EvaluateExpression(Function<T> left, Function<T> right)
-//     {
-//         throw new NotImplementedException();
-//     }
-//
-//     protected override bool IsBinaryImplement()
-//     {
-//         throw new NotImplementedException();
-//     }
-//
-//     public override bool Equals(object? obj)
-//     {
-//         return base.Equals(obj);
-//     }
-//
-//     public override int GetHashCode()
-//     {
-//         return base.GetHashCode();
-//     }
-//
-//     public override string ToString()
-//     {
-//         return base.ToString();
-//     }
-// }
+public class Sqrt<T> : BinaryExpression<T>
+{
+    public Sqrt(Function<T> left, NumberExpression<T> right) : base(left, right)
+    {
+    }
+
+    public override int Priority => 3;
+
+    protected override Function<T> Derivative(char variable, Function<T> left, Function<T> right)
+    {
+        return new NumberExpression<T>(Arithmetic.Real1, Arithmetic) / right * left.Derivative(variable) / new Sqrt<T>(
+            Pow<T>.DeterminatePow(left, right - new NumberExpression<T>(Arithmetic.Real1, Arithmetic)),
+            (NumberExpression<T>)right);
+    }
+
+    protected override T Evaluate(T left, T right)
+    {
+        return Arithmetic.Sqrt(left, right);
+    }
+
+    protected override Function<T> EvaluateExpression(Function<T> left, Function<T> right)
+    {
+        return new Sqrt<T>(left, (NumberExpression<T>)right);
+    }
+
+    protected override bool IsBinaryImplement()
+    {
+        return Left.ToString()! != "0";
+    }
+
+    public override bool Equals(object? obj)
+    {
+        var binary = obj as Sqrt<T>;
+        if (binary is null) return false;
+
+        return Left.Equals(binary.Left) && Right.Equals(binary.Right);
+    }
+
+    public override int GetHashCode()
+    {
+        return 7 * Left.GetHashCode() * Right.GetHashCode();
+    }
+
+    public override string ToString()
+    {
+        var right = Right.ToString()!;
+        return right == "2" ? $"sqrt({Left})" : $"sqrt[{right}]({Left})";
+    }
+
+    public override string ToLatex()
+    {
+        var (l, r) = ("{", "}");
+        var right = Right.ToLatex();
+        return right == "2" ? $"\\sqrt{l}{Left.ToLatex()}{r}" : $"\\sqrt[{right}]{l}{Left.ToLatex()}{r}";
+    }
+}

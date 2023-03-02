@@ -1,9 +1,12 @@
 ﻿using BigNum;
-using Expression;
 using Expression.Expressions;
 using Expression.Arithmetics;
 
-UserInterface();
+var arithmetic = new ArithmeticExp<RealNumbers>(new BigNumExp(new BigNumMath(6, 9)));
+
+var exp = arithmetic.Parsing("sqrt(2)");
+Console.WriteLine(exp);
+// UserInterface();
 
 static void UserInterface()
 {
