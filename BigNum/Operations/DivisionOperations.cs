@@ -76,7 +76,7 @@ internal static class DivisionOperations
         if (div.Count < divisor.Count) return (0, div);
 
         if (div.Count == divisor.Count) result = div[^1] / divisor[^1];
-        else result = (div[^1] * base10 + div[^1]) / divisor[^1];
+        else result = (div[^1] * base10 + div[^2]) / divisor[^1];
 
         List<long> aux;
         while (true)
