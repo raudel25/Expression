@@ -6,13 +6,13 @@
 @inherits MathJaxContentComponent
 
 <div style="width: 350px; margin: 10px;">
-    @if (_auxFun is not null)
+    @if (_auxFun is not null && !_error)
     {
         <div style="justify-self: center; margin: 5px; font-size: 20px;">
-            <ShowExp Function="_auxFun"></ShowExp>
+            <ShowExp Function="_auxFun" @key="1"></ShowExp>
         </div>
     }
-    @if (_auxFun is null && _function != "")
+    @if (_error)
     {
         <div class="alert alert-danger">
             The expression is incorrect
@@ -24,7 +24,7 @@
 
         <button class="input-group-text" @onclick="AddFunction">
             <div style="margin-bottom: -1em; margin-top: -1em">
-                \[f(x)\]
+                <Equation Value="f(x)"></Equation>
             </div>
         </button>
     </div>
@@ -45,36 +45,45 @@
 
     private Function<RealNumbers>? _auxFun;
 
+    private bool _error = false;
+
     public void AddFunction()
     {
+        _error = false;
         try
         {
             var exp = ArithmeticExp.Parsing(_function);
 
-            if (exp is null) return;
+            if (exp is null)
+            {
+                _error = true;
+                return;
+            }
 
             Functions.Add(exp);
             _function = "";
             _auxFun = null;
             Changed();
         }
-        catch 
+        catch
         {
-            _auxFun = null;
+            _error = true;
         }
     }
 
     private void Press(KeyboardEventArgs e)
     {
+        _error = false;
         if (e.Code == "Enter")
             AddFunction();
         try
         {
-            _auxFun = ArithmeticExp.Parsing(_function);
+            var aux = ArithmeticExp.Parsing(_function);
+            if (aux is not null) _auxFun = aux;
         }
-        catch 
+        catch
         {
-            _auxFun = null;
+            _error = true;
         }
     }
 
