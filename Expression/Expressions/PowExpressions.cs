@@ -69,7 +69,7 @@ public class Pow<T> : BinaryExpression<T>
     {
         var (l, r) = ("{", "}");
 
-        return $"{Left.ToLatex()}^{l}{Right.ToLatex()}{r}";
+        return $"{l}{Left.ToLatex()}{r}^{l}{Right.ToLatex()}{r}";
     }
 }
 
@@ -110,9 +110,9 @@ public class Sqrt<T> : BinaryExpression<T>
 
     protected override Function<T> Derivative(char variable, Function<T> left, Function<T> right)
     {
-        return new NumberExpression<T>(Arithmetic.Real1, Arithmetic) / right * left.Derivative(variable) / new Sqrt<T>(
+        return  left.Derivative(variable) /(right* new Sqrt<T>(
             Pow<T>.DeterminatePow(left, right - new NumberExpression<T>(Arithmetic.Real1, Arithmetic)),
-            (NumberExpression<T>)right);
+            (NumberExpression<T>)right));
     }
 
     protected override T Evaluate(T left, T right)

@@ -13,14 +13,6 @@ internal static class ReduceExpression<T>
     {
         var unary = exp as UnaryExpression<T>;
 
-        Function<T>? number;
-
-        if (unary is not null)
-        {
-            number = Aux<T>.Numbers(unary);
-            if (number is not null) return number;
-        }
-
         switch (unary)
         {
             case Sin<T>:
@@ -31,8 +23,11 @@ internal static class ReduceExpression<T>
 
         if (exp is not BinaryExpression<T> binary) return exp;
 
-        number = Aux<T>.Numbers(binary);
-        if (number is not null) return number;
+        if (binary is not Division<T> && binary is not Sqrt<T> && binary is not Log<T>)
+        {
+            var number = Aux<T>.Numbers(binary);
+            if (number is not null) return number;
+        }
 
         return binary switch
         {

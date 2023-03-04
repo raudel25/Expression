@@ -6,7 +6,7 @@
         <Nullable>enable</Nullable>
         <OutputType>Library</OutputType>
         <PackageId>Expression</PackageId>
-        <Version>1.2.1</Version>
+        <Version>1.2.2</Version>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <Authors>Raudel Alejadro Gomez Molina</Authors>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>

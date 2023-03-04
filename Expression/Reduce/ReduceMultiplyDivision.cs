@@ -141,7 +141,7 @@ internal static class ReduceMultiplyDivision<T>
     {
         var aux = ReduceDivisionSimple(binary);
         if (aux is not null) return aux;
-
+        
         aux = ReduceDivision(binary.Left, binary.Right, binary.Arithmetic.Real1, binary.Arithmetic.Real1);
         if (aux is not null) return aux;
 
@@ -250,10 +250,10 @@ internal static class ReduceMultiplyDivision<T>
             return pow;
         }
 
-        if (left is NumberExpression<T> && right is NumberExpression<T>)
-            return new NumberExpression<T>(left.Arithmetic.Division(
-                left.Arithmetic.Pow(left.Evaluate(new List<(char, T)>()), indLeft),
-                left.Arithmetic.Pow(right.Evaluate(new List<(char, T)>()), indRight)), left.Arithmetic);
+        // if (left is NumberExpression<T> && right is NumberExpression<T>)
+        //     return new NumberExpression<T>(left.Arithmetic.Division(
+        //         left.Arithmetic.Pow(left.Evaluate(new List<(char, T)>()), indLeft),
+        //         left.Arithmetic.Pow(right.Evaluate(new List<(char, T)>()), indRight)), left.Arithmetic);
 
         return null;
     }
