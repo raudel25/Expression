@@ -34,17 +34,17 @@
     <div style="justify-self: center; margin: 10px;">
         @if (_ind != 0)
         {
-            <button class="btn btn-light" @onclick="() => _ind--">Previous</button>
+            <button class="btn btn-light border-dark m-1" @onclick="() => _ind--"><i class="oi oi-arrow-left"></i></button>
         }
 
-        <button class="btn btn-light" @onclick="Next">
+        <button class="btn btn-light border-dark m-1" @onclick="Next">
             @if (_ind == Variables.Count - 1)
             {
-                <span>Accept</span>
+                <i class="oi oi-check"></i>
             }
             else
             {
-                <span>Next</span>
+                <i class="oi oi-arrow-right"></i>
             }
         </button>
     </div>

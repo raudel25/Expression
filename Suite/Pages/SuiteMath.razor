@@ -40,12 +40,14 @@
         <div class="nav-exp">
             @if (_ind != 0)
             {
-                <button class="btn btn-light" @onclick="() => { _ind--; _action = Actions.None; }">Previous</button>
+                <button class="btn btn-light border-dark m-1" @onclick="() => { _ind--; _action = Actions.None; }">
+                    <i class="oi oi-arrow-left d" aria-hidden="true"></i>
+                </button>
             }
             @if (_ind != _functions.Count - 1 && _functions.Count != 0)
             {
-                <button class="btn btn-light" aria-label="Next" @onclick="() => { _ind++; _action = Actions.None; }">
-                    Next
+                <button class="btn btn-light border-dark m-1" aria-label="Next" @onclick="() => { _ind++; _action = Actions.None; }">
+                    <i class="oi oi-arrow-right d" aria-hidden="true"></i>
                 </button>
             }
         </div>
