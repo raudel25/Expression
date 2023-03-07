@@ -123,8 +123,6 @@ public class NativeExp : IArithmetic<double>
 
     public double Sqrt(double x, double y)
     {
-        if ((int)y - y == 0)
-            throw new Exception("The index is not real");
         return Math.Pow(x, 1 / y);
     }
 }
