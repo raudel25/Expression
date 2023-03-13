@@ -16,15 +16,44 @@
         }
         else
         {
-            @if (_action == Actions.EvaluativeFunc)
+            @if (_action != Actions.None && _action != Actions.Result)
             {
                 <div style="justify-self: flex-end">
                     <button class="btn btn-dark" @onclick="() => _action = Actions.Build">New</button>
                 </div>
-
-                <EvalFunc Eval="EvalFunc" ArithmeticExp="ArithmeticExp"
-                          Variables="Variables()">
-                </EvalFunc>
+                @if (_action != Actions.EvaluativeFunc)
+                {
+                    <div class="show-actions">
+                        @if (_action == Actions.Derivative)
+                        {
+                            <Derivative Function="_functions[_ind]" Derv="Derivative"></Derivative>
+                        }
+                        @if (_action == Actions.Evaluative)
+                        {
+                            <EvalVarible Variables="Variables()"
+                                         Eval="Eval" Big="Big" Message="Enter the variables values">
+                            </EvalVarible>
+                        }
+                        @if (_action == Actions.Taylor)
+                        {
+                            <Taylor Variables="Variables()"
+                                    PolTaylor="Taylor" Big="Big">
+                            </Taylor>
+                        }
+                        @if (_action == Actions.Error)
+                        {
+                            <div class="alert alert-danger">
+                                The result is not real
+                            </div>
+                        }
+                    </div>
+                }
+                @if (_action == Actions.EvaluativeFunc)
+                {
+                    <EvalFunc Eval="EvalFunc" ArithmeticExp="ArithmeticExp"
+                              Variables="Variables()">
+                    </EvalFunc>
+                }
             }
             else
             {
@@ -67,41 +96,18 @@
             </div>
         }
 
-        <div class="show-actions">
-            @if (_action == Actions.Derivative)
-            {
-                <Derivative Function="_functions[_ind]" Derv="Derivative"></Derivative>
-            }
-            @if (_action == Actions.Evaluative)
-            {
-                <EvalVarible Variables="Variables()"
-                             Eval="Eval" Big="Big" Message="Enter the variables values">
-                </EvalVarible>
-            }
-            @if (_action == Actions.Taylor)
-            {
-                <Taylor Variables="Variables()"
-                        PolTaylor="Taylor" Big="Big">
-                </Taylor>
-            }
-            @if (_action == Actions.Error)
-            {
-                <div class="alert alert-danger">
-                    The result is not real
+        @if (_action == Actions.Result)
+        {
+            <div class="show-result">
+                <div style="font-size:20px">
+                    <ShowExp Function="_result"></ShowExp>
                 </div>
-            }
-            @if (_action == Actions.Result)
-            {
-                <div style="display: grid;justify-self: center;">
-                    <div style="font-size:20px">
-                        <ShowExp Function="_result"></ShowExp>
-                    </div>
-                    <div style="justify-self: center">
-                        <button class="btn btn-dark" @onclick="Analyze">Analyze</button>
-                    </div>
+                <div style="justify-self: center">
+                    <button class="btn btn-dark" @onclick="Analyze">Analyze</button>
                 </div>
-            }
-        </div>
+            </div>
+        }
+
     </div>
 </div>
 
