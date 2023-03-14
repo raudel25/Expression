@@ -107,7 +107,10 @@
                     <button class="btn btn-dark" @onclick="() => DecideVariables(Actions.Taylor)">Taylor</button>
                     <button class="btn btn-dark" @onclick="() => DecideVariables(Actions.Evaluative)">Evaluate</button>
                     <button class="btn btn-dark" @onclick="() => DecideVariables(Actions.EvaluativeFunc)">Function</button>
-                    <button class="btn btn-dark" @onclick="() => _action = Actions.Graph">Graph</button>
+                    <button class="btn btn-dark"
+                            @onclick="() => _action = _functions[_ind].VariablesToExpression.Count == 1 ? Actions.Graph : Actions.None">
+                        Graph
+                    </button>
                 </div>
             }
         }
