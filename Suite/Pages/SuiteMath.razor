@@ -16,7 +16,7 @@
         }
         else
         {
-            @if (_action != Actions.None && _action != Actions.Result)
+            @if (_action != Actions.None && _action != Actions.Result && _action != Actions.Graph)
             {
                 <div style="justify-self: flex-end">
                     <button class="btn btn-dark" @onclick="() => _action = Actions.Build">New</button>
@@ -57,9 +57,18 @@
             }
             else
             {
-                <div style="height: 40px">
-                    <button class="btn btn-dark" @onclick="() => _action = Actions.Build">New</button>
-                </div>
+                @if (_action == Actions.Graph)
+                {
+                    <div style="height: 40px">
+                        <button class="btn btn-dark" @onclick="() => _action = Actions.None">Back</button>
+                    </div>
+                }
+                else
+                {
+                    <div style="height: 40px">
+                        <button class="btn btn-dark" @onclick="() => _action = Actions.Build">New</button>
+                    </div>
+                }
             }
         }
 
@@ -81,19 +90,26 @@
             }
         </div>
 
-
-        @if (_functions.Count != 0)
+        @if (_action == Actions.Graph)
         {
-            <div class="show-exp">
-                <ShowExp Function="_functions[_ind]"></ShowExp>
-            </div>
+            <Graph Exp="@_functions[_ind].ToString()" @key="_ind"></Graph>
+        }
+        else
+        {
+            @if (_functions.Count != 0)
+            {
+                <div class="show-exp">
+                    <ShowExp Function="_functions[_ind]"></ShowExp>
+                </div>
 
-            <div class="options">
-                <button class="btn btn-dark" @onclick="() => DecideVariables(Actions.Derivative)">Derivative</button>
-                <button class="btn btn-dark" @onclick="() => DecideVariables(Actions.Taylor)">Taylor</button>
-                <button class="btn btn-dark" @onclick="() => DecideVariables(Actions.Evaluative)">Evaluate</button>
-                <button class="btn btn-dark" @onclick="() => DecideVariables(Actions.EvaluativeFunc)">Function</button>
-            </div>
+                <div class="options">
+                    <button class="btn btn-dark" @onclick="() => DecideVariables(Actions.Derivative)">Derivative</button>
+                    <button class="btn btn-dark" @onclick="() => DecideVariables(Actions.Taylor)">Taylor</button>
+                    <button class="btn btn-dark" @onclick="() => DecideVariables(Actions.Evaluative)">Evaluate</button>
+                    <button class="btn btn-dark" @onclick="() => DecideVariables(Actions.EvaluativeFunc)">Function</button>
+                    <button class="btn btn-dark" @onclick="() => _action = Actions.Graph">Graph</button>
+                </div>
+            }
         }
 
         @if (_action == Actions.Result)
@@ -130,7 +146,8 @@
         EvaluativeFunc,
         Build,
         Error,
-        Result
+        Graph,
+        Result,
     }
 
     private Actions _action;

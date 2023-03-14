@@ -19,4 +19,8 @@
         <None Include="README.md" Pack="true" PackagePath="\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Plotly.Blazor" Version="2.18.2" />
+    </ItemGroup>
+
 </Project>

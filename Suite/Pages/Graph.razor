@@ -1,0 +1,76 @@
+@using Plotly.Blazor
+@using Plotly.Blazor.Traces
+@using Plotly.Blazor.Traces.ScatterLib
+@using Expression.Arithmetics
+@using Expression.Expressions
+@using Plotly.Blazor.LayoutLib
+@using Plotly.Blazor.Traces.SplomLib.DimensionLib
+
+<div style="margin-top: 10px">
+    <PlotlyChart @bind-Data="_data" @ref="_chart"/>
+</div>
+
+
+@code {
+
+    [Parameter]
+    public string Exp { get; set; } = "";
+
+    private Function<double> _exp = null!;
+
+    private List<char> _variable = null!;
+
+    private readonly ArithmeticExp<double> _arithmetic = new(new NativeExp());
+
+    private double _strat = -50;
+
+    private double _end = 50;
+
+    private PlotlyChart _chart = null!;
+
+    private IList<ITrace> _data = null!;
+
+    protected override void OnInitialized()
+    {
+        _exp = _arithmetic.Parsing(Exp)!;
+        _variable = _exp.VariablesToExpression;
+
+        _data = Data();
+    }
+
+    private (List<double>,List<double>) Plot()
+    {
+        var xList = new List<double>(((int)_end - (int)_strat) * 1000);
+        var yList = new List<double>(((int)_end - (int)_strat) * 1000);
+        
+        for (var x = _strat; x <= _end; x += 0.001)
+        {
+            var y = _exp.Evaluate(new List<(char, double)> { (_variable[0],x) });
+
+            if (y is double.NaN or double.PositiveInfinity or double.PositiveInfinity or double.NegativeZero)
+                continue;
+            if (Math.Abs(y) > 10e6 || Math.Abs(x) > 10e6)
+                continue;
+
+            xList.Add(x);
+            yList.Add(y);
+        }
+        
+        return (xList,yList);
+    }
+
+    private IList<ITrace> Data()
+    {
+        var (x,y) = Plot();
+        return new List<ITrace>
+        {
+            new Scatter
+            {
+                Mode = ModeFlag.Lines,
+                X = x.Cast<object>().ToList(),
+                Y = y.Cast<object>().ToList()
+            }
+        };
+    }
+
+}
